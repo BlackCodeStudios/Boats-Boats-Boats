@@ -291,7 +291,7 @@ namespace PirateWars
             LineX = Content.Load<Texture2D>("LineX");
             LineY = Content.Load<Texture2D>("LineY");
             #region Main Menu
-            logo = Content.Load<Texture2D>("BeardCoded2");
+            logo = Content.Load<Texture2D>("BeardCoded2_1");
             logoFont = Content.Load<SpriteFont>("Fonts/LogoFont");
             mottoFont = Content.Load<SpriteFont>("Fonts/MottoFont");
             startButtonPos = new Vector2(300, 300);
@@ -473,7 +473,7 @@ namespace PirateWars
                     p.Update(player);
                 }
                 /*check the friendlyList;  if the list has been initialized, and the ship's ability is not activated, then the list should be cleared.  Only applies to Player_ManOfWar.  Otherwise, nothing will happen here*/
-                if (friendlyList.Count >= 0 && (player.getShipState() != Ship.ShipState.AbilityActivated))
+                if (friendlyList.Count >= 0 && (player.getShipState() != Player.ShipState.AbilityActivated))
                     friendlyList.Clear();
                 else
                 {
@@ -529,7 +529,7 @@ namespace PirateWars
             if (newState.IsKeyDown(Keys.Tab))
             {
                 KeyboardState doubleCheck = Keyboard.GetState();
-                if (player.getShipState() == Ship.ShipState.AbilityCharged)
+                if (player.getShipState() == Player.ShipState.AbilityCharged)
                 {
                     player.ActivateAbility(gameTimer.RawTime);
                     if (player.GetType() == typeof(Player_ManOfWar))
@@ -747,7 +747,7 @@ namespace PirateWars
                 float x = graphics.PreferredBackBufferWidth / 2 - logoFont.MeasureString("BOATS BOATS BOATS").X / 2;
                 float y = 25 + logoFont.MeasureString("BOATS BOATS BOATS").Y;
                 spriteBatch.DrawString(logoFont, "BOATS BOATS BOATS", new Vector2(x, y), Color.White);
-                spriteBatch.Draw(startButton.getTexture(), new Vector2(300, 300), Color.White);
+                spriteBatch.Draw(startButton.Texture, new Vector2(300, 300), Color.White);
             }
             else if (gameState == GameState.ShipSelection)
             {
@@ -770,7 +770,7 @@ namespace PirateWars
                 spriteBatch.DrawString(logoFont, "GAME OVER", new Vector2(250, 100), Color.Black);
                 spriteBatch.DrawString(mottoFont, "Score: " + score, new Vector2(250, 300), Color.Black);
                 spriteBatch.DrawString(mottoFont, "High Score: " + readHighScoreData().HighScore + " " + readHighScoreData().date, new Vector2(400, 300), Color.Black);
-                spriteBatch.Draw(returnToMenu.getTexture(), returnToMenu.getPosition(), Color.White);
+                spriteBatch.Draw(returnToMenu.Texture, returnToMenu.Position, Color.White);
 
             }
             spriteBatch.End();
@@ -787,9 +787,7 @@ namespace PirateWars
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Draw(logo, new Vector2(graphics.PreferredBackBufferWidth / 2 - logo.Width / 2, graphics.PreferredBackBufferHeight / 2 - logo.Height / 2), Color.White);
-            int titleW = graphics.PreferredBackBufferWidth / 2 - (int)logoFont.MeasureString("BlackCode Studios").X / 2;
-            int titleH = graphics.PreferredBackBufferHeight / 10;
-            spriteBatch.DrawString(logoFont, "BlackCode Studios", new Vector2(titleW, titleH), Color.White);
+            //spriteBatch.DrawString(logoFont, "BlackCode Studios", new Vector2(titleW, titleH), Color.White);
             spriteBatch.DrawString(mottoFont, "Omnis Erigere Niger Vexillum", new Vector2(200, 600), Color.White);
         }
 
@@ -800,29 +798,29 @@ namespace PirateWars
             spriteBatch.DrawString(logoFont, "CHOOSE YOUR SHIP", new Vector2(titleX, 100), Color.White);
 
             //draw buttons
-            spriteBatch.Draw(brigButton.getTexture(), brigButton.getPosition(), Color.White);
-            spriteBatch.Draw(frigateButton.getTexture(), frigateButton.getPosition(), Color.White);
-            spriteBatch.Draw(manOfWarButton.getTexture(), manOfWarButton.getPosition(), Color.White);
+            spriteBatch.Draw(brigButton.Texture, brigButton.Position, Color.White);
+            spriteBatch.Draw(frigateButton.Texture, frigateButton.Position, Color.White);
+            spriteBatch.Draw(manOfWarButton.Texture, manOfWarButton.Position, Color.White);
 
             //draw ship data
-            float brigButtonMid = brigButton.getPosition().X + brigButton.getTexture().Width / 2;
-            float frigateButtonMid = frigateButton.getPosition().X + frigateButton.getTexture().Width / 2;
-            float mOWButtonMid = manOfWarButton.getPosition().X + manOfWarButton.getTexture().Width / 2;
+            float brigButtonMid = brigButton.Position.X + brigButton.Texture.Width / 2;
+            float frigateButtonMid = frigateButton.Position.X + frigateButton.Texture.Width / 2;
+            float mOWButtonMid = manOfWarButton.Position.X + manOfWarButton.Texture.Width / 2;
             //make sure the text is centered around the button
-            spriteBatch.DrawString(mottoFont, PLAYER_BRIG_DATA.PrintData() +"\nPOWER: RAMMING SPEED", new Vector2(brigButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.getPosition().Y + 30), Color.White);
+            spriteBatch.DrawString(mottoFont, PLAYER_BRIG_DATA.PrintData() +"\nPOWER: RAMMING SPEED", new Vector2(brigButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.Position.Y + 30), Color.White);
 
-            spriteBatch.DrawString(mottoFont, PLAYER_FRIG_DATA.PrintData() + "\nPOWER: TANK", new Vector2(frigateButtonMid - (mottoFont.MeasureString(PLAYER_FRIG_DATA.PrintData()).X / 2), frigateButton.getPosition().Y + 30), Color.White);
+            spriteBatch.DrawString(mottoFont, PLAYER_FRIG_DATA.PrintData() + "\nPOWER: TANK", new Vector2(frigateButtonMid - (mottoFont.MeasureString(PLAYER_FRIG_DATA.PrintData()).X / 2), frigateButton.Position.Y + 30), Color.White);
 
-            spriteBatch.DrawString(mottoFont, PLAYER_MOW_DATA.PrintData() + "\nPOWER: ARMY", new Vector2(mOWButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.getPosition().Y + 30), Color.White);
+            spriteBatch.DrawString(mottoFont, PLAYER_MOW_DATA.PrintData() + "\nPOWER: ARMY", new Vector2(mOWButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.Position.Y + 30), Color.White);
 
             //draw ship names
 
             float x = frigateButtonMid - (mottoFont.MeasureString("The Patt Meters").X / 2);
-            spriteBatch.DrawString(mottoFont, "The Patt Meters", new Vector2(x, frigateButton.getPosition().Y - 35), Color.White);
+            spriteBatch.DrawString(mottoFont, "The Patt Meters", new Vector2(x, frigateButton.Position.Y - 35), Color.White);
             x = brigButtonMid - (mottoFont.MeasureString("The Kimberly").X / 2);
-            spriteBatch.DrawString(mottoFont, "The Kimberly", new Vector2(x, brigButton.getPosition().Y - 35), Color.White);
+            spriteBatch.DrawString(mottoFont, "The Kimberly", new Vector2(x, brigButton.Position.Y - 35), Color.White);
             x = mOWButtonMid - (mottoFont.MeasureString("El Jefe").X / 2);
-            spriteBatch.DrawString(mottoFont, "El Jefe", new Vector2(x, manOfWarButton.getPosition().Y - 35), Color.White);
+            spriteBatch.DrawString(mottoFont, "El Jefe", new Vector2(x, manOfWarButton.Position.Y - 35), Color.White);
 
 
         }
@@ -830,8 +828,8 @@ namespace PirateWars
         private void DrawPauseMenu(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.DrawString(logoFont, "PAUSE", new Vector2(150, 100), Color.Black);
-            spriteBatch.Draw(resumeGame.getTexture(), resumeGame.getPosition(), Color.White);
-            spriteBatch.Draw(returnToMenu.getTexture(), returnToMenu.getPosition(), Color.White);
+            spriteBatch.Draw(resumeGame.Texture, resumeGame.Position, Color.White);
+            spriteBatch.Draw(returnToMenu.Texture, returnToMenu.Position, Color.White);
         }
 
         /// <summary>
@@ -893,7 +891,7 @@ namespace PirateWars
                 }
                 else
                 {
-                    if (player.GetType() == typeof(Player_Frigate) && player.getShipState() == Ship.ShipState.AbilityActivated)
+                    if (player.GetType() == typeof(Player_Frigate) && player.getShipState() == Player.ShipState.AbilityActivated)
                         spriteBatch.Draw(playerCBPowerUpTexture, c.getPosition(), null, Color.White, c.getAngle(), c.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
                     else
                         spriteBatch.Draw(playerCBTexture, c.getPosition(), null, Color.White, c.getAngle(), c.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
@@ -944,7 +942,7 @@ namespace PirateWars
             healthBarC = Color.Green;
 
             //if the player's ability is activated, then they are invincible.  Turn the health bar to gold to indicate this
-            if (player.getShipState() == Ship.ShipState.AbilityActivated)
+            if (player.getShipState() == Player.ShipState.AbilityActivated)
             {
                 healthBarC = Color.Gold;
             }
@@ -957,7 +955,7 @@ namespace PirateWars
              * draw ability duration bar underneath the health bar
              * If the ability is depleting, draw gameTimer.RawTime - abilityActivateTime / AbilityDuration
              */
-            if (player.getShipState() == Ship.ShipState.AbilityActivated)
+            if (player.getShipState() == Player.ShipState.AbilityActivated)
             {
                 //width of the ability activated bar
                 int width = (int)(healthBar.Width * (1 - (gameTimer.RawTime.TotalMilliseconds - player.getAbilityActivateTime().TotalMilliseconds) / player.getAbilityDuration()));
@@ -967,7 +965,7 @@ namespace PirateWars
             }
 
             //draw ability recharging
-            else if (player.getShipState() != Ship.ShipState.AbilityActivated)
+            else if (player.getShipState() != Player.ShipState.AbilityActivated)
             {
                 int width = (int)(MathHelper.Clamp((float)(healthBar.Width * (((gameTimer.RawTime.TotalMilliseconds - player.getAbilityRechargeStartTime().TotalMilliseconds) / player.getAbilityRecharge()))), 0, (int)healthBar.Width));
                 spriteBatch.Draw(healthBar, new Rectangle(this.Window.ClientBounds.Width / 2 - healthBar.Width / 2,
@@ -1123,6 +1121,10 @@ namespace PirateWars
         /// </summary>
         /// <param name="v">the vector taken in to see if it is out of bounds.  Passed by reference.</param>
         /// <param name="t">the texture that belongs to that vector.  Since all objects are drawn with the origin at their middle, it is necesary to know what the width and height of the object are, otherwise, half the object will be allowed to leave the screen</param>
+        /// <param name="lowerXBound">The vector's x value is not allowed to be less than this</param>
+        /// <param name="lowerYBound">The vector's y value is not allowed to be less than this</param>
+        /// <param name="upperXBound">The vector's x value is not allowed to be greater than this</param>
+        /// <param name="upperYBound">The vector's y value is not allowed to be greater than this</param>
         private void OutOfBounds(ref Vector2 v, Texture2D t, float lowerXBound, float upperXBound, float lowerYBound, float upperYBound)
         {
             //out of bounds top
@@ -1213,7 +1215,7 @@ namespace PirateWars
                     //if it is a player frigate, check to see if it's ability is activated, if not, then remove the cannon ball upon contact.  Else, leave the cannon balls alone
                     else
                     {
-                        if (((Player)(s)).getShipState() != Ship.ShipState.AbilityActivated)
+                        if (((Player)(s)).getShipState() != Player.ShipState.AbilityActivated)
                             s.getCBA().Remove(cB);
                     }
                 }//end if collision
@@ -1223,7 +1225,7 @@ namespace PirateWars
             //if s is the player, then check if it is a brig and has its ability activated
             if (s == player)
             {
-                if (player.GetType() == typeof(Player_Brig) && player.getShipState() == Ship.ShipState.AbilityActivated)
+                if (player.GetType() == typeof(Player_Brig) && player.getShipState() == Player.ShipState.AbilityActivated)
                     if (s.BoundingBox.Intersects(e.BoundingBox))
                     {
                         e.takeDamage(s.getDamage());

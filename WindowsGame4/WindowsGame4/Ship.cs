@@ -32,14 +32,6 @@ namespace PirateWars
         /// <value>reduces incoming damage.  Values range from 0 to 1, where 0 means no damage resitance and 1 means invincibility</value>
         protected float damageResistance;
 
-        public enum ShipState
-        {
-            AbilityCharged,           //normal mode
-            AbilityRecharging,       //while the ability is recharging
-            AbilityActivated        //special power activated
-        }
-
-
         #region Constructors
         /// <summary>
         /// The default constructor for all ships.  All of them share these starting characteristics
@@ -55,6 +47,12 @@ namespace PirateWars
             maxHealth = health;
         }//end default constructor
 
+        /// <summary>
+        /// Construct new Ship from a ShipData structure, a texture to represent the ship, and a texture to represent the ship's projectiles
+        /// </summary>
+        /// <param name="d">ShipData strucutre. Usually taken from XML file loaded in main game through ContentPipeline</param>
+        /// <param name="tex">Texture to represent ship</param>
+        /// <param name="cBTex">Texture to represent projectiles</param>
         public Ship(ShipData d, Texture2D tex, Texture2D cBTex)
             : base(d, tex)
         {
@@ -87,6 +85,7 @@ namespace PirateWars
         {
             return maxHealth;
         }
+        /// <summary>
         /// get the damage that this ship does
         /// </summary>
         /// <returns><see cref="damage"/></returns>
@@ -131,7 +130,6 @@ namespace PirateWars
         {
             return CannonBallTexture;
         }
-        /// <summary>
 
         #endregion //Accessors
 
@@ -162,7 +160,7 @@ namespace PirateWars
         /// <summary>
         /// change the health of the ship
         /// </summary>
-        /// <param name="newH">the new health of the ship</param>
+        ///<param name="damageTaken">The damage that is dealt to the ship</param>
         public void takeDamage(float damageTaken)
         {
             //if damage resistance is 1, then this will generate health - 0; else it will be health - damagTaken

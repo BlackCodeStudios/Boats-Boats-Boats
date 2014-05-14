@@ -7,6 +7,9 @@ using System.Text;
 
 namespace ObjectDataTypes
 {
+    /// <summary>
+    /// Holds all data needed to contstruct a new Ship in PirateWars.  This class is designed to be serialized and deserialized from an XML document.
+    /// </summary>
     public class ShipData : ObjectData
     {
         //has all of the variables of ObjectData and...
@@ -27,7 +30,7 @@ namespace ObjectDataTypes
         /// Create a string to represent all player data so that it can be displayed in an easy to read format.
         /// </summary>
         /// <returns>returns a string with all ship data</returns>
-        public string PrintData()
+        new public string PrintData()
         {
             string output = base.PrintData();
             output += ("Cannons per side: " + cannons + "\n");

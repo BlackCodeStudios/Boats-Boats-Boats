@@ -13,7 +13,9 @@ using ObjectDataTypes;
 
 namespace PirateWars
 {
-    
+    /// <summary>
+    /// Spawns the a Player_Brig and an Enemy_Brig in the center of the screen.  The enemy does nothing and takes no damage.  Basic game to check for collisions, and make sure that movement is working correctly.
+    /// </summary>
     class TestGame : Microsoft.Xna.Framework.Game
     {
 
@@ -111,7 +113,7 @@ namespace PirateWars
              */
             if (newState.IsKeyDown(Keys.Tab))
             {
-                if (player.getShipState() == Ship.ShipState.AbilityCharged)
+                if (player.getShipState() == Player.ShipState.AbilityCharged)
                 {
                 }
             }

@@ -12,8 +12,29 @@ namespace PirateWars
     /// </summary>
     public abstract class Player : Ship
     {
+        /// <summary>
+        /// Keep track of ship's state.  Ships have 3 states, AbilityCharged, AbilityRecharging and AbilityActivated
+        /// </summary>
+        public enum ShipState
+        {
+            /// <summary>
+            /// The player's ability is fully charged
+            /// </summary>
+            AbilityCharged,
+
+            /// <summary>
+            /// The players's ability is charging
+            /// </summary>
+            AbilityRecharging,
+            
+            /// <summary>
+            /// The player's ability is activated
+            /// </summary>
+            AbilityActivated
+        }
+
         /// <value>keep track of the ship's current state</value>
-        protected Ship.ShipState shipState;
+        protected ShipState shipState;
         /// <value>time at which the ability was activated</value>
         protected TimeSpan abilityActivateTime;
         ///<value>time at which the ability started to recharge.</value>

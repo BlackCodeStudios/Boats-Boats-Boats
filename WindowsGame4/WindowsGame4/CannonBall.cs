@@ -114,12 +114,6 @@ namespace PirateWars
             damage = newD;
         }
 
-        ///
-        /// <summary>
-        /// set the position of the cannon ball       
-        /// </summary>
-        ///<param name="newP"> the new position</param> 
-
         /// <summary>
         /// change the direction of the cannonball
         /// </summary>

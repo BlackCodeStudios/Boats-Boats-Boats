@@ -59,16 +59,10 @@ namespace PirateWars
         }
 
         /// <summary>
-        /// Constructs new RectangleF from a vector representing position, and another representing its dimensions
+        /// Constructs new RectangleF from a vector representing position, and another representing its texture.
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="d"></param>
-        public RectangleF(Vector2 p, Vector2 d)
-        {
-            position = p;
-            dimensions = d;
-            angle = 0;
-        }
+        /// <param name="p">Vector representing the coordinates where this object is on screen</param>
+        /// <param name="t">Texture that this rectangle is drawn around.</param>
         public RectangleF(Vector2 p, Texture2D t)
         {
             position = p;
@@ -184,6 +178,11 @@ namespace PirateWars
             //if all cases are true, then there is a collision
             return true;
         }
+        /// <summary>
+        /// A different collision detection algorithm using very basic axis aligned boxes.
+        /// </summary>
+        /// <param name="r">The other rectangle that is being checked against</param>
+        /// <returns>returns true if the two boxes overlap, false otherwise</returns>
         public bool IntersectsB(RectangleF r)
         {
             /* 
@@ -206,6 +205,10 @@ namespace PirateWars
                 return false;
             return true;
         }
+        /// <summary>
+        /// Rotate the half width and length vectors as well as the internal x and y axes by some angle in radians 
+        /// </summary>
+        /// <param name="a"></param>
         public void RotateAxis(float a)
         {
             /*
@@ -213,6 +216,10 @@ namespace PirateWars
              * |rotated_x|  =   |original_x||cos(a) -sin(a)| 
              * |rotated_y|      |original_y||sin(a) cos(a) |
              * the following code is just the expanded form of the above matrix
+             * 
+             * Angle = 0 means that the object is perfectly horizontal. An angle of -pi/2 means that the object is pointing perfectly upward.  The angle measurement is the rotation from the horizontal around the center of the object.
+             * 
+             * All calculations done through the rotation matrix are accomplished by using the data from when the object was perfectly horizontal
              */
             angle = Object.WrapAngle(a);
 
@@ -230,6 +237,10 @@ namespace PirateWars
             xAxis = Vector2.Normalize(xAxis);
             yAxis = Vector2.Normalize(yAxis);
         }
+        /// <summary>
+        /// Return a string that can be displayed containing all data for this RectangleF.  Used primarily for debugging
+        /// </summary>
+        /// <returns>String of data</returns>
         public string Print()
         {
             string output;

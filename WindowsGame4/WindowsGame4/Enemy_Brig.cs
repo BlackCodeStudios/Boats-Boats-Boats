@@ -33,14 +33,16 @@ namespace PirateWars
         /// <summary>
         /// Constructs new Enemy Brig.  This constructor is exactly the same as for the Enemy class.
         /// </summary>
-        /// <param name="e">EnemyData structure that holds all initialization data.  Loaded from the main game using the ContentPipeline</param>
+        /// <param name="d">EnemyData structure that holds all initialization data.  Loaded from the main game using the ContentPipeline</param>
         /// <param name="tex">Texture representing this enemy</param>
         /// <param name="cBTex">Texture representing enemy cannon balls</param>
         public Enemy_Brig(EnemyData d, Texture2D tex, Texture2D cBTex) : base(d, tex, cBTex) { }
+        
         /// <summary>
         /// Controls moving the enemy ships towards the player, and controls their firing mechanics, as well as moving cannon balls after they have been fired
         /// </summary>
         /// <param name="gameTime">used to restrict the Enemy's rate of fire</param>
+        /// <param name="player">Provides player data so that Enemies can respond to events accordingly</param>
         public override void UpdateAndMove(GameTime gameTime, Ship player)
         {
             TimeSpan newGameTime = gameTime.TotalGameTime;

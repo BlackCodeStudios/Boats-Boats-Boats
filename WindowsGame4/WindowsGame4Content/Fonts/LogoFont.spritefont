@@ -51,9 +51,17 @@ with.
     See the documentation for more information.
     -->
     <CharacterRegions>
-      <CharacterRegion>
+      <CharacterRegion> <!-- Special Characters -->
         <Start>&#32;</Start>
-        <End>&#126;</End>
+        <End>&#36;</End>
+      </CharacterRegion>
+      <CharacterRegion> <!-- Uppercase Characters -->
+        <Start>&#32;</Start>
+        <End>&#90;</End>
+      </CharacterRegion>
+      <CharacterRegion> <!--Lowercase Characters-->
+        <Start>&#97;</Start>
+        <End>&#122;</End>
       </CharacterRegion>
     </CharacterRegions>
   </Asset>

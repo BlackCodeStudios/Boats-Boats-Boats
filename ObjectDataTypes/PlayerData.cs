@@ -5,6 +5,9 @@ using System.Text;
 
 namespace ObjectDataTypes
 {
+    /// <summary>
+    /// Holds all data needed to contstruct a new Player in PirateWars.  This class is designed to be serialized and deserialized from an XML document.
+    /// </summary>
     public class PlayerData : ShipData
     {
         //all of the variables of ShipData plus...

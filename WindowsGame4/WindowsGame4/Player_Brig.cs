@@ -58,24 +58,6 @@ namespace PirateWars
             : base(d,tex,cBTex){}
 
         /// <summary>
-        /// Overloaded constructor for the Ship class
-        /// </summary>
-        /// <param name="i">filename for the image</param>
-        /// <param name="s">speed that the ship will move at</param>
-        /// <param name="c">number of cannons for the ship</param>
-        /// <param name="rOF">rate of fire of the ship</param>
-        /// <param name="C">ContentmManager passed from main game class</param>
-        public Player_Brig(string i, Vector2 s, int c, double rOF, Texture2D tex)
-            : this()
-        {
-            image = i;
-            speed = s;
-            cannons = c;
-            rateOfFire = rOF;
-            texture = tex;
-            origin = new Vector2(texture.Width / 2, texture.Height / 2);
-        }//end constructor (string, double, int, double)
-        /// <summary>
         /// Override Fire method from Ship.  All this does is prevent the brig type from firing while its ability is activated
         /// </summary>
         public override void Fire()

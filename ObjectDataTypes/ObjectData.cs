@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ObjectDataTypes
 {
+    /// <summary>
+    /// Holds all data needed to contstruct a new Object in PirateWars.  This class is designed to be serialized and deserialized from an XML document.
+    /// </summary>
     public class ObjectData
     {
         /// <value>Vector2 representing the speed of the boat</value>
@@ -17,16 +20,20 @@ namespace ObjectDataTypes
         public float turnSpeed;
         /// <value>filename of the image for the ship</value>
         public string image;
-        /// <value>Texture2D that is used to display the ship on screen</value>
         
-        //default constructor sets all values to 0
+        /// <summary>
+        /// Construct a new ObjectData instance.  Sets all data equal to 0
+        /// </summary>
         public ObjectData()
         {
             speed = Vector2.Zero;
             angle = turnSpeed = 0;
             image = "";
         }
-
+        /// <summary>
+        /// Create a string that holds all data from the class so that it can be easily displayed
+        /// </summary>
+        /// <returns>String with all data</returns>
         public string PrintData() 
         {
             string output = "";
