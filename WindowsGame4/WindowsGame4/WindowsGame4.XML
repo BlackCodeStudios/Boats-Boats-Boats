@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PirateWars</name>
+    </assembly>
+    <members>
+        <member name="M:WindowsGame4.Program.Main(System.String[])">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:WindowsGame4.Game1">
+            <summary>
+            This is the main type for your game
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Game1.#ctor">
+            <summary>
+            Sets the basics for the graphics, and GUI for this game
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Game1.Initialize">
+            <summary>
+            Allows the game to perform any initialization it needs to before starting to run.
+            This is where it can query for any required services and load any non-graphic
+            related content.  Calling base.Initialize will enumerate through any components
+            and initialize them as well.
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Game1.LoadContent">
+            <summary>
+            LoadContent will be called once per game and is the place to load
+            all of your content.
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Game1.UnloadContent">
+            <summary>
+            UnloadContent will be called once per game and is the place to unload
+            all content.
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Game1.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Allows the game to run logic such as updating the world,
+            checking for collisions, gathering input, and playing audio.
+            </summary>
+            <param name="gameTime">Provides a snapshot of timing values.</param>
+        </member>
+        <member name="M:WindowsGame4.Game1.Draw(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            This is called when the game should draw itself.
+            </summary>
+            <param name="gameTime">Provides a snapshot of timing values.</param>
+        </member>
+        <member name="M:WindowsGame4.Game1.OutOfBounds(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            This function checks to see if a vector will be out of the GUI bounds, and if it is out of bounds, will set the vector so that it comes back in bounds
+            </summary>
+            <param name="v">the vector taken in to see if it is out of bounds.  Passed by reference.</param>
+            <param name="t">the texture that belongs to that vector.  Since all objects are drawn with the origin at their middle, it is necesary to know what the width and height of the object are, otherwise, half the object will be allowed to leave the screen</param>
+        </member>
+        <member name="M:WindowsGame4.Game1.OutOfBounds(WindowsGame4.CannonBall)">
+            <summary>
+            This function checks to see if a CannonBall is out of bounds.  IF it is, return true
+            </summary>
+            <param name="c">the cannon ball to be checked for out of boundsness.</param>
+        </member>
+        <member name="T:WindowsGame4.CannonBall">
+            <summary>
+            Main projectile classs 
+            </summary>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.damage">
+            <value>stores the value of damage that a cannon ball does when hitting another ship </value>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.position">
+            <value>is a 2D vector that stores the current location of the cannon ball on the screen </value>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.speed">
+            <value>is a 2d vector that determines how many pixels a cannon ball moves upon updating </value>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.direction">
+            <value>is a 2D vector that determines the direction that the cannon ball moves after firing.  This direction is always perpindicular to the direction of the ship it is fired from </value>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.image">
+            <value> the filename (without extension) of the image for the cannon ball </value>
+        </member>
+        <member name="F:WindowsGame4.CannonBall.texture">
+            <value> stores the value of damage that a cannon ball does when hitting another ship </value>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.#ctor">
+             <summary>
+             Default constructor for a cannon ball.
+             </summary>
+            <params> 
+            None 
+            </params>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Overloaded constructor for a cannon ball
+             </summary>
+            <param name="v"> 2D vector for the starting position of the cannon ball </param>
+             <param name="d">2D vector for the direction of the cannon ball.  Should be perpendicular to the direction of the ship it was fired from </param>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getDamage">
+            <summary>
+            get the damage this cannon ball does
+            </summary>
+            <returns><see cref="F:WindowsGame4.CannonBall.damage"/></returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getPosition">
+            <summary>
+            get the current position of the cannon ball on the screen
+            </summary>
+            <returns><see cref="F:WindowsGame4.CannonBall.position"/></returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getTexture">
+            
+             <summary>
+             get the texture
+             </summary>
+             <returns> <see cref="F:WindowsGame4.CannonBall.texture"/> </returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getSpeed">
+            
+             <summary>
+             get the speed of the ball
+             </summary>
+             <returns><see cref="F:WindowsGame4.CannonBall.speed"/></returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getImage">
+            <summary>
+            get the filename that is used to create the texture
+            </summary>
+            <returns> <see cref="F:WindowsGame4.CannonBall.image"/> </returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.getDirection">
+            
+             <summary>
+             get the direction that the vector is facing
+             </summary>
+             <returns><see cref="F:WindowsGame4.CannonBall.direction"/></returns>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.setDamage(System.Double)">
+            
+             <summary>
+             set the damage that the cannon ball does        
+             </summary>
+            <param name="newD"> the new value for the damage</param> 
+        </member>
+        <member name="M:WindowsGame4.CannonBall.setPosition(Microsoft.Xna.Framework.Vector2)">
+            
+             <summary>
+             set the position of the cannon ball       
+             </summary>
+            <param name="newP"> the new position</param> 
+        </member>
+        <member name="M:WindowsGame4.CannonBall.setSpeed(Microsoft.Xna.Framework.Vector2)">
+            
+             <summary>
+             change the value of the speed
+             </summary>
+             <param name="newS">the new speed</param>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.setTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            change the texutre of the cannon ball
+            </summary>
+            <param name="newT">the new texture</param>
+        </member>
+        <member name="M:WindowsGame4.CannonBall.setDirection(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            change the direction of the cannonball
+            </summary>
+            <param name="newD">new direction</param>
+        </member>
+        <member name="T:WindowsGame4.Ship">
+            <summary>
+            Main ship class.  All other ship types are derived from this type.
+            </summary>
+        </member>
+        <member name="F:WindowsGame4.Ship.speed">
+            <value>Vector2 representing the speed of the boat</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.position">
+            <value>Vector2 holding the position of the boat on the screen </value>
+        </member>
+        <member name="F:WindowsGame4.Ship.origin">
+            <value>Vector2 that represents the origin of the texture.  This is the point where anything operation dealing with rotation or collision detection is relative to </value>
+        </member>
+        <member name="F:WindowsGame4.Ship.angle">
+            <value>float that stores the current angle that the ship is facing relative to the center of the screen.  negative angles are counterclockwise rotations, and positive are clockwise.  Stored in RADIANS not degrees </value>
+        </member>
+        <member name="F:WindowsGame4.Ship.cannons">
+            <value>number of cannons per side on the ship (total/2)</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.rateOfFire">
+            <value>double indicating what the delay between cannon shots is in miliseconds</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.CBA">
+            <value>list containing the active cannon balls fired by this ship</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.image">
+            <value>filename of the image for the ship</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.texture">
+            <value>Texture2D that is used to display the ship on screen</value>
+        </member>
+        <member name="F:WindowsGame4.Ship.CM">
+            <value>ContentManager that is passed from the main game so that the ship can load its own texture and have access to its properties </value>
+        </member>
+        <member name="M:WindowsGame4.Ship.getImage">
+            <summary>
+            get the filename for an image
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.image"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getSpeed">
+            <summary>
+            Get the speed of the boat
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.speed"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getPosition">
+            <summary>
+            get the position of the boat on screen
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.position"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getCannons">
+            <summary>
+            get the number of cannons on each side of the ship
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.cannons"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getROF">
+            <summary>
+            get the delay between cannon shots in miliseconds
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.rateOfFire"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getAngle">
+            <summary>
+            get the angle that the boat is facing
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.angle"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getOrigin">
+            <summary>
+            Get the position that is the origin of the texture/image.  For boats, it will always be the center of the image
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.origin"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getCBA">
+            <summary>
+            Get the list of active cannon balls that this ship has fired.  
+            </summary>
+            <returns> <see cref="F:WindowsGame4.Ship.CBA"/> </returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.getTexture">
+            <summary>
+            Get the texture that is displayed on the screen
+            </summary>
+            <returns><see cref="F:WindowsGame4.Ship.texture"/></returns>
+        </member>
+        <member name="M:WindowsGame4.Ship.setImage(System.String)">
+            <summary>
+            Change the filename of the image used to load the texture for this boat, and then update the texture
+            </summary>
+            <param name="newI">the new filename</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setSpeed(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Change the speed of the boat
+            </summary>
+            <param name="newS">the new speed of the boat</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setPosition(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            change the position of the boat
+            </summary>
+            <param name="newP">the new position</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setCannons(System.Int32)">
+            <summary>
+            change the number of cannons on a side of the boat
+            </summary>
+            <param name="newC">the new number of cannons per side</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setROF(System.Double)">
+            <summary>
+            change the delay in between cannon shots (in miliseconds)
+            </summary>
+            <param name="newR">the new delay</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setAngle(System.Single)">
+            <summary>
+            change the angle of the boat
+            </summary>
+            <param name="newA">the new angle</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.setOrigin(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Change the origin of the boat
+            </summary>
+            <param name="newO">the new origin</param>
+        </member>
+        <member name="M:WindowsGame4.Ship.Fire">
+            <summary>
+            Create new cannon balls (cannons * 2) and place them in the <see cref="F:WindowsGame4.Ship.CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the direction for a left side cannon ball and then inverts it for the right side
+            </summary>
+        </member>
+        <member name="M:WindowsGame4.Ship.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Updates the movement of cannonballs.  This way each ship is in charge of updating it's own cannon balls rather than having to loop through each ship somewhere in the main game program
+            </summary>
+            <param name="gameTime">provides a snapshot of timing values</param>
+        </member>
+    </members>
+</doc>

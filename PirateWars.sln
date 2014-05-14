@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateWars", "WindowsGame4\WindowsGame4\PirateWars.csproj", "{96CFA9A5-9ECD-414D-BB8B-D27480D5DDDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateWarsContent", "WindowsGame4\WindowsGame4Content\PirateWarsContent.contentproj", "{86E0B73E-8B81-4F85-B9BE-4377C52D5763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectDataTypes", "ObjectDataTypes\ObjectDataTypes.csproj", "{AB87969E-A4D5-46D0-BC51-8479A826E742}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://blackcodestudios.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ObjectDataTypes\\ObjectDataTypes.csproj
+		SccProjectName1 = ObjectDataTypes
+		SccLocalPath1 = ObjectDataTypes
+		SccProjectUniqueName2 = WindowsGame4\\WindowsGame4\\PirateWars.csproj
+		SccProjectName2 = WindowsGame4/WindowsGame4
+		SccLocalPath2 = WindowsGame4\\WindowsGame4
+		SccProjectUniqueName3 = WindowsGame4\\WindowsGame4Content\\PirateWarsContent.contentproj
+		SccProjectName3 = WindowsGame4/WindowsGame4Content
+		SccLocalPath3 = WindowsGame4\\WindowsGame4Content
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96CFA9A5-9ECD-414D-BB8B-D27480D5DDDA}.Debug|x86.ActiveCfg = Debug|x86
+		{96CFA9A5-9ECD-414D-BB8B-D27480D5DDDA}.Debug|x86.Build.0 = Debug|x86
+		{96CFA9A5-9ECD-414D-BB8B-D27480D5DDDA}.Release|x86.ActiveCfg = Release|x86
+		{96CFA9A5-9ECD-414D-BB8B-D27480D5DDDA}.Release|x86.Build.0 = Release|x86
+		{86E0B73E-8B81-4F85-B9BE-4377C52D5763}.Debug|x86.ActiveCfg = Debug|x86
+		{86E0B73E-8B81-4F85-B9BE-4377C52D5763}.Release|x86.ActiveCfg = Release|x86
+		{86E0B73E-8B81-4F85-B9BE-4377C52D5763}.Release|x86.Deploy.0 = Release|x86
+		{AB87969E-A4D5-46D0-BC51-8479A826E742}.Debug|x86.ActiveCfg = Debug|x86
+		{AB87969E-A4D5-46D0-BC51-8479A826E742}.Debug|x86.Build.0 = Debug|x86
+		{AB87969E-A4D5-46D0-BC51-8479A826E742}.Release|x86.ActiveCfg = Release|x86
+		{AB87969E-A4D5-46D0-BC51-8479A826E742}.Release|x86.Build.0 = Release|x86
+		{AB87969E-A4D5-46D0-BC51-8479A826E742}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

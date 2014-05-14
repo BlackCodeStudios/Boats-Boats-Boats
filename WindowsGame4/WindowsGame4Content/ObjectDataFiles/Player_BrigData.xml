@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <!-- TODO: replace this Asset with your own XML asset data. -->
+  <Asset Type="ObjectDataTypes.PlayerData">
+    <speed>5.0 5.0</speed>
+    <angle>0</angle>
+    <turnSpeed>4</turnSpeed>
+    <image>Brig2_1.png</image>
+    <cannons>3</cannons>
+    <rateOfFire>300</rateOfFire>
+    <cannonBallVelocity>7.0 7.0</cannonBallVelocity>
+    <health>100</health>
+    <damage>5</damage>
+    <damageResistance>0</damageResistance>
+    <ABILITY_DURATION>15000</ABILITY_DURATION>
+    <ABILITY_RECHARGE>0</ABILITY_RECHARGE>
+    <ABILITY_RECHARGE_MAX>20000</ABILITY_RECHARGE_MAX>
+  </Asset>
+</XnaContent>

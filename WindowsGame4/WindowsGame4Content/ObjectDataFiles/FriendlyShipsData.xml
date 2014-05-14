@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <!-- TODO: replace this Asset with your own XML asset data. -->
+  <Asset Type="ObjectDataTypes.EnemyData">
+    <speed>0.0 0.0</speed>
+    <angle>-90</angle>
+    <turnSpeed>3.0</turnSpeed>
+    <image>Frigate.png</image>
+    <cannons>4</cannons>
+    <rateOfFire>250</rateOfFire>
+    <cannonBallVelocity>7.0 7.0</cannonBallVelocity>
+    <health>25</health>
+    <damage>10</damage>
+    <damageResistance>1</damageResistance>
+    <range>10000</range>
+    <score>0</score>
+  </Asset>
+</XnaContent>
