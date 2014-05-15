@@ -24,11 +24,17 @@ We are by no means experts, but we hope that people will learn from our mistakes
 INSTALL
 ================
 1)  Go into the INSTALL folder
+
 2)  If you do not have the XNA Framework 4.0 Redistributable 4.0 Refresh installed, double click "xnafx40_redist.msi"
+
 2a) Follow installation instructions
+
 3)  Double click the "setup" file.  This checks to make sure that you have all other necessary componenets.
+
 3a) Allow the "setup" file to install any components that you do not have
+
 4)  Double click "PirateWars" file (the original name of the project was Pirate Wars) to install the game
+
 5) Enjoy!
 
 NOTE: The installation file was generated using Microsoft's ClickOnce Application Deployment Manifest.
@@ -40,15 +46,25 @@ DEVELOPMENT PLANS
 As of right now, these are the plans for the development of the game
 
   -Clean up UI
+    
     *Create Instruction window
+    
     *Add background animation to start menu
+    
     *Create loading screen
+    
     *Create more interesting background image for game instead of the solid color blue background
+    
     *Make HUD more interesting
+  
   -Create multiple game types
+    
     *Wave Mode
+      
       Only spawn fireboats, and have them move horizontally and vertically across the screen.
+      
       Waves spawn faster and with more enemies as game continues
+    
     *Boss Battle
       Fight each boss one at a time and try and defeat them as fast as you can without dying
     *King Of The Hill
