@@ -21,21 +21,22 @@ namespace PirateWars
     #region Game1
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        #region Public Variables
+        #region Private Variables
+
+        #region Player Values
+        /// <value>initial spawning location for the player</value>
+        Vector2 playerStartingPos;
         /// <value>the Ship that the player controls.  It is made static so that the Enemy class can access it for movement purposes</value>
         protected Player player;
         #endregion
 
-        #region Private Variables
-
-
-        /// <value>initial spawning location for the player</value>
-        Vector2 playerStartingPos;
-
+        #region Graphics and Timer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         Timer gameTimer;
+        #endregion
+
         #region Textures
         Texture2D playerCBTexture;
         Texture2D enemyCBTexture;
@@ -96,7 +97,7 @@ namespace PirateWars
         /// <value>The min time interval in between spawns in milliseconds</value>
         float SPAWN_TIME_MIN = 1500;
         /// <value>the maximum number of enemies that can be on screen at a given point in time</value>
-        int SPAWN_NUMBER_THRESHOLD = 10;
+        int SPAWN_NUMBER_THRESHOLD = 8;
         float NextSpawn;
         #endregion
 
@@ -129,9 +130,12 @@ namespace PirateWars
         EnemyData BOSS_DATA;
         #endregion
 
+        #region Boss Values
         Vector2 BOSS_POSITION;
         bool BOSS_SPAWN_SUCCESS = false;
         bool DISABLE_PLAYER_MOVEMENT = false;
+        bool BOSS_READY_TO_SPAWN = false;
+        #endregion
 
         /// <summary>
         /// The game has several states, but it can only be in one state at a time.
@@ -466,7 +470,7 @@ namespace PirateWars
                 //update object positions
                 foreach (Enemy e in EnemyList)
                 {
-                    e.UpdateAndMove(gameTime, player);
+                    e.UpdateAndMove(gameTimer.RawTime, player);
                 }
                 foreach (PlayerInteractable p in playerInteractableList)
                 {
@@ -485,7 +489,7 @@ namespace PirateWars
                             int target = i;
                             if (i >= EnemyList.Count - 1)
                                 target = EnemyList.Count - 1;
-                            friendlyList.ElementAt(i).UpdateAndMove(gameTime, EnemyList.ElementAt(target));
+                            friendlyList.ElementAt(i).UpdateAndMove(gameTimer.RawTime, EnemyList.ElementAt(target));
                         }
                     }
                 }
@@ -511,8 +515,8 @@ namespace PirateWars
         private void UpdateKeyboardInput(GameTime time)
         {
             KeyboardState newState = Keyboard.GetState();
-            Vector2 newP = player.getPosition();
-            float angle = player.getAngle();
+            Vector2 newP = player.Position;
+            float angle = player.Angle;
             TimeSpan newKeyPress = time.TotalGameTime;
 
             /*
@@ -541,43 +545,43 @@ namespace PirateWars
             }
             if (DISABLE_PLAYER_MOVEMENT == true)
             {
-                Vector2 direction = new Vector2((float)(Math.Cos(player.getAngle())), (float)(Math.Sin(player.getAngle())));
+                Vector2 direction = new Vector2((float)(Math.Cos(player.Angle)), (float)(Math.Sin(player.Angle)));
                 direction.Normalize();
-                newP -= direction * player.getSpeed();
-                if (player.getPosition().X >= BOSS_POSITION.X + 30)
+                newP -= direction * player.Speed;
+                if (player.Position.X >= BOSS_POSITION.X + 30)
                     DISABLE_PLAYER_MOVEMENT = false;
             }
             else
             {
                 if (newState.IsKeyDown(Keys.A) || newState.IsKeyDown(Keys.Left))
                 {
-                    angle = player.getAngle() - player.getTurnSpeed();
+                    angle = player.Angle - player.TurnSpeed;
                 }
                 if (newState.IsKeyDown(Keys.D) || newState.IsKeyDown(Keys.Right))
                 {
-                    angle = player.getAngle() + player.getTurnSpeed();
+                    angle = player.Angle + player.TurnSpeed;
                 }
 
                 if (newState.IsKeyDown(Keys.W) || newState.IsKeyDown(Keys.Up))
                 {
-                    Vector2 direction = new Vector2((float)(Math.Cos(player.getAngle())), (float)(Math.Sin(player.getAngle())));
+                    Vector2 direction = new Vector2((float)(Math.Cos(player.Angle)), (float)(Math.Sin(player.Angle)));
                     direction.Normalize();
-                    newP += direction * player.getSpeed();
+                    newP += direction * player.Speed;
                 }//end move FORWARD
             }
             //check to make sure it stays within bounds, and then update position and angle
             if (BOSS_SPAWN_SUCCESS)
             {
-                OutOfBounds(ref newP, player.getTexture(), BOSS_POSITION.X, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight - 50);
+                OutOfBounds(ref newP, player.Texture, BOSS_POSITION.X, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight - 50);
             }
             else
-                OutOfBounds(ref newP, player.getTexture(), 0, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight);
-            player.setPosition(newP);
-            player.setAngle(angle);
+                OutOfBounds(ref newP, player.Texture, 0, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight);
+            player.Position = newP;
+            player.Angle = angle;
 
             // get the time between the last firing and this firing.  If the delay has been more than 200 miliseconds, fire again
             double delay = newKeyPress.TotalMilliseconds - oldKeyPress.TotalMilliseconds;
-            if (newState.IsKeyDown(Keys.Space) && delay > player.getROF())
+            if (newState.IsKeyDown(Keys.Space) && delay > player.RateOfFire)
             {
                 player.Fire();
                 //reset the value of oldkeypress
@@ -618,22 +622,25 @@ namespace PirateWars
             }//end MainMenu
             else if (gameState == GameState.ShipSelection)
             {
+                //if any of the buttons are clicked, set the player to the corresponding type and then start the game
                 //check for Brig Selection
                 if (brigButton.buttonClicked(newState))
                 {
                     player = new Player_Brig(PLAYER_BRIG_DATA, playerBrig, playerCBTexture);
-                    StartGame(gameTime);
+                    StartGame();
 
                 }
+                //check for frigate selection
                 else if (frigateButton.buttonClicked(newState))
                 {
                     player = new Player_Frigate(PLAYER_FRIG_DATA, playerFrigate, playerCBTexture);
-                    StartGame(gameTime);
+                    StartGame();
                 }
+                //check for man of war selection
                 else if (manOfWarButton.buttonClicked(newState))
                 {
                     player = new Player_ManOfWar(PLAYER_MOW_DATA, playerManOfWar, playerCBTexture);
-                    StartGame(gameTime);
+                    StartGame();
                 }
             }//end shipSelection
             else if (gameState == GameState.Pause)
@@ -663,65 +670,74 @@ namespace PirateWars
             float BUFFER = 25;
             friendlyList = new List<FriendlyShips>();
             //ship 1 (12:00)
-            float x = player.getPosition().X;
-            float y = player.getPosition().Y - (2 * player.getOrigin().Y) - (2 * e.getOrigin().Y) - BUFFER;
+            float x = player.Position.X;
+            float y = player.Position.Y - (2 * player.Origin.Y) - (2 * e.Origin.Y) - BUFFER;
             Vector2 ePos = new Vector2(x, y);
-            e.setPosition(ePos);
+            e.Position = ePos;
             friendlyList.Add(e);
 
             //ship 2 (9 position)
-            x = player.getPosition().X - player.getOrigin().X - e.getOrigin().X - BUFFER;
-            y = player.getPosition().Y - player.getOrigin().Y;
+            x = player.Position.X - player.Origin.X - e.Origin.X - BUFFER;
+            y = player.Position.Y - player.Origin.Y;
             FriendlyShips e1 = new FriendlyShips(ENEMY_FRIG_DATA, playerFrigate, playerCBTexture);
             ePos = new Vector2(x, y);
-            e1.setPosition(ePos);
+            e1.Position = ePos;
             friendlyList.Add(e1);
 
             //ship 3 (6:00)
-            x = player.getPosition().X;
-            y = player.getPosition().Y + (2 * player.getOrigin().Y) + (2 * e.getOrigin().Y) + BUFFER;
+            x = player.Position.X;
+            y = player.Position.Y + (2 * player.Origin.Y) + (2 * e.Origin.Y) + BUFFER;
             ePos = new Vector2(x, y);
             FriendlyShips e2 = new FriendlyShips(ENEMY_FRIG_DATA, playerFrigate, playerCBTexture);
-            e2.setPosition(ePos);
+            e2.Position = ePos;
             friendlyList.Add(e2);
 
             //ship 4 (3:00)
-            x = player.getPosition().X + player.getOrigin().X + e.getOrigin().X + BUFFER;
-            y = player.getPosition().Y - player.getOrigin().Y;
+            x = player.Position.X + player.Origin.X + e.Origin.X + BUFFER;
+            y = player.Position.Y - player.Origin.Y;
             FriendlyShips e3 = new FriendlyShips(ENEMY_FRIG_DATA, playerFrigate, playerCBTexture);
             ePos = new Vector2(x, y);
-            e3.setPosition(ePos);
+            e3.Position = ePos;
             friendlyList.Add(e3);
         }
 
+        #endregion //mouse
 
-        private void StartGame(GameTime gameTime)
+        #endregion//input
+        #region Helpers
+        /// <summary>
+        /// Set all game values to default value.  Called when first starting the game (or restarting the game)
+        /// </summary>
+        private void StartGame()
         {
             gameState = GameState.Loading;
+
             //ready the player
-            player.setPosition(playerStartingPos);
+            player.Position = playerStartingPos;
             player.Reset();
+
             //set game constants
             score = 0;
             scoreMultiplier = 1;
             lastSpawn = TimeSpan.Zero;
+
             //make sure all lists are empty
             EnemyList.Clear();
-            player.getCBA().Clear();
+            player.CannonBalls.Clear();
             playerInteractableList.Clear();
+
             //set gameState to GameOn
             gameState = GameState.GameOn;
+
+            //set Boss values to false
             BOSS_SPAWN_SUCCESS = false;
             BOSS_READY_TO_SPAWN = false;
+
             //make sure the timer is set to 0, and then start it
             gameTimer.Reset();
             gameTimer.Start();
-            
         }
-        #endregion //mouse
-
-        #endregion//input
-
+        #endregion
         #region Draw
         /// <summary>
         /// This is called when the game should draw itself.
@@ -845,8 +861,8 @@ namespace PirateWars
             GraphicsDevice.Clear(new Color(28, 107, 160));
 
             //draw player
-            spriteBatch.Draw(enemyCBTexture, player.getPosition(), Color.White);
-            spriteBatch.Draw(player.getTexture(), player.getPosition(), null, Color.White, player.getAngle(), player.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(enemyCBTexture, player.Position, Color.White);
+            spriteBatch.Draw(player.Texture, player.Position, null, Color.White, player.Angle, player.Origin, 1.0f, SpriteEffects.None, 0.0f);
 
 
 
@@ -856,7 +872,7 @@ namespace PirateWars
             {
                 for (int i = friendlyList.Count - 1; i >= 0; i--)
                 {
-                    spriteBatch.Draw(friendlyList.ElementAt(i).getTexture(), friendlyList.ElementAt(i).getPosition(), null, Color.White, friendlyList.ElementAt(i).getAngle(), friendlyList.ElementAt(i).getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+                    spriteBatch.Draw(friendlyList.ElementAt(i).Texture, friendlyList.ElementAt(i).Position, null, Color.White, friendlyList.ElementAt(i).Angle, friendlyList.ElementAt(i).Origin, 1.0f, SpriteEffects.None, 0.0f);
                 }
             }
 
@@ -864,65 +880,64 @@ namespace PirateWars
             for (int i = (EnemyList.Count - 1); i >= 0; i--)
             {
                 Enemy e1 = EnemyList.ElementAt(i);
-                spriteBatch.Draw(e1.getTexture(), e1.getPosition(), null, Color.White, e1.getAngle(), e1.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+                spriteBatch.Draw(e1.Texture, e1.Position, null, Color.White, e1.Angle, e1.Origin, 1.0f, SpriteEffects.None, 0.0f);
 
                 //if it is a boss enemy, draw a health bar
                 if (e1.GetType() == typeof(Boss1))
                 {
-                    int x = (int)(e1.getPosition().X - e1.getTexture().Width / 2);
-                    int y = (int)(e1.getPosition().Y - e1.getTexture().Height / 2);
+                    int x = (int)(e1.Position.X - e1.Texture.Width / 2);
+                    int y = (int)(e1.Position.Y - e1.Texture.Height / 2);
                     RectangleF Bounding = e1.BoundingBox;
 
-                    int healthBarL = (int)(healthBar.Width * (double)((e1.getHealth() / e1.getMaxHealth())));
+                    //give the enemy a health bar that the player can see
+                    int healthBarL = (int)(healthBar.Width * (double)((e1.Health / e1.MaxHealth)));
                     spriteBatch.Draw(healthBar, new Rectangle(x, y, healthBarL / 2, 15), Color.Red);
-                    //draw bounding box
-                    spriteBatch.Draw(BorderTexture, new Rectangle((int)e1.BoundingBox.X, (int)e1.BoundingBox.Y, (int)e1.BoundingBox.Width, (int)e1.BoundingBox.Height), Color.White);
                 }
             }
 
             //draw player cannon balls
-            for (int i = player.getCBA().Count - 1; i >= 0; i--)
+            for (int i = player.CannonBalls.Count - 1; i >= 0; i--)
             {
-                CannonBall c = player.getCBA().ElementAt(i);
+                CannonBall c = player.CannonBalls.ElementAt(i);
                 /*if the cannon ball has gone out of bounds, remove it and do not draw, else draw it*/
-                if (OutOfBounds(player.getCBA().ElementAt(i)))
+                if (OutOfBounds(player.CannonBalls.ElementAt(i)))
                 {
-                    player.getCBA().RemoveAt(i);
+                    player.CannonBalls.RemoveAt(i);
                 }
                 else
                 {
                     if (player.GetType() == typeof(Player_Frigate) && player.getShipState() == Player.ShipState.AbilityActivated)
-                        spriteBatch.Draw(playerCBPowerUpTexture, c.getPosition(), null, Color.White, c.getAngle(), c.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+                        spriteBatch.Draw(playerCBPowerUpTexture, c.Position, null, Color.White, c.Angle, c.Origin, 1.0f, SpriteEffects.None, 0.0f);
                     else
-                        spriteBatch.Draw(playerCBTexture, c.getPosition(), null, Color.White, c.getAngle(), c.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+                        spriteBatch.Draw(playerCBTexture, c.Position, null, Color.White, c.Angle, c.Origin, 1.0f, SpriteEffects.None, 0.0f);
                 }
             }
 
             //draw enemy cannon balls
             foreach (Enemy e in EnemyList)
             {
-                for (int i = e.getCBA().Count - 1; i >= 0; i--)
+                for (int i = e.CannonBalls.Count - 1; i >= 0; i--)
                 {
-                    CannonBall c = e.getCBA().ElementAt(i);
+                    CannonBall c = e.CannonBalls.ElementAt(i);
                     if (OutOfBounds(c))
                     {
-                        e.getCBA().RemoveAt(i);
+                        e.CannonBalls.RemoveAt(i);
                     }
                     else
-                        spriteBatch.Draw(enemyCBTexture, c.getPosition(), null, Color.White, c.getAngle(), c.getOrigin(), 1.0f, SpriteEffects.None, 0.0f);
+                        spriteBatch.Draw(enemyCBTexture, c.Position, null, Color.White, c.Angle, c.Origin, 1.0f, SpriteEffects.None, 0.0f);
                 }
             }
             //draw friendly ships
             foreach (FriendlyShips fs in friendlyList)
             {
-                for (int i = fs.getCBA().Count - 1; i >= 0; i--)
+                for (int i = fs.CannonBalls.Count - 1; i >= 0; i--)
                 {
-                    if (OutOfBounds(fs.getCBA().ElementAt(i)))
+                    if (OutOfBounds(fs.CannonBalls.ElementAt(i)))
                     {
-                        fs.getCBA().Remove(fs.getCBA().ElementAt(i));
+                        fs.CannonBalls.Remove(fs.CannonBalls.ElementAt(i));
                     }
                     else
-                        spriteBatch.Draw(playerCBTexture, fs.getCBA().ElementAt(i).getPosition(), Color.White);
+                        spriteBatch.Draw(playerCBTexture, fs.CannonBalls.ElementAt(i).Position, Color.White);
                 }
             }
             
@@ -932,7 +947,7 @@ namespace PirateWars
                 if (OutOfBounds(playerInteractableList.ElementAt(i)))
                     playerInteractableList.RemoveAt(i);
                 else
-                    spriteBatch.Draw(playerInteractableList.ElementAt(i).getTexture(), playerInteractableList.ElementAt(i).getPosition(), Color.White);
+                    spriteBatch.Draw(playerInteractableList.ElementAt(i).Texture, playerInteractableList.ElementAt(i).Position, Color.White);
             }
             
             /*Draw HUD*/
@@ -949,7 +964,7 @@ namespace PirateWars
 
             //draw health bar
             spriteBatch.Draw(healthBar, new Rectangle(this.Window.ClientBounds.Width / 2 - healthBar.Width / 2,
-             30, (int)(healthBar.Width * ((double)player.getHealth() / player.getMaxHealth())), 44), healthBarC);
+             30, (int)(healthBar.Width * ((double)player.Health / player.MaxHealth)), 44), healthBarC);
 
             /*
              * draw ability duration bar underneath the health bar
@@ -977,8 +992,6 @@ namespace PirateWars
         }
         #endregion
 
-
-        bool BOSS_READY_TO_SPAWN = false;
         #region Spawn
         /// <summary>
         /// Creates new enemies and adds them to <see cref="EnemyList"/>.  Only spawns new enemies every 3 seconds.
@@ -1010,7 +1023,7 @@ namespace PirateWars
                     BOSS_READY_TO_SPAWN = false;
                 }
             }
-            else if (NextSpawn <= 0 && EnemyList.Count < 20 && BOSS_READY_TO_SPAWN == false)
+            else if (NextSpawn <= SPAWN_NUMBER_THRESHOLD && BOSS_READY_TO_SPAWN == false)
             {
                 /*
                  * Lograthmic spawn:
@@ -1072,11 +1085,11 @@ namespace PirateWars
                             posY = randomGenerator.Next(graphics.PreferredBackBufferHeight - 50, graphics.PreferredBackBufferHeight);
                             break;
                     }
-                    e.setPosition(new Vector2(posX, posY));
+                    e.Position = new Vector2(posX, posY);
 
                     //set the ship's angle such that it spans pointing towards the player
-                    float angle = Object.TurnToFace(e.getPosition(), player.getPosition(), e.getAngle(), MathHelper.TwoPi);
-                    e.setAngle(angle);
+                    float angle = Object.TurnToFace(e.Position, player.Position, e.Angle, MathHelper.TwoPi);
+                    e.Angle = angle;
                     EnemyList.Add(e);
 
                     //reset spawn time
@@ -1103,9 +1116,8 @@ namespace PirateWars
                 float posX, posY;
                 posX = LOWER_SPAWN_X;
                 posY = LOWER_SPAWN_Y;
-                b.setPosition(new Vector2(posX, posY));
+                b.Position = (new Vector2(posX, posY));
                 EnemyList.Add(b);
-                Console.WriteLine("SPAWNING BOSS");
                 return true;
             }
             if (BOSS_SPAWN_SUCCESS == true)
@@ -1159,9 +1171,9 @@ namespace PirateWars
         /// <param name="c">the cannon ball to be checked for out of boundsness.</param>
         private bool OutOfBounds(CannonBall c)
         {
-            if (c.getPosition().X < 0 || c.getPosition().X > graphics.PreferredBackBufferWidth)
+            if (c.Position.X < 0 || c.Position.X > graphics.PreferredBackBufferWidth)
                 return true;
-            else if (c.getPosition().Y < 0 || c.getPosition().Y > graphics.PreferredBackBufferHeight)
+            else if (c.Position.Y < 0 || c.Position.Y > graphics.PreferredBackBufferHeight)
                 return true;
             else
                 return false;
@@ -1169,9 +1181,9 @@ namespace PirateWars
 
         private bool OutOfBounds(PlayerInteractable m)
         {
-            if (m.getPosition().X < 0 || m.getPosition().X > graphics.PreferredBackBufferWidth)
+            if (m.Position.X < 0 || m.Position.X > graphics.PreferredBackBufferWidth)
                 return true;
-            else if (m.getPosition().Y < 0 || m.getPosition().Y > graphics.PreferredBackBufferHeight)
+            else if (m.Position.Y < 0 || m.Position.Y > graphics.PreferredBackBufferHeight)
                 return true;
             else
                 return false;
@@ -1183,7 +1195,7 @@ namespace PirateWars
             int r = randomGenerator.Next(0, 100);
             if (r >= 0 && r < 10)
             {
-                playerInteractableList.Add(new HealthPowerup(e.getPosition(), new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup));
+                playerInteractableList.Add(new HealthPowerup(e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup));
             }
 
         }
@@ -1199,24 +1211,23 @@ namespace PirateWars
         private void CollisionDetection(Ship s, Ship e, int index)
         {
             //check cannon balls
-            for (int j = s.getCBA().Count - 1; j >= 0; j--)
+            for (int j = s.CannonBalls.Count - 1; j >= 0; j--)
             {
-                CannonBall cB = s.getCBA().ElementAt(j);
+                CannonBall cB = s.CannonBalls.ElementAt(j);
                 if (cB.BoundingBox.Intersects(e.BoundingBox))
                 {
-                    Console.WriteLine("CB COLLISION: " + "at " + cB.getPosition() + "; HX: " + cB.BoundingBox.HalfX + "; HY: " + cB.BoundingBox.HalfY + "; XA: " + cB.BoundingBox.XAxis + "; YA: " + cB.BoundingBox.YAxis);
                     //deal damage to enemy
-                    e.takeDamage(cB.getDamage());
+                    e.takeDamage(cB.Damage);
                     //remove cannon ball
 
                     //if the ship is not a player frigate, remove the cannon ball upon contact
                     if (s.GetType() != typeof(Player_Frigate))
-                        s.getCBA().Remove(cB);
+                        s.CannonBalls.Remove(cB);
                     //if it is a player frigate, check to see if it's ability is activated, if not, then remove the cannon ball upon contact.  Else, leave the cannon balls alone
                     else
                     {
                         if (((Player)(s)).getShipState() != Player.ShipState.AbilityActivated)
-                            s.getCBA().Remove(cB);
+                            s.CannonBalls.Remove(cB);
                     }
                 }//end if collision
                 //check if the ship should be sunk
@@ -1228,7 +1239,7 @@ namespace PirateWars
                 if (player.GetType() == typeof(Player_Brig) && player.getShipState() == Player.ShipState.AbilityActivated)
                     if (s.BoundingBox.Intersects(e.BoundingBox))
                     {
-                        e.takeDamage(s.getDamage());
+                        e.takeDamage(s.Damage);
 
                         //check if it has collided with a boss, and if it did, force the player backwards
                         if (e.GetType() == typeof(Boss1))
@@ -1243,15 +1254,13 @@ namespace PirateWars
             {
                 if (s.BoundingBox.Intersects(e.BoundingBox))
                 {
-                    Console.WriteLine("FB COLLISION: " + "at " + s.getPosition() + "; HX: " + s.BoundingBox.HalfX + "; HY: " + s.BoundingBox.HalfY + "; XA: " + s.BoundingBox.XAxis + "; YA: " + s.BoundingBox.YAxis);
-                    e.takeDamage(s.getDamage());
                     EnemyList.RemoveAt(index);
                     return;
                 }
             }
 
             //check if the ship should be sunk
-            if (e.getHealth() <= 0)
+            if (e.Health <= 0)
             {
                 if (e.GetType() == typeof(Player_Brig) || e.GetType() == typeof(Player_Frigate) || e.GetType() == typeof(Player_ManOfWar))
                 {
@@ -1266,7 +1275,7 @@ namespace PirateWars
                     int numberOfMultis = ((Enemy)(e)).getScore() / 5;
                     for (int m = 0; m < numberOfMultis; m++)
                     {
-                        Multiplier mp = new Multiplier(e.getPosition(), e.getPosition(), (float)(randomGenerator.Next(360)) * (float)(Math.PI / 180), multiplierTexture);
+                        Multiplier mp = new Multiplier(e.Position, e.Position, (float)(randomGenerator.Next(360)) * (float)(Math.PI / 180), multiplierTexture);
                         playerInteractableList.Add(mp);
                     }
                     //determine if this ship will drop a powerup

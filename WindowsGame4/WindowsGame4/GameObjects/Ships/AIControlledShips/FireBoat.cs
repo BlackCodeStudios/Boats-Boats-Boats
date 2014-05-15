@@ -8,7 +8,9 @@ using ObjectDataTypes;
 
 namespace PirateWars
 {
-    #region FireBoat
+    /// <summary>
+    /// Another type of enemy.  Does not behave the same as the other Enemy ships.  This one charges at the player and deals damage upon collision.
+    /// </summary>
     class FireBoat : Enemy
     {
         public FireBoat()
@@ -22,10 +24,9 @@ namespace PirateWars
             turnSpeed = 10 / (float)Math.PI;
             score = 5;
             health = 10;
-        }//end default constructor
+        }
 
         public FireBoat(EnemyData d, Texture2D tex)
             :base(d, tex, null){ }
-    }//end class FireBoat
-    #endregion
+    }
 }

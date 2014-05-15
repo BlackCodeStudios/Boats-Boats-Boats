@@ -17,32 +17,39 @@ namespace PirateWars
     {
         /// <value>Vector2 representing the speed of the boat</value>
         protected Vector2 speed;
+        
         /// <value>Vector2 holding the position of the boat on the screen </value>
         protected Vector2 position;
+        
         /// <value>Vector2 that represents the origin of the texture.  This is the point where anything operation dealing with rotation or collision detection is relative to </value>
         protected Vector2 origin;
+        
         /// <value>float that stores the current angle that the ship is facing relative to the center of the screen.  negative angles are counterclockwise rotations, and positive are clockwise.  Stored in RADIANS not degrees </value>
         protected float angle;
+        
         ///<value>float indicting how fast the ship can turn</value>
         protected float turnSpeed;
+        
         /// <value>filename of the image for the ship</value>
         protected string image;
+        
         /// <value>Texture2D that is used to display the ship on screen</value>
         protected Texture2D texture;
+        
         /// <value>Oriented Bounding Box used for detection collisions between objects</value>
         protected RectangleF Bounding;
+        
         ///<value>creates a rectangle around each object.  Used for collision detection</value>
         public RectangleF BoundingBox
         {
             get
             {
-                //Console.WriteLine("OBJECT POS: " + position + "; " + origin + "; " + angle);
                 Bounding.Position = this.position;
                 Bounding.RotateAxis(this.angle);
                 return Bounding;
-
             }
         }
+
         /// <summary>
         /// Default constructor for Object.  Sets all values to 0
         /// </summary>
@@ -56,6 +63,7 @@ namespace PirateWars
             image = "";
             Bounding = new RectangleF();
         }
+
         /// <summary>
         /// Takes in an ObjectData sturcture and pulls all data from it, and stores it in the proper variables.  Also takes in a texture to represent this object
         /// </summary>
@@ -75,6 +83,7 @@ namespace PirateWars
             Bounding = new RectangleF(position, texture);
             
         }
+
         /// <summary>
         /// Constructor for Objects without using ObjectData structure
         /// </summary>
@@ -92,105 +101,95 @@ namespace PirateWars
         #region Accessors
 
         /// <summary>
-        /// get the filename for an image
-        /// </summary>
-        /// <returns>returns the filename of the image for that object</returns>
-        public string getImage()
-        {
-            return image;
-        }//end getImage
-
-        /// <summary>
         /// Get the speed of the boat
         /// </summary>
         /// <returns>a Vector2 representing the speed of the object</returns>
-        public Vector2 getSpeed()
+        public Vector2 Speed
         {
-            return speed;
-        }//end getSpeed
-
+            get
+            {
+                return speed;
+            }
+            set
+            {
+                speed = value;
+            }
+        }
+       
         /// <summary>
         /// get the position of the boat on screen
         /// </summary>
         /// <returns><see cref="position"/></returns>
-        public Vector2 getPosition()
+        public Vector2 Position
         {
-            return position;
-        }//end getPosition
+            get
+            {
+                return position;
+            }
+            set
+            {
+                position = value;
+            }
+        }
 
         /// <summary>
         /// get the angle that the boat is facing
         /// </summary>
         /// <returns><see cref="angle"/></returns>
-        public float getAngle()
+        public float Angle
         {
-            return angle;
-        }//end get angle
-
+            get
+            {
+                return angle;
+            }
+            set
+            {
+                //take the incoming value and make sure to wrap it so it stays between -Pi/2 and Pi/2
+                angle = WrapAngle(value);
+            }
+        }
+       
         /// <summary>
         /// get the turn speed of the boat
         /// </summary>
         /// <returns><see cref="turnSpeed"/></returns>
-        public float getTurnSpeed()
+        public float TurnSpeed
         {
-            return turnSpeed;
+            get
+            {
+                return turnSpeed;
+            }
+            set
+            {
+                turnSpeed = value;
+            }
         }
         /// <summary>
-        /// Get the position that is the origin of the texture/image.  For boats, it will always be the center of the image
+        /// Get the origin of the object in relation to the object's texture.  Is usually the center of the image
         /// </summary>
         /// <returns><see cref="origin"/></returns>
-        public Vector2 getOrigin()
+        public Vector2 Origin
         {
-            return origin;
+            get
+            {
+                return origin;
+            }
         }
         /// <summary>
         /// Get the texture that is displayed on the screen
         /// </summary>
         /// <returns><see cref="texture"/></returns>
-        public Texture2D getTexture()
+        public Texture2D Texture
         {
-            return texture;
+            get
+            {
+                return texture;
+            }
+            set
+            {
+                texture = value;
+            }
         }
-
-        /// <summary>
-        /// Change the speed of the boat
-        /// </summary>
-        /// <param name="newS">the new speed of the boat</param>
-        
-        #endregion 
-
-        #region Mutators
-        public void setSpeed(Vector2 newS)
-        {
-            speed = newS;
-        }//end setSpeed
-
-        /// <summary>
-        /// change the position of the boat
-        /// </summary>
-        /// <param name="newP">the new position</param>
-        public void setPosition(Vector2 newP)
-        {
-            position = newP;
-        }
-
-        /// <summary>
-        /// change the angle of the boat
-        /// </summary>
-        /// <param name="newA">the new angle</param>
-        public void setAngle(float newA)
-        {
-            angle = WrapAngle(newA);
-        }//end setAngle
-
-        /// <summary>
-        /// Change the origin of the boat
-        /// </summary>
-        /// <param name="newO">the new origin</param>
-        public void setOrigin(Vector2 newO)
-        {
-            origin = newO;
-        }//end setOrigin
         #endregion
 
         #region Helpers

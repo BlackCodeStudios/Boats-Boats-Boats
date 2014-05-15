@@ -56,7 +56,7 @@ with.
         <End>&#36;</End>
       </CharacterRegion>
       <CharacterRegion> <!-- Uppercase Characters -->
-        <Start>&#32;</Start>
+        <Start>&#65;</Start>
         <End>&#90;</End>
       </CharacterRegion>
       <CharacterRegion> <!--Lowercase Characters-->

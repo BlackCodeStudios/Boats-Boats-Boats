@@ -90,8 +90,8 @@ namespace PirateWars
             //The internal axes of the rectangle are equal to the halfX and halfY values, but they need to be normalized
             xAxis = originalHalfX;
             yAxis = originalHalfY;
-            xAxis = Vector2.Normalize(xAxis);
-            yAxis = Vector2.Normalize(yAxis);
+            xAxis.Normalize();      //normalized x-axis
+            yAxis.Normalize();      //normalized y-axis
 
             //initially, the rectangle is not rotated.  So the rotated half lengths equal the original half lenghts
             rotatedHalfX = originalHalfX;
@@ -234,8 +234,8 @@ namespace PirateWars
             //the internal axes of the box also change as the box is rotated.  They are the normalized half width and length vectors
             xAxis = rotatedHalfX;
             yAxis = rotatedHalfY;
-            xAxis = Vector2.Normalize(xAxis);
-            yAxis = Vector2.Normalize(yAxis);
+            xAxis.Normalize();
+            yAxis.Normalize();
         }
         /// <summary>
         /// Return a string that can be displayed containing all data for this RectangleF.  Used primarily for debugging

@@ -10,9 +10,11 @@ namespace PirateWars
     /// <summary>
     /// PlayerInteractables is the superclass for all objects that directly interact with the player such as powerups and mutlipliers.  They behave similarily in movement but do different things to the state of the game and the player.
     /// </summary>
-    abstract class PlayerInteractable : Object
+    public abstract class PlayerInteractable : Object
     {
+        /// <value>Direction that the PlayerInteractable moves along</value>
         protected Vector2 direction;
+        
         /// <summary>
         /// Default constructor for PlayerInteractable.  Uses default from Object and sets all variables unique to PlayerInteractable to 0
         /// </summary>
@@ -21,6 +23,7 @@ namespace PirateWars
         {
             direction = Vector2.Zero;
         }
+        
         /// <summary>
         /// Construct new PlayerInteractable from an ObjectData structure and a texture to represent this object
         /// </summary>
@@ -31,11 +34,12 @@ namespace PirateWars
         {
             origin = new Vector2(tex.Width / 2, tex.Height / 2);
         }
+        
         /// <summary>
-        /// Construct new PlayerInteractable from 2 Vectors representing position and direction, the angle that the object should be oriented and a Texture to represent that object
+        /// Construct new PlayerInteractable from 2 Vectors representing position and c_direction, the angle that the object should be oriented and a Texture to represent that object
         /// </summary>
         /// <param name="p">Vector representing position on screen</param>
-        /// <param name="d">Vector representing the direction that the object moves</param>
+        /// <param name="d">Vector representing the c_direction that the object moves</param>
         /// <param name="a">Angle (in radians) that the object is rotated (relative to its origin)</param>
         /// <param name="tex">Texture to represent that object</param>
         public PlayerInteractable(Vector2 p, Vector2 d, float a, Texture2D tex)
@@ -43,17 +47,18 @@ namespace PirateWars
         {
             direction = d;
         }
+        
         /// <summary>
-        /// Handles changing position, direction and angle when applicable
+        /// Handles changing position, c_direction and angle when applicable
         /// </summary>
         /// <param name="player">Player data so that the object can respond to player events accordingly</param>
         public virtual void Update(Ship player)
         {
-            float distanceFromPlayer = Vector2.Distance(this.position, player.getPosition());
+            float distanceFromPlayer = Vector2.Distance(this.position, player.Position);
 
-            if (distanceFromPlayer <= (player.getTexture().Width*1.5))
+            if (distanceFromPlayer <= player.Texture.Width/2 + this.Texture.Width/2 + 15)
             {
-                this.angle = TurnToFace(position, player.getPosition(), angle, 10);
+                this.angle = TurnToFace(position, player.Position, angle, 10);
                 WrapAngle(this.angle);
                 this.speed *= 2;
             }
@@ -61,6 +66,10 @@ namespace PirateWars
             this.position += heading * this.speed;
         }//end update
 
+        /// <summary>
+        /// Activate the PlayerInteractable's ability (if it has one)
+        /// </summary>
+        /// <param name="s">The ship that will receive the benefit from the PlayerInteractable</param>
         public abstract void ActivateAbility(Ship s);
     }
 }

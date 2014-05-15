@@ -6,28 +6,21 @@ using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
 namespace PirateWars
 {
-    #region CannonBall
+
     /// <summary>
     /// Main projectile classs 
     /// </summary>
     public class CannonBall : Object
     {
-        //CannonBalls are the one exception to objectsWithHealth.  They do not have health, but do have damage
-        #region Private Varaibles
         /// <value>stores the value of damage that a cannon ball does when hitting another ship </value>
         private float damage;
+
         /// <value>is a 2D vector that determines the direction that the cannon ball moves after firing.  This direction is always perpindicular to the direction of the ship it is fired from </value>
         private Vector2 direction;
-        #endregion
 
-        /*public member functions*/
-        #region Constructors
         /// <summary>
         /// Default constructor for a cannon ball.
         /// </summary>
-        ///<params> 
-        ///None 
-        ///</params>
         public CannonBall()
             : base()
         {
@@ -74,56 +67,41 @@ namespace PirateWars
             damage = da;
             speed = s;
             angle = a;
-            origin = new Vector2(texture.Width/2, texture.Height/2);
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
             Bounding = new RectangleF(position, texture);
         }
-        #endregion
 
-        #region Accessors
         /// <summary>
         /// get the damage this cannon ball does
         /// </summary>
         /// <returns><see cref="damage"/></returns>
-
-        public float getDamage()
+        public float Damage
         {
-            return damage;
+            get
+            {
+                return damage;
+            }
+            set
+            {
+                damage = value;
+            }
         }
 
         /// <summary>
         /// access the direction that the cannon ball is going
         /// </summary>
-        /// <returns>direction</returns>
-        public Vector2 getDirection()
+        /// <returns><see cref="direction"/></returns>
+        public Vector2 Direction
         {
-            return direction;
+            get
+            {
+                return direction;
+            }
+            set
+            {
+                direction = value;
+            }
         }
-
-        #endregion
-
-        #region Mutators
-        
-        ///
-        /// <summary>
-        /// set the damage that the cannon ball does        
-        /// </summary>
-        ///<param name="newD"> the new value for the damage</param> 
-
-        public void setDamage(float newD)
-        {
-            damage = newD;
-        }
-
-        /// <summary>
-        /// change the direction of the cannonball
-        /// </summary>
-        /// <param name="newD">new direction</param>
-        public void setDirection(Vector2 newD)
-        {
-               direction = newD;
-        }
-        #endregion
     }
-    #endregion
 }
 

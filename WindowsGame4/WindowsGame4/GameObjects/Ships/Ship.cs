@@ -73,51 +73,80 @@ namespace PirateWars
         /// Get the health of the ship
         /// </summary>
         /// <returns><see cref="health"/></returns>
-        public float getHealth()
+        public float Health
         {
-            return health;
+            get
+            {
+                return health;
+            }
         }
+
         /// <summary>
         /// get the max health that the ship can have;
         /// </summary>
         /// <returns><see cref="maxHealth"/></returns>
-        public float getMaxHealth()
+        public float MaxHealth
         {
-            return maxHealth;
+            get
+            {
+                return maxHealth;
+            }
         }
+
         /// <summary>
         /// get the damage that this ship does
         /// </summary>
         /// <returns><see cref="damage"/></returns>
-        public float getDamage()
+        public float Damage
         {
-            return damage;
+            get
+            {
+                return damage;
+            }
+            set 
+            {
+                damage = value;
+            }
         }
+
         /// <summary>
         /// get the number of cannons on each side of the ship
         /// </summary>
         /// <returns><see cref="cannons"/></returns>
-        public int getCannons()
+        public int Cannons
         {
-            return cannons;
+            get
+            {
+                return cannons;
+            }
         }//end getcannons
 
         /// <summary>
         /// get the delay between cannon shots in miliseconds
         /// </summary>
         /// <returns><see cref="rateOfFire"/></returns>
-        public double getROF()
+        public double RateOfFire
         {
-            return rateOfFire;
+            get
+            {
+                return rateOfFire;
+            }
+            set 
+            {
+                rateOfFire = value;
+            }
         }//end getROF
 
         /// <summary>
         /// Get the list of active cannon balls that this ship has fired.  
         /// </summary>
         /// <returns> <see cref="CBA"/> </returns>
-        public List<CannonBall> getCBA()
+        public List<CannonBall> CannonBalls
         {
-            return CBA;
+            get
+            {
+                return CBA;
+            }
         }
 
 
@@ -126,39 +155,18 @@ namespace PirateWars
         /// get the texture for this ships cannon balls
         /// </summary>
         /// <returns><see cref="CannonBallTexture"/></returns>
-        public Texture2D getCannonBallTexture()
+        public Texture2D CBTexture
         {
-            return CannonBallTexture;
+            get
+            {
+                return CannonBallTexture;
+            }
         }
 
         #endregion //Accessors
-
-
-        #region Mutators
-
+        
         /// <summary>
-        /// change the number of cannons on a side of the boat
-        /// </summary>
-        /// <param name="newC">the new number of cannons per side</param>
-        public void setCannons(int newC)
-        {
-            cannons = newC;
-        }//end setCannons
-
-        /// <summary>
-        /// change the delay in between cannon shots (in miliseconds)
-        /// </summary>
-        /// <param name="newR">the new delay</param>
-        public void setROF(double newR)
-        {
-            rateOfFire = newR;
-        }//end setROF
-
-
-
-
-        /// <summary>
-        /// change the health of the ship
+        /// Deal damage to a ship. Checks to see what the damage resistance of the ship is and adjusts the damage dealt accordingly
         /// </summary>
         ///<param name="damageTaken">The damage that is dealt to the ship</param>
         public void takeDamage(float damageTaken)
@@ -179,42 +187,34 @@ namespace PirateWars
 
         #region Updating
         /// <summary>
-        /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the direction for a left side cannon ball and then inverts it for the right side
+        /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the c_direction for a left side cannon ball and then inverts it for the right side
         /// Different ships fire different looking cannonBalls, so it is necessary to pass the type of cannonBall into the fire funtion.
         /// </summary>
         public virtual void Fire()
         {
             /*
              * increment is the space between the cannons (and thus each cannon ball)
-             * the spacing is related to the direction that the boat is facing * an increment value (35.0f)
+             * the spacing is related to the c_direction that the boat is facing * an increment value (35.0f)
              */
-            Vector2 boatDirection = new Vector2((float)(Math.Cos(this.angle)), (float)(Math.Sin(this.angle))); ;
-            boatDirection.Normalize();
-            Vector2 increment = boatDirection * (texture.Width / cannons);
+            Vector2 increment = this.Direction * (texture.Width / cannons);
             for (int i = 1; i <= cannons; i++)
             {
-                //direction is perpendicular to the boat and pointing off its left side
-                Vector2 direction = new Vector2((float)(Math.Cos(this.angle - MathHelper.PiOver2)), (float)(Math.Sin(this.angle - MathHelper.PiOver2)));
-
-                //Normalize the direction vector (magnitude of 1)
-                direction.Normalize();
+                //get the initial c_direction of the cannon ball.  By default, cannon balls will move linearly along this c_direction vector until they dissappear off screen.
+                Vector2 c_direction = InitialProjectileDirection();
 
                 //mutliplying the increment by the value of i moves the cannon balls down.  i = 0 starts at the first cannon, and i+1 is the next cannon
                 Vector2 posL = this.position + (((cannons - i) - (cannons / 2)) * increment);
                 Vector2 posR = this.position + (((cannons - i) - (cannons / 2)) * increment);
 
-                //the position of the cannon ball is its current position plus the normalized direction vector times the speed
-                posL += direction * cannonBallVelocity;     //off left side
-                posR += -direction * cannonBallVelocity;    //off right side
-                //float a = (float)Math.Atan2(direction.Y, direction.X);
-                CBA.Add(new CannonBall(posL, direction, this.CannonBallTexture, this.damage, cannonBallVelocity,Object.WrapAngle(this.angle-MathHelper.PiOver2)));
-                CBA.Add(new CannonBall(posR, -direction, this.CannonBallTexture, this.damage, cannonBallVelocity,Object.WrapAngle(this.angle+ MathHelper.PiOver2)));
+                //the position of the cannon ball is its current position plus the normalized c_direction vector times the speed
+                posL += c_direction * cannonBallVelocity;     //off left side
+                posR += -c_direction * cannonBallVelocity;    //off right side
 
-                 /*Console.WriteLine("CB: " + i + ".L" + CBA.ElementAt(CBA.Count-2).getPosition() + "; " + CBA.ElementAt(CBA.Count-2).getAngle() + "; " + CBA.ElementAt(CBA.Count-2).BoundingBox.XAxis + "; " + CBA.ElementAt(CBA.Count-2).BoundingBox.YAxis);
-                 Console.WriteLine("CB: " + i + ".R" + CBA.ElementAt(CBA.Count - 1).getPosition() + "; " + CBA.ElementAt(CBA.Count - 1).getAngle() + "; " + CBA.ElementAt(CBA.Count - 1).BoundingBox.XAxis + "; " + CBA.ElementAt(CBA.Count - 1).BoundingBox.YAxis);
-             */
+                //add Cannon Balls to List of cannon balls
+                CBA.Add(new CannonBall(posL, c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle - MathHelper.PiOver2)));      //add left side cannon ball
+                CBA.Add(new CannonBall(posR, -c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle + MathHelper.PiOver2)));    //add right side cannon ball
             }
-        }//end Fire
+        }
 
         /// <summary>
         /// Updates the movement of cannonballs.  This way each ship is in charge of updating it's own cannon balls rather than having to loop through each ship somewhere in the main game program
@@ -228,13 +228,35 @@ namespace PirateWars
             {
                 //move the cannon balls
                 CannonBall c = CBA.ElementAt(i);
-                Vector2 pos = c.getPosition() + (c.getDirection() * c.getSpeed());
-                c.setPosition(pos);
-                /*Console.WriteLine("CB " + i + ": " + c.getAngle() + "; " + c.BoundingBox.HalfX + "; " + c.BoundingBox.HalfY + "; " + c.BoundingBox.XAxis + "; " + c.BoundingBox.YAxis);
-                 */ 
+                Vector2 pos = c.Position + (c.Direction * c.Speed);
+                c.Position = pos;
             }//end for i
         }//end update
         #endregion
+
+        #region Helpers
+        /// <summary>
+        /// Calculate the c_direction that the ship is facing.  The vector it returns is normalized
+        /// </summary>
+        protected Vector2 Direction
+        {
+            get
+            {
+                Vector2 d = new Vector2((float)(Math.Cos(this.angle)), (float)(Math.Sin(this.angle)));
+                d.Normalize();
+                return d;
+            }
+        }
+        /// <summary>
+        /// Get the initial c_direction that a cannon ball will travel.  It is perpindicular to the c_direction of the ship
+        /// </summary>
+        /// <returns>Normalized vector describing the c_direction a projectile will move</returns>
+        protected Vector2 InitialProjectileDirection()
+        {
+            Vector2 d = new Vector2((float)(Math.Cos(this.angle - MathHelper.PiOver2)), (float)(Math.Sin(this.angle - MathHelper.PiOver2)));
+            d.Normalize();
+            return d;
+        }
+        #endregion
     }//end ship
-    #endregion
 }

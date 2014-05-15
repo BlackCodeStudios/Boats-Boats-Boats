@@ -87,16 +87,15 @@ namespace PirateWars
         /// </summary>
         /// <param name="gameTime">Timing snapshot used to regulate rate of fire</param>
         /// <param name="player">The player's game information so that the AI can react accordingly</param>
-        public virtual void UpdateAndMove(GameTime gameTime, Ship player)
+        public virtual void UpdateAndMove(TimeSpan gameTime, Ship player)
         {
-            TimeSpan newGameTime = gameTime.TotalGameTime;
-            float distanceFromPlayer = Vector2.Distance(position, player.getPosition());
+            float distanceFromPlayer = Vector2.Distance(position, player.Position);
             //if the enemy is chasing the player, then move the enemy in a heading along that angle
             //otherwise, it is in firing mode, so the enemy should not move and instead orient itself to be parallel with the player
             if (state == EnemyState.Chasing)
             {
                 //calculate the angle towards the player and set the enemy's angle to that angle
-                this.angle = TurnToFace(position, player.getPosition(), this.angle, turnSpeed);
+                this.angle = TurnToFace(position, player.Position, this.angle, turnSpeed);
                 Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));
                 this.position += heading * this.speed;
             }

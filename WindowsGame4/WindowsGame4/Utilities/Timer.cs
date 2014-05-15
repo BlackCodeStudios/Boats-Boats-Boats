@@ -8,7 +8,7 @@ namespace PirateWars
     /// <summary>
     /// Keeps track of all timing in game
     /// </summary>
-    class Timer
+    public class Timer
     {
         TimeSpan time;
         enum TimerState
@@ -31,6 +31,7 @@ namespace PirateWars
         /// <param name="gameTime">Snapshot of timing values from main game</param>
         public void Update(GameTime gameTime) 
         {
+            //increase the value of time only if the timer is set to Active
             if(state == TimerState.Active)
                 time += gameTime.ElapsedGameTime;
         }
@@ -41,6 +42,9 @@ namespace PirateWars
         {
             state = TimerState.Active;
         }
+        /// <summary>
+        /// Pause the timer.  This will prevent Update() from incrementing the time
+        /// </summary>
         public void Pause()
         {
             state = TimerState.Paused;

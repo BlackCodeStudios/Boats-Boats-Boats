@@ -43,10 +43,9 @@ namespace PirateWars
         /// </summary>
         /// <param name="gameTime">used to restrict the Enemy's rate of fire</param>
         /// <param name="player">Provides player data so that Enemies can respond to events accordingly</param>
-        public override void UpdateAndMove(GameTime gameTime, Ship player)
+        public override void UpdateAndMove(TimeSpan gameTime, Ship player)
         {
-            TimeSpan newGameTime = gameTime.TotalGameTime;
-            float distanceFromPlayer = Vector2.Distance(position, player.getPosition());
+            float distanceFromPlayer = Vector2.Distance(position, player.Position);
             //if the enemy is chasing the player, then move the enemy in a heading along that angle
             //otherwise, it is in firing mode, so the enemy should not move and instead orient itself to be parallel with the player
             if (distanceFromPlayer <= range)
@@ -56,7 +55,7 @@ namespace PirateWars
             if (state == EnemyState.Chasing)
             {
                 //calculate the angle towards the player and set the enemy's angle to that angle
-                this.angle = TurnToFace(position, player.getPosition(), this.angle, turnSpeed);
+                this.angle = TurnToFace(position, player.Position, this.angle, turnSpeed);
                 Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));
                 this.position += heading * this.speed;
             }
@@ -65,14 +64,14 @@ namespace PirateWars
             if (state == EnemyState.Firing)
             {
                 //assume the firing position.
-                this.angle = TurnToFire(position, player.getPosition(), this.angle, turnSpeed);
+                this.angle = TurnToFire(position, player.Position, this.angle, turnSpeed);
                 Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));
-                if (newGameTime.TotalMilliseconds - lastFire.TotalMilliseconds > rateOfFire)
+                if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds > rateOfFire)
                 {
                     this.Fire();
-                    lastFire = newGameTime;
+                    lastFire = gameTime;
                 }
-                base.Update(gameTime.TotalGameTime);
+                base.Update(gameTime);
             }//end if firing
         }//end UpdateAndMove
 

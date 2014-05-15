@@ -8,6 +8,9 @@ using ObjectDataTypes;
 
 namespace PirateWars
 {
+    /// <summary>
+    /// Another type of Enemy.  Behaves the same as an Enemy_Brig but with different data values.
+    /// </summary>
     class Enemy_Frigate : Enemy_Brig
     {
         EnemyData dataEF = new EnemyData();
