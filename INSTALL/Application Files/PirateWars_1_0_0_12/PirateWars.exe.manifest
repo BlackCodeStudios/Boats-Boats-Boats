@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="PirateWars.exe" version="1.0.0.11" publicKeyToken="6893d7e1216b49a5" language="neutral" processorArchitecture="x86" type="win32" />
+  <asmv1:assemblyIdentity name="PirateWars.exe" version="1.0.0.12" publicKeyToken="6893d7e1216b49a5" language="neutral" processorArchitecture="x86" type="win32" />
   <description asmv2:iconFile="Game.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -70,7 +70,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>J1BToUf7dsrpNL8CloGjR+Q575I=</dsig:DigestValue>
+        <dsig:DigestValue>m1bEfZPuPDlhKb+O1yLXOXofNYo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -82,7 +82,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>3xd5UL8lm/dNJjFUd5gDtNz4Xrc=</dsig:DigestValue>
+        <dsig:DigestValue>pyopIY7QavuD31pDsNQALzV+fRg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -246,24 +246,6 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>xPq64uWN+sSLNQUuz+exbCyqEG0=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Content\LineX.xnb" size="240">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>Wv2foStrZuoQ9bhhJG/eIe9l+ys=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Content\LineY.xnb" size="238">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>dLJW9PKZhvOAXemBiSfDiXki9+k=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Multiplier.xnb" size="228">
@@ -443,7 +425,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>jiaLsR5/pW9z3qAeyGHHce43XgE=</dsig:DigestValue>
+      <dsig:DigestValue>4E8aswy1EJ37Mh7JJ8K8x/U2X/0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Sounds\GIOmetryWars2.xnb" size="131">
@@ -500,4 +482,4 @@
       <dsig:DigestValue>T6BL1PxCqND5aV5UkfwaTRXGhpg=</dsig:DigestValue>
     </hash>
   </file>
-<publisherIdentity name="CN=Leviathan\Giovanni" issuerKeyHash="d41227d81cafd5bcd637bbcd8a9f91f80fb8ff89" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>gtain3QjFHptl6tyGwoX/+bJ7lo=</DigestValue></Reference></SignedInfo><SignatureValue>nmHurHXNbwujh3eWXMqLHsQso/1R0n2O49gucUji57760eFbwYS8ZyPD85JjPWKHCfFb7ExtGAfvvsq8E9loOsvotV+UaY76I0fyU9RQx6LbLdPSRq9YiRs83TGOGaaUNL8W3gJDcVrPdCC0iS/Q9pv6l8oUFWcYR7vJ3NiWFlw=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>rOZSV1nFo8FhhX4/sr0HrtwFl1djosGcEZg01T1SymtucDmS5ZyzB9+/dbX108FpcHaFE4tllQ2GKAq5in3ZU2M88xOE1mIseh1BwDbhzPbrctCw5lqiIpWyFOsyiMdyUt9UdxyxlhoGqqxEgmsbWbw82J9LAfxRl2N8fVJkNrM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="5aeec9e6ff170a1b72ab976d7a1423749fa2d682" Description="" Url=""><as:assemblyIdentity name="PirateWars.exe" version="1.0.0.11" publicKeyToken="6893d7e1216b49a5" language="neutral" processorArchitecture="x86" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Leviathan\Giovanni</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>2PYHAUZ7TRoZFhNTCkP53H0OiGI=</DigestValue></Reference></SignedInfo><SignatureValue>aPRMf7/Lh7yblhNsZl1TKheNYK5TZWAvlz3YCC7WFkyssqk9YcdVDOXahIu15rdMBF3zyKpbqjIWlDSx2oSvDpjU8Xm/uCf69uRKg/DnjAHlHH5DzZOZ+7ndXzwT4DwPQoGl6ydKHa6B/emlyfqmCD9i3TmAXPDNIGZAkSPlcbA=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>rOZSV1nFo8FhhX4/sr0HrtwFl1djosGcEZg01T1SymtucDmS5ZyzB9+/dbX108FpcHaFE4tllQ2GKAq5in3ZU2M88xOE1mIseh1BwDbhzPbrctCw5lqiIpWyFOsyiMdyUt9UdxyxlhoGqqxEgmsbWbw82J9LAfxRl2N8fVJkNrM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB4TCCAUqgAwIBAgIQHxH23+eawrNK1UqD6Cn+GTANBgkqhkiG9w0BAQUFADAvMS0wKwYDVQQDHiQATABlAHYAaQBhAHQAaABhAG4AXABHAGkAbwB2AGEAbgBuAGkwHhcNMTQwNDI2MjI1MTQwWhcNMTUwNDI3MDQ1MTQwWjAvMS0wKwYDVQQDHiQATABlAHYAaQBhAHQAaABhAG4AXABHAGkAbwB2AGEAbgBuAGkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKzmUldZxaPBYYV+P7K9B67cBZdXY6LBnBGYNNU9UsprbnA5kuWcswffv3W19dPBaXB2hROLZZUNhigKuYp92VNjPPMThNZiLHodQcA24cz263LQsOZaoiKVshTrMojHclLfVHccsZYaBqqsRIJrG1m8PNifSwH8UZdjfH1SZDazAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAfF0BrL8YY7CD8MyYypUPGUmVd9pNIa2EvjRTqL1vW1MpSFmlcqYC6XO+NO8x1SZaQh7Stn8DM47roAhMA4iysW4XuG3h9icJY2zizCvSF3Qz5OsbyZxX9OU1JvDzBhbXBHwcKa85ie//H+58FNgi6JeInbafjWPXjfs6vjbrUgM=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=Leviathan\Giovanni" issuerKeyHash="d41227d81cafd5bcd637bbcd8a9f91f80fb8ff89" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>/HgeelUyBtkuzqPpmZRhze7kqbU=</DigestValue></Reference></SignedInfo><SignatureValue>Y5U6Iy7sw+XUuMnDB3cjLoeiEehZSY9PNUfb0sD9DbtgFmOeVmoMpT62V0mQK2J7HKnXW7WgT1agm8BrdpsxNLuyH8vj1tBW2I8P1eoAOeIdhYGVPRTMSRZkFb7+lpBc3N14YTrkA47dYkMRn8gyKLdGHYsy413SMxspsWGxJ1Q=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>rOZSV1nFo8FhhX4/sr0HrtwFl1djosGcEZg01T1SymtucDmS5ZyzB9+/dbX108FpcHaFE4tllQ2GKAq5in3ZU2M88xOE1mIseh1BwDbhzPbrctCw5lqiIpWyFOsyiMdyUt9UdxyxlhoGqqxEgmsbWbw82J9LAfxRl2N8fVJkNrM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="b5a9e4eecd619499e9a3ce2ed90632557a1e78fc" Description="" Url=""><as:assemblyIdentity name="PirateWars.exe" version="1.0.0.12" publicKeyToken="6893d7e1216b49a5" language="neutral" processorArchitecture="x86" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Leviathan\Giovanni</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>RLWJL2EsrQGwjOJViaBcuBpbCh4=</DigestValue></Reference></SignedInfo><SignatureValue>UgSrVGhV1tbBlwQii+y/06HFPRg6Uvf3uLh/aBor2OmFfuTU6b40or1KTwJfuNhvtsjtYaXUrKMfwDp/uRIZksf6ZwFZAv3R5rn6dlSALAEJUWlG2RrH0hsTqqMBex6ejXAVEwrd6rNRt1bF5mf2WnzfTftbczAE0jHGJ+bD2Zk=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>rOZSV1nFo8FhhX4/sr0HrtwFl1djosGcEZg01T1SymtucDmS5ZyzB9+/dbX108FpcHaFE4tllQ2GKAq5in3ZU2M88xOE1mIseh1BwDbhzPbrctCw5lqiIpWyFOsyiMdyUt9UdxyxlhoGqqxEgmsbWbw82J9LAfxRl2N8fVJkNrM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB4TCCAUqgAwIBAgIQHxH23+eawrNK1UqD6Cn+GTANBgkqhkiG9w0BAQUFADAvMS0wKwYDVQQDHiQATABlAHYAaQBhAHQAaABhAG4AXABHAGkAbwB2AGEAbgBuAGkwHhcNMTQwNDI2MjI1MTQwWhcNMTUwNDI3MDQ1MTQwWjAvMS0wKwYDVQQDHiQATABlAHYAaQBhAHQAaABhAG4AXABHAGkAbwB2AGEAbgBuAGkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKzmUldZxaPBYYV+P7K9B67cBZdXY6LBnBGYNNU9UsprbnA5kuWcswffv3W19dPBaXB2hROLZZUNhigKuYp92VNjPPMThNZiLHodQcA24cz263LQsOZaoiKVshTrMojHclLfVHccsZYaBqqsRIJrG1m8PNifSwH8UZdjfH1SZDazAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAfF0BrL8YY7CD8MyYypUPGUmVd9pNIa2EvjRTqL1vW1MpSFmlcqYC6XO+NO8x1SZaQh7Stn8DM47roAhMA4iysW4XuG3h9icJY2zizCvSF3Qz5OsbyZxX9OU1JvDzBhbXBHwcKa85ie//H+58FNgi6JeInbafjWPXjfs6vjbrUgM=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

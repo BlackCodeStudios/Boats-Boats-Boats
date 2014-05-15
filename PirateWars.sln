@@ -10,21 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectDataTypes", "ObjectDataTypes\ObjectDataTypes.csproj", "{AB87969E-A4D5-46D0-BC51-8479A826E742}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://blackcodestudios.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ObjectDataTypes\\ObjectDataTypes.csproj
-		SccProjectName1 = ObjectDataTypes
-		SccLocalPath1 = ObjectDataTypes
-		SccProjectUniqueName2 = WindowsGame4\\WindowsGame4\\PirateWars.csproj
-		SccProjectName2 = WindowsGame4/WindowsGame4
-		SccLocalPath2 = WindowsGame4\\WindowsGame4
-		SccProjectUniqueName3 = WindowsGame4\\WindowsGame4Content\\PirateWarsContent.contentproj
-		SccProjectName3 = WindowsGame4/WindowsGame4Content
-		SccLocalPath3 = WindowsGame4\\WindowsGame4Content
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86

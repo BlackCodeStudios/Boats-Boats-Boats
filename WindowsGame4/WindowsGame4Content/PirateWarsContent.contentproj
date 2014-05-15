@@ -278,20 +278,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LineY.png">
-      <Name>LineY</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="LineX.png">
-      <Name>LineX</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="CannonBall.png">
       <Name>CannonBall</Name>
       <Importer>TextureImporter</Importer>

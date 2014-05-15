@@ -54,9 +54,6 @@ namespace PirateWars
         Texture2D BossTexture;
         Texture2D BorderTexture;
 
-        //TEST TEXTURES
-        Texture2D LineX;
-        Texture2D LineY;
         #endregion
 
         #region Music and Sounds
@@ -292,8 +289,6 @@ namespace PirateWars
             #endregion
 
             BOSS_POSITION = new Vector2(BossTexture.Width / 2, graphics.PreferredBackBufferHeight / 2 - BossTexture.Height / 2);
-            LineX = Content.Load<Texture2D>("LineX");
-            LineY = Content.Load<Texture2D>("LineY");
             #region Main Menu
             logo = Content.Load<Texture2D>("BeardCoded2_1");
             logoFont = Content.Load<SpriteFont>("Fonts/LogoFont");
