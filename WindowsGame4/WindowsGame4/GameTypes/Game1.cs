@@ -699,6 +699,7 @@ namespace PirateWars
         #endregion //mouse
 
         #endregion//input
+
         #region Helpers
         /// <summary>
         /// Set all game values to default value.  Called when first starting the game (or restarting the game)
@@ -732,7 +733,18 @@ namespace PirateWars
             gameTimer.Reset();
             gameTimer.Start();
         }
+
+        private void DropPowerup(Enemy e)
+        {
+            int r = randomGenerator.Next(0, 100);
+            if (r >= 0 && r < 10)
+            {
+                playerInteractableList.Add(new HealthPowerup(e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup));
+            }
+
+        }
         #endregion
+
         #region Draw
         /// <summary>
         /// This is called when the game should draw itself.
@@ -850,17 +862,11 @@ namespace PirateWars
         /// <param name="gameTime">Contains timing information for the game</param>
         private void DrawGame(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            //need texture, origin, rectangle, color, angle, vector2, sprite effects, float
-            //the origin is the center of the ship
             //set background color
             GraphicsDevice.Clear(new Color(28, 107, 160));
 
             //draw player
-            spriteBatch.Draw(enemyCBTexture, player.Position, Color.White);
             spriteBatch.Draw(player.Texture, player.Position, null, Color.White, player.Angle, player.Origin, 1.0f, SpriteEffects.None, 0.0f);
-
-
-
 
             //if there are friendlies
             if (player.GetType() == typeof(Player_ManOfWar))
@@ -882,10 +888,9 @@ namespace PirateWars
                 {
                     int x = (int)(e1.Position.X - e1.Texture.Width / 2);
                     int y = (int)(e1.Position.Y - e1.Texture.Height / 2);
-                    RectangleF Bounding = e1.BoundingBox;
 
                     //give the enemy a health bar that the player can see
-                    int healthBarL = (int)(healthBar.Width * (double)((e1.Health / e1.MaxHealth)));
+                    int healthBarL = (int)((healthBar.Width*.5f) * (double)((e1.Health / e1.MaxHealth)));
                     spriteBatch.Draw(healthBar, new Rectangle(x, y, healthBarL / 2, 15), Color.Red);
                 }
             }
@@ -1092,7 +1097,6 @@ namespace PirateWars
                 }
             }
         }
-        #endregion
 
         private void ResetSpawnTime(int spawnNumber, TimeSpan timeSpan)
         {
@@ -1119,6 +1123,7 @@ namespace PirateWars
                 return true;
             return false;
         }
+        #endregion
 
         #endregion //game updating
 
@@ -1185,15 +1190,6 @@ namespace PirateWars
         }
         #endregion
 
-        private void DropPowerup(Enemy e)
-        {
-            int r = randomGenerator.Next(0, 100);
-            if (r >= 0 && r < 10)
-            {
-                playerInteractableList.Add(new HealthPowerup(e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup));
-            }
-
-        }
         #region Collision Detection
 
         /// <summary>
