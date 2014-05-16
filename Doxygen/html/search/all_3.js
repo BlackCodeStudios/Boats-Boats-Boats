@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['damage',['damage',['../class_object_data_types_1_1_ship_data.html#a0709b0ed43363aa79d4b858289bd68dd',1,'ObjectDataTypes.ShipData.damage()'],['../class_pirate_wars_1_1_cannon_ball.html#af00ee361ee0e23b21b888c5d43dc0c7f',1,'PirateWars.CannonBall.damage()'],['../class_pirate_wars_1_1_ship.html#a16fb9e5002036f3e465d191f5d78b40d',1,'PirateWars.Ship.damage()'],['../class_pirate_wars_1_1_cannon_ball.html#acaa565ed20caf26c4aecc35a842edd36',1,'PirateWars.CannonBall.Damage()'],['../class_pirate_wars_1_1_ship.html#aecd3e366b0bb4e026e328cf57fd0923d',1,'PirateWars.Ship.Damage()']]],
+  ['damageresistance',['damageResistance',['../class_object_data_types_1_1_ship_data.html#a2a7a857b1de14a109c7e71776a043cb7',1,'ObjectDataTypes.ShipData.damageResistance()'],['../class_pirate_wars_1_1_ship.html#ade29f460435578f92aa817eb7072e480',1,'PirateWars.Ship.damageResistance()']]],
+  ['dataef',['dataEF',['../class_pirate_wars_1_1_enemy___frigate.html#a8d90205fe83ad9fd3ef3ab2d9d7a1b81',1,'PirateWars::Enemy_Frigate']]],
+  ['datap',['dataP',['../class_pirate_wars_1_1_player___frigate.html#a437831a7b076222a5a78c75964b23b96',1,'PirateWars::Player_Frigate']]],
+  ['date',['date',['../struct_pirate_wars_1_1_game1_1_1_high_score_data.html#a00c733be5bd5a4965c2c6eae276797ca',1,'PirateWars::Game1::HighScoreData']]],
+  ['deactivateability',['DeactivateAbility',['../class_pirate_wars_1_1_player.html#a52a7d8517ceb0a39afbced9b685cbc3f',1,'PirateWars.Player.DeactivateAbility()'],['../class_pirate_wars_1_1_player___brig.html#a99111917190e315fc94d7784756f6f78',1,'PirateWars.Player_Brig.DeactivateAbility()'],['../class_pirate_wars_1_1_player___frigate.html#a5bfbd8437a28709ccd4006a3200df257',1,'PirateWars.Player_Frigate.DeactivateAbility()'],['../class_pirate_wars_1_1_player___man_of_war.html#aee454e324ae8e4012eb27591a6debeeb',1,'PirateWars.Player_ManOfWar.DeactivateAbility()']]],
+  ['dimensions',['dimensions',['../class_pirate_wars_1_1_rectangle_f.html#a92c8b3ad6a7e00d77bc0762878a8b7b7',1,'PirateWars::RectangleF']]],
+  ['direction',['direction',['../class_pirate_wars_1_1_cannon_ball.html#a92a3254430c1e737216c667e753563ca',1,'PirateWars.CannonBall.direction()'],['../class_pirate_wars_1_1_player_interactable.html#aeac63d3cb35fe388a80d20d750258b3e',1,'PirateWars.PlayerInteractable.direction()'],['../class_pirate_wars_1_1_cannon_ball.html#a026426a92722dc7362d682db64b9b478',1,'PirateWars.CannonBall.Direction()'],['../class_pirate_wars_1_1_ship.html#a4ed67a0e3bf81ee17fc745730a4fb46b',1,'PirateWars.Ship.Direction()']]],
+  ['disable_5fplayer_5fmovement',['DISABLE_PLAYER_MOVEMENT',['../class_pirate_wars_1_1_game1.html#adae4b434b499e61675f30f5e63bf4352',1,'PirateWars::Game1']]],
+  ['displaytime',['DisplayTime',['../class_pirate_wars_1_1_timer.html#a70a470569e7d7a2f4d1ee16ea0b3bca9',1,'PirateWars::Timer']]],
+  ['draw',['Draw',['../class_pirate_wars_1_1_game1.html#a4d4ca0dd3e3fb30819eb05e18b388de5',1,'PirateWars.Game1.Draw()'],['../class_pirate_wars_1_1_test_game.html#a7ee8bb45d08d5ec84a0c8e13332a808d',1,'PirateWars.TestGame.Draw()']]],
+  ['drawbootmenu',['DrawBootMenu',['../class_pirate_wars_1_1_game1.html#aade4d119228ef17acc7b1e3f11e3bd8d',1,'PirateWars::Game1']]],
+  ['drawgame',['DrawGame',['../class_pirate_wars_1_1_game1.html#aa6b2d65f985cab48e4e862cfe28844ff',1,'PirateWars::Game1']]],
+  ['drawpausemenu',['DrawPauseMenu',['../class_pirate_wars_1_1_game1.html#aba6435ceabb8ad7bd19c1f6c3bc9d83b',1,'PirateWars::Game1']]],
+  ['drawshipselection',['DrawShipSelection',['../class_pirate_wars_1_1_game1.html#a9b715026bbf39df19f90429db5712e38',1,'PirateWars::Game1']]],
+  ['droppowerup',['DropPowerup',['../class_pirate_wars_1_1_game1.html#a0c495bb4397f04a4f51b552d2a4d8b33',1,'PirateWars::Game1']]]
+];
