@@ -224,12 +224,10 @@ namespace PirateWars
             angle = Object.WrapAngle(a);
 
             //rotate the original HalfX value by the angle a
-            rotatedHalfX.X = (float)((originalHalfX.X * Math.Cos(a)) - (originalHalfX.Y * Math.Sin(a)));
-            rotatedHalfX.Y = (float)((originalHalfX.X * Math.Sin(a)) + (originalHalfX.Y * Math.Cos(a)));
-
+            rotatedHalfX = RotateVector(originalHalfX, a);
+            
             //rotate the original HalfY value by the angle a
-            rotatedHalfY.X = (float)((originalHalfY.X * Math.Cos(a)) - (originalHalfY.Y * Math.Sin(a)));
-            rotatedHalfY.Y = (float)((originalHalfY.X * Math.Sin(a)) - (originalHalfY.Y * Math.Cos(a)));
+            rotatedHalfY = RotateVector(originalHalfY, a);
 
             //the internal axes of the box also change as the box is rotated.  They are the normalized half width and length vectors
             xAxis = rotatedHalfX;
@@ -350,6 +348,20 @@ namespace PirateWars
             {
                 return yAxis;
             }
+        }
+
+        /// <summary>
+        /// Rotate a vector by some angle (in radians)
+        /// </summary>
+        /// <param name="v">The vector to be rotated</param>
+        /// <param name="a">The angle to rotate the vector by</param>
+        /// <returns>A new rotated vector</returns>
+        public static Vector2 RotateVector(Vector2 v, float a)
+        {
+            Vector2 r = Vector2.Zero;
+            r.X = (float)((v.X * Math.Cos(a)) - (v.Y * Math.Sin(a)));
+            r.Y = (float)((v.X * Math.Sin(a)) + (v.Y * Math.Cos(a)));
+            return r;
         }
     }//end class
 }//end namespace

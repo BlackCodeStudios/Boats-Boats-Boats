@@ -187,8 +187,7 @@ namespace PirateWars
 
         #region Updating
         /// <summary>
-        /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the c_direction for a left side cannon ball and then inverts it for the right side
-        /// Different ships fire different looking cannonBalls, so it is necessary to pass the type of cannonBall into the fire funtion.
+        /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the direction for a left side cannon ball and then inverts it for the right side
         /// </summary>
         public virtual void Fire()
         {

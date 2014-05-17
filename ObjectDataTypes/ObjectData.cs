@@ -18,8 +18,6 @@ namespace ObjectDataTypes
         public float angle;
         ///<value>float indicting how fast the ship can turn</value>
         public float turnSpeed;
-        /// <value>filename of the image for the ship</value>
-        public string image;
         
         /// <summary>
         /// Construct a new ObjectData instance.  Sets all data equal to 0
@@ -28,7 +26,6 @@ namespace ObjectDataTypes
         {
             speed = Vector2.Zero;
             angle = turnSpeed = 0;
-            image = "";
         }
         /// <summary>
         /// Create a string that holds all data from the class so that it can be easily displayed

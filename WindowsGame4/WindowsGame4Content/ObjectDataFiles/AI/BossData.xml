@@ -2,17 +2,16 @@
 <XnaContent>
   <!-- TODO: replace this Asset with your own XML asset data. -->
   <Asset Type="ObjectDataTypes.EnemyData">
-    <speed>1.0 1.0</speed>
+    <speed>2.0 2.0</speed>
     <angle>90</angle>
-    <turnSpeed>0.5</turnSpeed>
-    <image>ManOfWar- Enemy.png</image>
-    <cannons>5</cannons>
+    <turnSpeed>1.0</turnSpeed>
+    <cannons>3</cannons>
     <rateOfFire>3000</rateOfFire>
-    <cannonBallVelocity>4.0 4.0</cannonBallVelocity>
-    <health>45</health>
+    <cannonBallVelocity>2.0 2.0</cannonBallVelocity>
+    <health>500</health>
     <damage>5</damage>
     <damageResistance>0</damageResistance>
-    <range>350</range>
-    <score>30</score>
+    <range>1000000</range>
+    <score>500</score>
   </Asset>
 </XnaContent>

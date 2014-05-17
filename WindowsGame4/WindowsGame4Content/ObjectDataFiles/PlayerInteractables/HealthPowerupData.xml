@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <!-- TODO: replace this Asset with your own XML asset data. -->
+  <Asset Type="ObjectDataTypes.PlayerInteractableData">
+    <speed> 0.3 0.3 </speed>
+    <angle> 0 </angle>
+    <turnSpeed>0</turnSpeed> <!--HealthPowerups don't turn or rotate, so turn speed is 0-->
+    <timeAllowedOnScreen>7000</timeAllowedOnScreen> <!--Will be used to construct a new TimeSpan representing 7000 miliseconds-->
+  </Asset>
+</XnaContent>

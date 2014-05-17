@@ -36,9 +36,35 @@ namespace PirateWars
         {
            
         }
+        /// <summary>
+        /// The frigate fires like a normal ship except when its ability is activated.  Then it fires off all four sides.
+        /// </summary>
         public override void Fire()
         {
+            //fire off two sides
             base.Fire();
+            
+            //if the ability is activated shoot in front and behind the ship
+            if (shipState == ShipState.AbilityActivated)
+            {
+                Vector2 increment = RectangleF.RotateVector(this.Direction,(float)Math.PI) * (texture.Height / cannons);
+                for (int i = 0; i < cannons; i++)
+                {
+                    /*
+                     * One set will move in the same direction as the ship, the other in the opposite direction.
+                     * Same algorithm as in base.Fire() but the direction is just the direction of the player
+                     */
+                    Vector2 posT = this.position + (((cannons - i) - (cannons / 2)) * increment);
+                    Vector2 posB = this.position + (((cannons - i) - (cannons / 2)) * increment);
+
+                    posT += this.Direction * cannonBallVelocity;     //off left side
+                    posB += -this.Direction * cannonBallVelocity;    //off right side
+                    
+                    //add Cannon Balls to List of cannon balls
+                    CBA.Add(new CannonBall(posT, this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle)));      //add left side cannon ball
+                    CBA.Add(new CannonBall(posB, -this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle)));    //add right side cannon ball
+                }
+            }
         }
 
         public override bool ActivateAbility(TimeSpan gameTime)

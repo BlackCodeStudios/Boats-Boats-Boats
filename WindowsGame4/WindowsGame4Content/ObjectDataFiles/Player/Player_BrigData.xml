@@ -2,18 +2,17 @@
 <XnaContent>
   <!-- TODO: replace this Asset with your own XML asset data. -->
   <Asset Type="ObjectDataTypes.PlayerData">
-    <speed>3.0 3.0</speed>
-    <angle>-90</angle>
-    <turnSpeed>2</turnSpeed>
-    <image>ManOfWar.png</image>
-    <cannons>6</cannons>
-    <rateOfFire>550</rateOfFire>
+    <speed>5.0 5.0</speed>
+    <angle>0</angle>
+    <turnSpeed>4</turnSpeed>
+    <cannons>3</cannons>
+    <rateOfFire>300</rateOfFire>
     <cannonBallVelocity>7.0 7.0</cannonBallVelocity>
-    <health>150</health>
-    <damage>7</damage>
+    <health>100</health>
+    <damage>5</damage>
     <damageResistance>0</damageResistance>
     <ABILITY_DURATION>15000</ABILITY_DURATION>
     <ABILITY_RECHARGE>0</ABILITY_RECHARGE>
-    <ABILITY_RECHARGE_MAX>25000</ABILITY_RECHARGE_MAX>
+    <ABILITY_RECHARGE_MAX>20000</ABILITY_RECHARGE_MAX>
   </Asset>
 </XnaContent>

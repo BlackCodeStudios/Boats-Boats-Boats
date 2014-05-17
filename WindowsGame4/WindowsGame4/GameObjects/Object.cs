@@ -72,8 +72,7 @@ namespace PirateWars
         public Object(ObjectData d, Texture2D tex)
         {
             speed = d.speed;
-            position = Vector2.Zero;;
-            image = d.image;
+            position = Vector2.Zero;
             texture = tex;
             origin = new Vector2(texture.Width / 2, texture.Height / 2);
             
@@ -81,7 +80,6 @@ namespace PirateWars
             angle = MathHelper.ToRadians(d.angle);
             turnSpeed = MathHelper.ToRadians(d.turnSpeed);
             Bounding = new RectangleF(position, texture);
-            
         }
 
         /// <summary>
@@ -98,6 +96,7 @@ namespace PirateWars
             origin = new Vector2(texture.Width/2, texture.Height/2);
             Bounding = new RectangleF(position, texture);
         }
+
         #region Accessors
 
         /// <summary>

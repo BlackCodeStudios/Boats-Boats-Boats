@@ -5,7 +5,6 @@
     <speed>4.0 4.0</speed>
     <angle>-90</angle>
     <turnSpeed>3</turnSpeed>
-    <image>Brig2_1.png</image>
     <cannons>4</cannons>
     <rateOfFire>450</rateOfFire>
     <cannonBallVelocity>7.0 7.0</cannonBallVelocity>

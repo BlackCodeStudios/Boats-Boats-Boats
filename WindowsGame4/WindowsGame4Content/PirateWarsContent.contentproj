@@ -170,7 +170,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Player_BrigData.xml">
+    <Compile Include="ObjectDataFiles\Player\Player_BrigData.xml">
       <Name>Player_BrigData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
@@ -178,21 +178,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Player_FrigateData.xml">
+    <Compile Include="ObjectDataFiles\Player\Player_FrigateData.xml">
       <Name>Player_FrigateData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Player_ManOfWarData.xml">
+    <Compile Include="ObjectDataFiles\Player\Player_ManOfWarData.xml">
       <Name>Player_ManOfWarData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Enemy_BrigData.xml">
+    <Compile Include="ObjectDataFiles\AI\Enemy_BrigData.xml">
       <Name>Enemy_BrigData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
@@ -200,28 +200,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\FireboatData.xml">
+    <Compile Include="ObjectDataFiles\AI\FireboatData.xml">
       <Name>FireboatData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Enemy_FrigateData.xml">
+    <Compile Include="ObjectDataFiles\AI\Enemy_FrigateData.xml">
       <Name>Enemy_FrigateData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Enemy_ManOfWarData.xml">
+    <Compile Include="ObjectDataFiles\AI\Enemy_ManOfWarData.xml">
       <Name>Enemy_ManOfWarData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\FriendlyShipsData.xml">
+    <Compile Include="ObjectDataFiles\AI\FriendlyShipsData.xml">
       <Name>FriendlyShipsData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
@@ -263,7 +263,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\BossData.xml">
+    <Compile Include="ObjectDataFiles\AI\BossData.xml">
       <Name>BossData</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
@@ -292,7 +292,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Player_Brig_TestData.xml">
+    <Compile Include="ObjectDataFiles\Player\Player_Brig_TestData.xml">
       <SubType>Designer</SubType>
       <Name>Player_Brig_TestData</Name>
       <Importer>XmlImporter</Importer>
@@ -300,7 +300,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectDataFiles\Enemy_Brig_TestData.xml">
+    <Compile Include="ObjectDataFiles\AI\Enemy_Brig_TestData.xml">
       <SubType>Designer</SubType>
       <Name>Enemy_Brig_TestData</Name>
       <Importer>XmlImporter</Importer>
@@ -319,6 +319,21 @@
       <Name>BeardCoded2_1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectDataFiles\PlayerInteractables\HealthPowerupData.xml">
+      <Name>HealthPowerupData</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectDataFiles\PlayerInteractables\MultiplierData.xml">
+      <Name>MultiplierData</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -5,7 +5,6 @@
     <speed>0.0 0.0</speed>
     <angle>-90</angle>
     <turnSpeed>3.0</turnSpeed>
-    <image>Frigate.png</image>
     <cannons>4</cannons>
     <rateOfFire>250</rateOfFire>
     <cannonBallVelocity>7.0 7.0</cannonBallVelocity>

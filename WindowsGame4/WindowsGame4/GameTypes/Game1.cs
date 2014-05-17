@@ -94,7 +94,7 @@ namespace PirateWars
         /// <value>The min time interval in between spawns in milliseconds</value>
         float SPAWN_TIME_MIN = 1500;
         /// <value>the maximum number of enemies that can be on screen at a given point in time</value>
-        int SPAWN_NUMBER_THRESHOLD = 8;
+        int SPAWN_NUMBER_THRESHOLD = 9;
         float NextSpawn;
         #endregion
 
@@ -125,6 +125,7 @@ namespace PirateWars
         PlayerData PLAYER_BRIG_DATA, PLAYER_FRIG_DATA, PLAYER_MOW_DATA;
         EnemyData FIREBOAT_DATA, ENEMY_BRIG_DATA, ENEMY_FRIG_DATA, ENEMY_MOW_DATA, FRIENDLY_SHIPS_DATA;
         EnemyData BOSS_DATA;
+        PlayerInteractableData HEALTH_POWER_DATA, MULTIPLIER_DATA;
         #endregion
 
         #region Boss Values
@@ -335,18 +336,21 @@ namespace PirateWars
 
             //Load object data
             #region ObjectData
-            PLAYER_BRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player_BrigData");
-            PLAYER_FRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player_FrigateData");
-            PLAYER_MOW_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player_ManOfWarData");
+            PLAYER_BRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player/Player_BrigData");
+            PLAYER_FRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player/Player_FrigateData");
+            PLAYER_MOW_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player/Player_ManOfWarData");
 
-            FIREBOAT_DATA = Content.Load<EnemyData>("ObjectDataFiles/FireboatData");
-            ENEMY_BRIG_DATA = Content.Load<EnemyData>("ObjectDataFiles/Enemy_BrigData");
-            ENEMY_FRIG_DATA = Content.Load<EnemyData>("ObjectDataFiles/Enemy_FrigateData");
-            ENEMY_MOW_DATA = Content.Load<EnemyData>("ObjectDataFiles/Enemy_ManOfWarData");
+            FIREBOAT_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/FireboatData");
+            ENEMY_BRIG_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/Enemy_BrigData");
+            ENEMY_FRIG_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/Enemy_FrigateData");
+            ENEMY_MOW_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/Enemy_ManOfWarData");
 
-            FRIENDLY_SHIPS_DATA = Content.Load<EnemyData>("ObjectDataFiles/FriendlyShipsData");
+            FRIENDLY_SHIPS_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/FriendlyShipsData");
 
-            BOSS_DATA = Content.Load<EnemyData>("ObjectDataFiles/BossData");
+            BOSS_DATA = Content.Load<EnemyData>("ObjectDataFiles/AI/BossData");
+
+            HEALTH_POWER_DATA = Content.Load<PlayerInteractableData>("ObjectDataFiles/PlayerInteractables/HealthPowerupData");
+            MULTIPLIER_DATA = Content.Load<PlayerInteractableData>("ObjectDataFiles/PlayerInteractables/MultiplierData");
             #endregion
 
             #region Sounds
@@ -422,7 +426,7 @@ namespace PirateWars
                 if (gameSongInstance.State == SoundState.Playing)
                     gameSongInstance.Stop();
                 if (gameOverSongInstance.State == SoundState.Stopped)
-                    gameSongInstance.Play();
+                    gameOverSongInstance.Play();
             }
             //if the game is the BootMenu, MainMenu, Ship Selection or PauseMenu, then the mouse input needs to be updated
             if (gameState == GameState.BootMenu || gameState == GameState.MainMenu || gameState == GameState.ShipSelection || gameState == GameState.Pause || gameState == GameState.GameOver)
@@ -467,9 +471,16 @@ namespace PirateWars
                 {
                     e.UpdateAndMove(gameTimer.RawTime, player);
                 }
-                foreach (PlayerInteractable p in playerInteractableList)
+                
+                for (int i = playerInteractableList.Count-1; i>=0; i--)
                 {
-                    p.Update(player);
+                    //update all PlayerInteractables
+                    playerInteractableList.ElementAt(i).Update(player, gameTimer.RawTime);
+                    //if one has timed out, remove it from the list
+                    if(playerInteractableList.ElementAt(i).TimedOut == true)
+                    {
+                        playerInteractableList.RemoveAt(i);
+                    }
                 }
                 /*check the friendlyList;  if the list has been initialized, and the ship's ability is not activated, then the list should be cleared.  Only applies to Player_ManOfWar.  Otherwise, nothing will happen here*/
                 if (friendlyList.Count >= 0 && (player.getShipState() != Player.ShipState.AbilityActivated))
@@ -739,7 +750,7 @@ namespace PirateWars
             int r = randomGenerator.Next(0, 100);
             if (r >= 0 && r < 10)
             {
-                playerInteractableList.Add(new HealthPowerup(e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup));
+                playerInteractableList.Add(new HealthPowerup(HEALTH_POWER_DATA, e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup,gameTimer.RawTime));
             }
 
         }
@@ -753,6 +764,8 @@ namespace PirateWars
         protected override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+            //check game state and draw screen accordingly
             if (gameState == GameState.BootMenu)
             {
                 DrawBootMenu(spriteBatch, gameTime);
@@ -761,8 +774,6 @@ namespace PirateWars
             {
                 spriteBatch.DrawString(logoFont, "LOADING " + (gameTimer.DisplayTime), new Vector2(300, 200), Color.Black);
             }
-
-                //check game state, and draw the screen appropriately
             else if (gameState == GameState.MainMenu)
             {
                 //draw main menu
@@ -927,7 +938,7 @@ namespace PirateWars
                         spriteBatch.Draw(enemyCBTexture, c.Position, null, Color.White, c.Angle, c.Origin, 1.0f, SpriteEffects.None, 0.0f);
                 }
             }
-            //draw friendly ships
+            //draw friendly cannon balls
             foreach (FriendlyShips fs in friendlyList)
             {
                 for (int i = fs.CannonBalls.Count - 1; i >= 0; i--)
@@ -937,7 +948,9 @@ namespace PirateWars
                         fs.CannonBalls.Remove(fs.CannonBalls.ElementAt(i));
                     }
                     else
-                        spriteBatch.Draw(playerCBTexture, fs.CannonBalls.ElementAt(i).Position, Color.White);
+                    {
+                        spriteBatch.Draw(playerCBTexture, fs.CannonBalls.ElementAt(i).Position, null, Color.White, fs.CannonBalls.ElementAt(i).Angle, fs.CannonBalls.ElementAt(i).Origin, 1.0f, SpriteEffects.None, 0.0f);
+                    }
                 }
             }
             
@@ -946,8 +959,10 @@ namespace PirateWars
             {
                 if (OutOfBounds(playerInteractableList.ElementAt(i)))
                     playerInteractableList.RemoveAt(i);
-                else
+                else if(playerInteractableList.ElementAt(i).Faded == false)
+                { 
                     spriteBatch.Draw(playerInteractableList.ElementAt(i).Texture, playerInteractableList.ElementAt(i).Position, Color.White);
+                }
             }
             
             /*Draw HUD*/
@@ -1019,10 +1034,13 @@ namespace PirateWars
                 if (EnemyList.Count == 0)
                 {
                     BOSS_SPAWN_SUCCESS = false;
-                    ResetSpawnTime(numberToSpawn, currentTime);
+                    ResetSpawnTime(numberToSpawn);
                     BOSS_READY_TO_SPAWN = false;
+                    //after beating the boss, increase the spawn number threshold so that they can face normal enemies again
+                    SPAWN_NUMBER_THRESHOLD+=2;
                 }
             }
+            //if the boss is not ready to spawn, continue spawning regular enemies enemies
             else if (NextSpawn <= SPAWN_NUMBER_THRESHOLD && BOSS_READY_TO_SPAWN == false)
             {
                 /*
@@ -1093,17 +1111,17 @@ namespace PirateWars
                     EnemyList.Add(e);
 
                     //reset spawn time
-                    ResetSpawnTime(numberToSpawn, currentTime);
+                    ResetSpawnTime(numberToSpawn);
                 }
             }
         }
 
-        private void ResetSpawnTime(int spawnNumber, TimeSpan timeSpan)
+        private void ResetSpawnTime(int spawnNumber)
         {
-            if (timeSpan.TotalSeconds <= 8)
+            //if it is the first 10 seconds of the game, force the next spawn to happen at SPAWN_TIME_MAX
+            if (gameTimer.RawTime.TotalSeconds <= 10)
                 NextSpawn = SPAWN_TIME_MAX;
-            else if (spawnNumber >= SPAWN_NUMBER_THRESHOLD / 2)
-                NextSpawn = SPAWN_TIME_MAX;
+            //otherwise, just pick a spawn time between the min and max times
             else
                 NextSpawn = (float)randomGenerator.Next((int)SPAWN_TIME_MIN, (int)SPAWN_TIME_MAX);
         }
@@ -1210,16 +1228,7 @@ namespace PirateWars
                     //deal damage to enemy
                     e.takeDamage(cB.Damage);
                     //remove cannon ball
-
-                    //if the ship is not a player frigate, remove the cannon ball upon contact
-                    if (s.GetType() != typeof(Player_Frigate))
-                        s.CannonBalls.Remove(cB);
-                    //if it is a player frigate, check to see if it's ability is activated, if not, then remove the cannon ball upon contact.  Else, leave the cannon balls alone
-                    else
-                    {
-                        if (((Player)(s)).getShipState() != Player.ShipState.AbilityActivated)
-                            s.CannonBalls.Remove(cB);
-                    }
+                    s.CannonBalls.Remove(cB);
                 }//end if collision
                 //check if the ship should be sunk
             }//end for j
@@ -1266,7 +1275,7 @@ namespace PirateWars
                     int numberOfMultis = ((Enemy)(e)).getScore() / 5;
                     for (int m = 0; m < numberOfMultis; m++)
                     {
-                        Multiplier mp = new Multiplier(e.Position, e.Position, (float)(randomGenerator.Next(360)) * (float)(Math.PI / 180), multiplierTexture);
+                        Multiplier mp = new Multiplier(MULTIPLIER_DATA, e.Position, e.Position, (float)(randomGenerator.Next(360)) * (float)(Math.PI / 180), multiplierTexture, gameTimer.RawTime);
                         playerInteractableList.Add(mp);
                     }
                     //determine if this ship will drop a powerup
