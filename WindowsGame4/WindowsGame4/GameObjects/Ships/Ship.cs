@@ -191,13 +191,28 @@ namespace PirateWars
         #endregion
 
         #region Updating
+
+        /// <summary>
+        /// Checks if the ship can fire again
+        /// </summary>
+        /// <param name="gameTime">Snapshot of timing values</param>
+        /// <returns>True if enough time has passed, false otherwise.</returns>
+        protected bool CanFire(TimeSpan gameTime)
+        {
+            if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds < rateOfFire)
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the direction for a left side cannon ball and then inverts it for the right side
         /// </summary>
         public virtual void Fire(TimeSpan gameTime)
         {
             //if there hasn't been enough time since the last fire, do not fire again.
-            if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds < rateOfFire)
+            if (CanFire(gameTime) == false)
                 return;
             /*
              * increment is the space between the cannons (and thus each cannon ball)

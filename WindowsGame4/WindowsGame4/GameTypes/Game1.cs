@@ -1030,7 +1030,6 @@ namespace PirateWars
                  *      The number of enemies that spawns durig any given wave is the sum of the natural log of game time + the natural log of their score per second
                  *      Ensures that the number is dynamic based on player ability but has a baseline for each game
                  */
-                Console.WriteLine(currentTime + " total spawning: " + numberToSpawn + "    " + Math.Log(1 + currentTime.TotalSeconds) + "; " + Math.Log((1 + scorePerMinute), 5));
                 numberToSpawn = (int)(MathHelper.Clamp(numberToSpawn, 0, 10));
 
                 lastSpawn = gameTimer.RawTime;

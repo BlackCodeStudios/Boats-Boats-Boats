@@ -75,8 +75,10 @@ namespace PirateWars
         /// Fire another round of projectiles.  The Boss's projectiles move in a sinusodial motion.
         /// </summary>
         /// <param name="gameTime">provides a snapshot of timing values</param>
-        private void Fire(TimeSpan gameTime)
+        protected void Fire(TimeSpan gameTime)
         {
+            if (CanFire(gameTime) == false)
+                return;
             /*
              * increment is the space between the cannons (and thus each cannon ball)
              * the spacing is related to the direction that the boat is facing * an increment value (35.0f)
