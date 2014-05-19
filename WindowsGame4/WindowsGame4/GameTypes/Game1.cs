@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Xml.Serialization;
 using ObjectDataTypes;
+using GameUtilities;
 
 namespace PirateWars
 {
@@ -70,7 +71,7 @@ namespace PirateWars
         #endregion
 
         #region MouseAndKeyboard
-        /// <value>keep track of the last keyboard state</value>
+       /* /// <value>keep track of the last keyboard state</value>
         KeyboardState oldKeyState;
         /// <value>Time at which the keyboard was last updated.  Used to regulate key input so that firing happens on a timing interval even if the key is constantly held down</value>
         TimeSpan oldKeyPress = new TimeSpan(0);
@@ -78,6 +79,8 @@ namespace PirateWars
         TimeSpan oldMouseEvent = new TimeSpan(0);
         /// <value>keep track of the last mouse state</value>
         MouseState oldMouseState;
+        */
+        InputManager inputManager;
         #endregion
 
         #region SpawningVariables
@@ -113,12 +116,12 @@ namespace PirateWars
         /// <value>multiplies the worth of each enemy.  Increases when multipliers are collected</value>
         int scoreMultiplier = 1;
         SpriteFont HUDFont;
-        Button startButton, returnToMenu, resumeGame;
+        GameButton startButton, returnToMenu, resumeGame;
         Vector2 startButtonPos;
         Texture2D logo;
         SpriteFont logoFont;
         SpriteFont mottoFont;
-        Button brigButton, frigateButton, manOfWarButton;
+        GameButton brigButton, frigateButton, manOfWarButton;
         #endregion //UI
 
         #region ObjectDataTypes
@@ -131,7 +134,6 @@ namespace PirateWars
         #region Boss Values
         Vector2 BOSS_POSITION;
         bool BOSS_SPAWN_SUCCESS = false;
-        bool DISABLE_PLAYER_MOVEMENT = false;
         bool BOSS_READY_TO_SPAWN = false;
         #endregion
 
@@ -230,6 +232,7 @@ namespace PirateWars
             gameState = GameState.BootMenu;
             IsMouseVisible = true;
 
+            inputManager = new InputManager();
            
         }
 
@@ -243,8 +246,8 @@ namespace PirateWars
         {
             base.Initialize();
 
-            oldKeyState = Keyboard.GetState();
-            oldMouseState = Mouse.GetState();
+            //oldKeyState = Keyboard.GetState();
+            //oldMouseState = Mouse.GetState();
 
             gameTimer = new Timer();
 
@@ -295,7 +298,7 @@ namespace PirateWars
             logoFont = Content.Load<SpriteFont>("Fonts/LogoFont");
             mottoFont = Content.Load<SpriteFont>("Fonts/MottoFont");
             startButtonPos = new Vector2(300, 300);
-            startButton = new Button(Content.Load<Texture2D>("StartButton"), startButtonPos);
+            startButton = new GameButton(Content.Load<Texture2D>("StartButton"), startButtonPos);
 
             float x1 = (float)graphics.PreferredBackBufferWidth / 6 - playerBrig.Width / 2;
             float x2 = (x1 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerFrigate.Width / 2);
@@ -304,11 +307,11 @@ namespace PirateWars
             Vector2 ship1Pos = new Vector2(x1, (graphics.PreferredBackBufferHeight / 2) - playerBrig.Height / 2);
             Vector2 ship2Pos = new Vector2(x2, (graphics.PreferredBackBufferHeight / 2) - playerFrigate.Height / 2);
             Vector2 ship3Pos = new Vector2(x3, (graphics.PreferredBackBufferHeight / 2) - playerManOfWar.Height / 2);
-            brigButton = new Button(playerBrig, ship1Pos);
-            frigateButton = new Button(playerFrigate, ship2Pos);
-            manOfWarButton = new Button(playerManOfWar, ship3Pos);
-            returnToMenu = new Button(Content.Load<Texture2D>("ReturnToMenu"), new Vector2(250, 325));
-            resumeGame = new Button(Content.Load<Texture2D>("StartButton"), new Vector2(250, 500));
+            brigButton = new GameButton(playerBrig, ship1Pos);
+            frigateButton = new GameButton(playerFrigate, ship2Pos);
+            manOfWarButton = new GameButton(playerManOfWar, ship3Pos);
+            returnToMenu = new GameButton(Content.Load<Texture2D>("ReturnToMenu"), new Vector2(250, 325));
+            resumeGame = new GameButton(Content.Load<Texture2D>("StartButton"), new Vector2(250, 500));
             #endregion
 
             #region GameMaterial
@@ -394,6 +397,9 @@ namespace PirateWars
         #region Update
         protected override void Update(GameTime gameTime)
         {
+            //update all inputs
+            inputManager.Update(gameTime);
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -520,61 +526,52 @@ namespace PirateWars
 
         private void UpdateKeyboardInput(GameTime time)
         {
-            KeyboardState newState = Keyboard.GetState();
+            //KeyboardState newState = Keyboard.GetState();
             Vector2 newP = player.Position;
             float angle = player.Angle;
             TimeSpan newKeyPress = time.TotalGameTime;
-
             /*
-             * WAD are the movement keys, but only W and S will actually move the ship
+             * WAD are the movement keys, but only W will actually move the ship
              * W: move ship forward in the direction that the ship is pointing 
              * A: rotate the ship to the left (-radians)
              * D: rotate the ship to the right (+radians)
              */
-            if (newState.IsKeyDown(Keys.Escape))
+            if (inputManager.KeyIsDown(Keys.Escape))
             {
                 gameState = GameState.Pause;
                 gameTimer.Pause();
             }
-            if (newState.IsKeyDown(Keys.Tab))
+            
+            if (inputManager.KeyIsDown(Keys.Tab))
             {
-                KeyboardState doubleCheck = Keyboard.GetState();
                 if (player.getShipState() == Player.ShipState.AbilityCharged)
                 {
                     player.ActivateAbility(gameTimer.RawTime);
                     if (player.GetType() == typeof(Player_ManOfWar))
                     {
-                        //brute force math where the 8 ships should spawn
+                        //brute force math where the 4 ships should spawn
                         GenerateFriendlies();
                     }
                 }
             }
-            if (DISABLE_PLAYER_MOVEMENT == true)
+            
+            if (inputManager.KeyIsDown(Keys.A) || inputManager.KeyIsDown(Keys.Left))
+            {
+                angle = player.Angle - player.TurnSpeed;
+            }
+                
+            if (inputManager.KeyIsDown(Keys.D) || inputManager.KeyIsDown(Keys.Right))
+            {
+                angle = player.Angle + player.TurnSpeed;
+            }
+
+            if (inputManager.KeyIsDown(Keys.W) || inputManager.KeyIsDown(Keys.Up))
             {
                 Vector2 direction = new Vector2((float)(Math.Cos(player.Angle)), (float)(Math.Sin(player.Angle)));
                 direction.Normalize();
-                newP -= direction * player.Speed;
-                if (player.Position.X >= BOSS_POSITION.X + 30)
-                    DISABLE_PLAYER_MOVEMENT = false;
+                newP += direction * player.Speed;
             }
-            else
-            {
-                if (newState.IsKeyDown(Keys.A) || newState.IsKeyDown(Keys.Left))
-                {
-                    angle = player.Angle - player.TurnSpeed;
-                }
-                if (newState.IsKeyDown(Keys.D) || newState.IsKeyDown(Keys.Right))
-                {
-                    angle = player.Angle + player.TurnSpeed;
-                }
 
-                if (newState.IsKeyDown(Keys.W) || newState.IsKeyDown(Keys.Up))
-                {
-                    Vector2 direction = new Vector2((float)(Math.Cos(player.Angle)), (float)(Math.Sin(player.Angle)));
-                    direction.Normalize();
-                    newP += direction * player.Speed;
-                }//end move FORWARD
-            }
             //check to make sure it stays within bounds, and then update position and angle
             if (BOSS_SPAWN_SUCCESS)
             {
@@ -584,17 +581,10 @@ namespace PirateWars
                 OutOfBounds(ref newP, player.Texture, 0, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight);
             player.Position = newP;
             player.Angle = angle;
-
-            // get the time between the last firing and this firing.  If the delay has been more than 200 miliseconds, fire again
-            double delay = newKeyPress.TotalMilliseconds - oldKeyPress.TotalMilliseconds;
-            if (newState.IsKeyDown(Keys.Space) && delay > player.RateOfFire)
-            {
-                player.Fire();
-                //reset the value of oldkeypress
-                oldKeyPress = newKeyPress;
-            }
-            //Update keyPress state
-            oldKeyState = newState;
+            
+            //place a delay on the space bar firing
+            if(inputManager.KeyIsDown(Keys.Space))
+                player.Fire(gameTimer.RawTime);
         }//end UpdateInput (Keyboard
         #endregion //keyboard
 
@@ -608,21 +598,14 @@ namespace PirateWars
                 if (newState.LeftButton == ButtonState.Pressed)
                 {
                     gameState = GameState.MainMenu;
-                    oldMouseEvent = gameTime.TotalGameTime;
                 }
             }
             if (gameState == GameState.MainMenu)
             {
-                //set delay of 300 milliseconds before allowing another mouse click event.  Prevents spaming and menu problems
-                if (gameTime.TotalGameTime.TotalMilliseconds - oldMouseEvent.TotalMilliseconds < 200)
-                {
-                    return;
-                }
                 //if it clicked the start Button
-                if (startButton.buttonClicked(newState))
+                if (inputManager.GameButtonWasClicked(startButton) == true)
                 {
                     gameState = GameState.ShipSelection;
-                    oldMouseState = newState;
                     return;
                 }
             }//end MainMenu
@@ -630,20 +613,20 @@ namespace PirateWars
             {
                 //if any of the buttons are clicked, set the player to the corresponding type and then start the game
                 //check for Brig Selection
-                if (brigButton.buttonClicked(newState))
+                if (inputManager.GameButtonWasClicked(brigButton) == true)
                 {
                     player = new Player_Brig(PLAYER_BRIG_DATA, playerBrig, playerCBTexture);
                     StartGame();
 
                 }
                 //check for frigate selection
-                else if (frigateButton.buttonClicked(newState))
+                else if (inputManager.GameButtonWasClicked(frigateButton) == true)
                 {
                     player = new Player_Frigate(PLAYER_FRIG_DATA, playerFrigate, playerCBTexture);
                     StartGame();
                 }
                 //check for man of war selection
-                else if (manOfWarButton.buttonClicked(newState))
+                else if (inputManager.GameButtonWasClicked(manOfWarButton) == true)
                 {
                     player = new Player_ManOfWar(PLAYER_MOW_DATA, playerManOfWar, playerCBTexture);
                     StartGame();
@@ -651,22 +634,21 @@ namespace PirateWars
             }//end shipSelection
             else if (gameState == GameState.Pause)
             {
-                if (resumeGame.buttonClicked(newState))
+                if (inputManager.GameButtonWasClicked(resumeGame) == true)
                 {
                     gameState = GameState.GameOn;
                     gameTimer.Start();
                 }
-                if (returnToMenu.buttonClicked(newState))
+                if (inputManager.GameButtonWasClicked(returnToMenu) == true)
                 {
                     gameState = GameState.MainMenu;
                 }
             }
             else if (gameState == GameState.GameOver)
             {
-                if (returnToMenu.buttonClicked(newState))
+                if (inputManager.GameButtonWasClicked(returnToMenu) == true)
                     gameState = GameState.MainMenu;
             }
-            oldMouseState = newState;
         }
 
 
@@ -1240,12 +1222,6 @@ namespace PirateWars
                     if (s.BoundingBox.Intersects(e.BoundingBox))
                     {
                         e.takeDamage(s.Damage);
-
-                        //check if it has collided with a boss, and if it did, force the player backwards
-                        if (e.GetType() == typeof(Boss1))
-                        {
-                            DISABLE_PLAYER_MOVEMENT = true;
-                        }
                     }
             }
 

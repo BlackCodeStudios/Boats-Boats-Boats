@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ObjectDataTypes;
-
-namespace PirateWars
+namespace GameUtilities
 {
     /// <summary>
     /// Oriented Bounding Box class using floating point values. Designed to act like the XNA Rectangle class but with floating point values.
@@ -221,7 +219,7 @@ namespace PirateWars
              * 
              * All calculations done through the rotation matrix are accomplished by using the data from when the object was perfectly horizontal
              */
-            angle = Object.WrapAngle(a);
+            angle = WrapAngle(a);
 
             //rotate the original HalfX value by the angle a
             rotatedHalfX = RotateVector(originalHalfX, a);
@@ -254,6 +252,24 @@ namespace PirateWars
 
             return output;
         }
+
+        /// <summary>
+        /// Returns the angle expressed in radians between -Pi and Pi.
+        /// <param name="radians">the angle to wrap, in radians.</param>
+        /// <returns>the input value expressed in radians from -Pi to Pi.</returns>
+        /// </summary>
+        public static float WrapAngle(float radians)
+        {
+            while (radians < -MathHelper.Pi)
+            {
+                radians += MathHelper.TwoPi;
+            }
+            while (radians > MathHelper.Pi)
+            {
+                radians -= MathHelper.TwoPi;
+            }
+            return radians;
+        }//end WrapAngle
 
         /// <summary>
         /// Access and set the position values of the OBB

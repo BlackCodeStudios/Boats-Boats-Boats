@@ -51,11 +51,7 @@ namespace PirateWars
             //assume the firing position.
             this.angle = base.TurnToFire(position, enemy.Position, this.angle, turnSpeed);
             Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));
-            if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds > rateOfFire)
-            {
-                base.Fire();
-                lastFire = gameTime;
-            }
+            base.Fire(gameTime);
             base.Update(gameTime);
         }
     }

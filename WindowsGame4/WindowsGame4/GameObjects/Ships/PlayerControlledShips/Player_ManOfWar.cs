@@ -36,10 +36,6 @@ namespace PirateWars
         {
            
         }
-        public override void Fire()
-        {
-            base.Fire();
-        }
         public override bool ActivateAbility(TimeSpan gameTime)
         {
             if (base.ActivateAbility(gameTime) == false)

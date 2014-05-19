@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-namespace PirateWars
+namespace GameUtilities
 {
     /// <summary>
     /// Keeps track of all timing in game

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
+using GameUtilities;
 
 namespace PirateWars
 {
@@ -13,32 +14,32 @@ namespace PirateWars
     /// </summary>
 
 
-    public abstract class Object
+    public abstract class Object : GameComponent
     {
         /// <value>Vector2 representing the speed of the boat</value>
         protected Vector2 speed;
-        
+
         /// <value>Vector2 holding the position of the boat on the screen </value>
         protected Vector2 position;
-        
+
         /// <value>Vector2 that represents the origin of the texture.  This is the point where anything operation dealing with rotation or collision detection is relative to </value>
         protected Vector2 origin;
-        
+
         /// <value>float that stores the current angle that the ship is facing relative to the center of the screen.  negative angles are counterclockwise rotations, and positive are clockwise.  Stored in RADIANS not degrees </value>
         protected float angle;
-        
+
         ///<value>float indicting how fast the ship can turn</value>
         protected float turnSpeed;
-        
+
         /// <value>filename of the image for the ship</value>
         protected string image;
-        
+
         /// <value>Texture2D that is used to display the ship on screen</value>
         protected Texture2D texture;
-        
+
         /// <value>Oriented Bounding Box used for detection collisions between objects</value>
         protected RectangleF Bounding;
-        
+
         ///<value>creates a rectangle around each object.  Used for collision detection</value>
         public RectangleF BoundingBox
         {
@@ -53,7 +54,8 @@ namespace PirateWars
         /// <summary>
         /// Default constructor for Object.  Sets all values to 0
         /// </summary>
-        public Object()
+        public Object() :
+            base(null)
         {
             speed = Vector2.Zero;
             position = Vector2.Zero;
@@ -70,12 +72,13 @@ namespace PirateWars
         /// <param name="d">ObjectData structure.  Loaded from main game through ContentPipeline</param>
         /// <param name="tex">Texture to represent object.  Loaded from main game through ContentPipeline</param>
         public Object(ObjectData d, Texture2D tex)
+            : base(null)
         {
             speed = d.speed;
             position = Vector2.Zero;
             texture = tex;
             origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            
+
             //angle and turnSpeed are stored as degrees in XML file.  Convert to radians
             angle = MathHelper.ToRadians(d.angle);
             turnSpeed = MathHelper.ToRadians(d.turnSpeed);
@@ -88,12 +91,12 @@ namespace PirateWars
         /// <param name="p">Position to spawn object</param>
         /// <param name="a">Angle to rotate object by at spawn</param>
         /// <param name="tex">Texture to represent that object</param>
-        public Object(Vector2 p, float a, Texture2D tex)
+        public Object(Vector2 p, float a, Texture2D tex) :base(null)
         {
             position = p;
             angle = a;
             texture = tex;
-            origin = new Vector2(texture.Width/2, texture.Height/2);
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
             Bounding = new RectangleF(position, texture);
         }
 
@@ -114,7 +117,7 @@ namespace PirateWars
                 speed = value;
             }
         }
-       
+
         /// <summary>
         /// get the position of the boat on screen
         /// </summary>
@@ -144,10 +147,10 @@ namespace PirateWars
             set
             {
                 //take the incoming value and make sure to wrap it so it stays between -Pi/2 and Pi/2
-                angle = WrapAngle(value);
+                angle = RectangleF.WrapAngle(value);
             }
         }
-       
+
         /// <summary>
         /// get the turn speed of the boat
         /// </summary>
@@ -192,23 +195,6 @@ namespace PirateWars
         #endregion
 
         #region Helpers
-        /// <summary>
-        /// Returns the angle expressed in radians between -Pi and Pi.
-        /// <param name="radians">the angle to wrap, in radians.</param>
-        /// <returns>the input value expressed in radians from -Pi to Pi.</returns>
-        /// </summary>
-        public static float WrapAngle(float radians)
-        {
-            while (radians < -MathHelper.Pi)
-            {
-                radians += MathHelper.TwoPi;
-            }
-            while (radians > MathHelper.Pi)
-            {
-                radians -= MathHelper.TwoPi;
-            }
-            return radians;
-        }//end WrapAngle
 
         /// <summary>
         /// Calculates the angle that an object should face, given its position, its
@@ -251,15 +237,15 @@ namespace PirateWars
 
             // first, figure out how much we want to turn, using WrapAngle to get our
             // result from -Pi to Pi ( -180 degrees to 180 degrees )
-            float difference = WrapAngle(desiredAngle - currentAngle);
+            float difference = RectangleF.WrapAngle(desiredAngle - currentAngle);
 
             // clamp that between -turnSpeed and turnSpeed.
             difference = MathHelper.Clamp(difference, -turnSpeed, turnSpeed);
 
             // so, the closest we can get to our target is currentAngle + difference.
             // return that, using WrapAngle again.
-            return WrapAngle(currentAngle + difference);
+            return RectangleF.WrapAngle(currentAngle + difference);
         }//end TurnToFace
-       #endregion
+        #endregion
     }//end class
 }//end namespace

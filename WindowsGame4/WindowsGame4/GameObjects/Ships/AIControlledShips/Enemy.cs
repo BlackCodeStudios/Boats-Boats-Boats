@@ -36,9 +36,6 @@ namespace PirateWars
         /// <value>Sets the initial state of the enemy to chasing the player </value>
         protected EnemyState state = EnemyState.Chasing;
         
-        /// <value>Keeps track of when this ship last fired.  Regulates rate of fire in the UpdateAndFire method</value>
-        protected TimeSpan lastFire;
-        
         #endregion
 
         /// <summary>

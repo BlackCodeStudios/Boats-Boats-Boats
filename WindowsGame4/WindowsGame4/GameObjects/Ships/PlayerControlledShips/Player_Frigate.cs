@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
+using GameUtilities;
 
 namespace PirateWars
 {
@@ -39,10 +40,10 @@ namespace PirateWars
         /// <summary>
         /// The frigate fires like a normal ship except when its ability is activated.  Then it fires off all four sides.
         /// </summary>
-        public override void Fire()
+        public override void Fire(TimeSpan gameTime)
         {
             //fire off two sides
-            base.Fire();
+            base.Fire(gameTime);
             
             //if the ability is activated shoot in front and behind the ship
             if (shipState == ShipState.AbilityActivated)
@@ -61,8 +62,8 @@ namespace PirateWars
                     posB += -this.Direction * cannonBallVelocity;    //off right side
                     
                     //add Cannon Balls to List of cannon balls
-                    CBA.Add(new CannonBall(posT, this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle)));      //add left side cannon ball
-                    CBA.Add(new CannonBall(posB, -this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle)));    //add right side cannon ball
+                    CBA.Add(new CannonBall(posT, this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle)));      //add left side cannon ball
+                    CBA.Add(new CannonBall(posB, -this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle)));    //add right side cannon ball
                 }
             }
         }

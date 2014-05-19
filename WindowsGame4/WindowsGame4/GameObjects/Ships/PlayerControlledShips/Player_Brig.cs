@@ -60,10 +60,10 @@ namespace PirateWars
         /// <summary>
         /// Override Fire method from Ship.  All this does is prevent the brig type from firing while its ability is activated
         /// </summary>
-        public override void Fire()
+        public override void Fire(TimeSpan gameTime)
         {
             if (shipState != ShipState.AbilityActivated)
-                base.Fire();
+                base.Fire(gameTime);
         }
         /// <summary>
         /// Activate the ship's ability.  Calls the base function to perform basic operations and then modifies values specifically for this type

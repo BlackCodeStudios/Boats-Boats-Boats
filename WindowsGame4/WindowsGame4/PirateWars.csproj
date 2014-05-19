@@ -102,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameObjects\Ships\AIControlledShips\Boss1.cs" />
-    <Compile Include="Utilities\Button.cs" />
     <Compile Include="GameObjects\CannonBall.cs" />
     <Compile Include="GameObjects\Ships\AIControlledShips\Enemy.cs" />
     <Compile Include="GameObjects\Ships\AIControlledShips\Enemy_Brig.cs" />
@@ -121,10 +120,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="GameTypes\Game1.cs" />
     <Compile Include="GameObjects\Ships\PlayerControlledShips\Player_Brig.cs" />
-    <Compile Include="Utilities\RectangleF.cs" />
     <Compile Include="GameObjects\Ships\Ship.cs" />
     <None Include="GameTypes\TestGame.cs" />
-    <Compile Include="Utilities\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -136,6 +133,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GameUtilities\GameUtilities.csproj">
+      <Project>{29b80dda-48b7-41fd-a8ce-a45f1c350620}</Project>
+      <Name>GameUtilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ObjectDataTypes\ObjectDataTypes.csproj">
       <Project>{ab87969e-a4d5-46d0-bc51-8479a826e742}</Project>
       <Name>ObjectDataTypes</Name>

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
+using GameUtilities;
 
 namespace PirateWars
 {
@@ -31,6 +32,8 @@ namespace PirateWars
         protected float damage;
         /// <value>reduces incoming damage.  Values range from 0 to 1, where 0 means no damage resitance and 1 means invincibility</value>
         protected float damageResistance;
+        /// <value>Keep track of the last time the ship fired</value>
+        protected TimeSpan lastFire;
 
         #region Constructors
         /// <summary>
@@ -45,6 +48,7 @@ namespace PirateWars
             cannonBallVelocity = new Vector2(7.0f, 7.0f);
             damageResistance = 0;
             maxHealth = health;
+            lastFire = TimeSpan.Zero;
         }//end default constructor
 
         /// <summary>
@@ -65,6 +69,7 @@ namespace PirateWars
             health = maxHealth = d.health;
             origin = new Vector2(tex.Width / 2, tex.Height / 2);
             cannons = d.cannons;
+            lastFire = TimeSpan.Zero;
         }
         #endregion
 
@@ -189,8 +194,11 @@ namespace PirateWars
         /// <summary>
         /// Create new cannon balls (cannons * 2) and place them in the <see cref="CBA"/>.  All cannon balls are fired perpindicular to the boat.  Cannon number of cannon balls go off the left side, and the same number go off the right.  This function first creates the direction for a left side cannon ball and then inverts it for the right side
         /// </summary>
-        public virtual void Fire()
+        public virtual void Fire(TimeSpan gameTime)
         {
+            //if there hasn't been enough time since the last fire, do not fire again.
+            if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds < rateOfFire)
+                return;
             /*
              * increment is the space between the cannons (and thus each cannon ball)
              * the spacing is related to the c_direction that the boat is facing * an increment value (35.0f)
@@ -210,9 +218,10 @@ namespace PirateWars
                 posR += -c_direction * cannonBallVelocity;    //off right side
 
                 //add Cannon Balls to List of cannon balls
-                CBA.Add(new CannonBall(posL, c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle - MathHelper.PiOver2)));      //add left side cannon ball
-                CBA.Add(new CannonBall(posR, -c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, Object.WrapAngle(this.angle + MathHelper.PiOver2)));    //add right side cannon ball
+                CBA.Add(new CannonBall(posL, c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle - MathHelper.PiOver2)));      //add left side cannon ball
+                CBA.Add(new CannonBall(posR, -c_direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle + MathHelper.PiOver2)));    //add right side cannon ball
             }
+            lastFire = gameTime;
         }
 
         /// <summary>

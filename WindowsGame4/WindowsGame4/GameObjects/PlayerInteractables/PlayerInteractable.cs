@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
-
+using GameUtilities;
 namespace PirateWars
 {
     /// <summary>
@@ -96,7 +96,7 @@ namespace PirateWars
             if (distanceFromPlayer <= player.Texture.Width/2 + this.Texture.Width/2 + 15)
             {
                 this.angle = TurnToFace(position, player.Position, angle, 10);
-                WrapAngle(this.angle);
+                RectangleF.WrapAngle(this.angle);
                 this.speed *= 2;
             }
             Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));

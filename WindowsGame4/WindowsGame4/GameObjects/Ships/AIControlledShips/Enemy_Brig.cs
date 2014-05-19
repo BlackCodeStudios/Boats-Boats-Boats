@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ObjectDataTypes;
+using GameUtilities;
 
 namespace PirateWars
 {
@@ -66,11 +67,7 @@ namespace PirateWars
                 //assume the firing position.
                 this.angle = TurnToFire(position, player.Position, this.angle, turnSpeed);
                 Vector2 heading = new Vector2((float)Math.Cos(this.angle), (float)Math.Sin(this.angle));
-                if (gameTime.TotalMilliseconds - lastFire.TotalMilliseconds > rateOfFire)
-                {
-                    this.Fire();
-                    lastFire = gameTime;
-                }
+                this.Fire(gameTime);
                 base.Update(gameTime);
             }//end if firing
         }//end UpdateAndMove
@@ -90,10 +87,10 @@ namespace PirateWars
             float y = faceThis.Y - position.Y;
 
             float desiredAngle = (float)Math.Atan2(y, x) + (float)Math.PI / 2;
-            float difference = WrapAngle(desiredAngle - currentAngle);
+            float difference = RectangleF.WrapAngle(desiredAngle - currentAngle);
             difference = MathHelper.Clamp(difference, -turnSpeed, turnSpeed);
 
-            return WrapAngle(currentAngle + difference);
+            return RectangleF.WrapAngle(currentAngle + difference);
         }//end turn to fire
     }//end class
 }//end namepsace
