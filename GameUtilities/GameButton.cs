@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 namespace GameUtilities
 {
     /// <summary>
-    /// Button class that handles checking if a mouse has properly clicked on it.
+    /// Button class that contains a texture and a position
     /// </summary>
     public class GameButton
     {

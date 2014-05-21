@@ -15,7 +15,7 @@ using GameUtilities;
 
 namespace PirateWars
 {
-    
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -70,16 +70,14 @@ namespace PirateWars
         SoundEffectInstance gameOverSongInstance;
         #endregion
 
+        #region Menus
+        Menu mainMenu;
+        Menu bootMenu;
+        Menu pauseMenu;
+        Menu shipSelectionMenu;
+        #endregion
+
         #region MouseAndKeyboard
-       /* /// <value>keep track of the last keyboard state</value>
-        KeyboardState oldKeyState;
-        /// <value>Time at which the keyboard was last updated.  Used to regulate key input so that firing happens on a timing interval even if the key is constantly held down</value>
-        TimeSpan oldKeyPress = new TimeSpan(0);
-        /// <value>keeps track of the time of last mouse click to place delay between mouse clicks</value>
-        TimeSpan oldMouseEvent = new TimeSpan(0);
-        /// <value>keep track of the last mouse state</value>
-        MouseState oldMouseState;
-        */
         InputManager inputManager;
         #endregion
 
@@ -233,7 +231,7 @@ namespace PirateWars
             IsMouseVisible = true;
 
             inputManager = new InputManager();
-           
+
         }
 
         /// <summary>
@@ -246,8 +244,7 @@ namespace PirateWars
         {
             base.Initialize();
 
-            //oldKeyState = Keyboard.GetState();
-            //oldMouseState = Mouse.GetState();
+            IsFixedTimeStep = true;
 
             gameTimer = new Timer();
 
@@ -269,6 +266,29 @@ namespace PirateWars
                 file.Close();
             }
         }
+
+        #region ChangeMenuFunctions
+        private void ToMainMenu() { gameState = GameState.MainMenu; }               //change to MainMenu
+        private void ToShipSelection() { gameState = GameState.ShipSelection; }     //change to ShipSelection
+        private void ToGameOn() { gameState = GameState.GameOn; }                   //Change to GameOn
+        private void ToGameOver() { gameState = GameState.GameOver; }               //change to GameOver
+        private void ToPause() { gameState = GameState.Pause; }                     //change to pause
+        private void LoadPlayerBrig()
+        {
+            player = new Player_Brig(PLAYER_BRIG_DATA, playerBrig, playerCBTexture);
+            ToGameOn();
+        }
+        private void LoadPlayerFrig() 
+        { 
+            player = new Player_Frigate(PLAYER_FRIG_DATA, playerFrigate, playerCBTexture);
+            ToGameOn();
+        }
+        private void LoadPlayerMOW() 
+        { 
+            player = new Player_ManOfWar(PLAYER_MOW_DATA, playerManOfWar, playerCBTexture);
+            ToGameOn();
+        }
+        #endregion
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -293,25 +313,12 @@ namespace PirateWars
             #endregion
 
             BOSS_POSITION = new Vector2(BossTexture.Width / 2, graphics.PreferredBackBufferHeight / 2 - BossTexture.Height / 2);
+
             #region Main Menu
             logo = Content.Load<Texture2D>("BeardCoded2_1");
             logoFont = Content.Load<SpriteFont>("Fonts/LogoFont");
             mottoFont = Content.Load<SpriteFont>("Fonts/MottoFont");
-            startButtonPos = new Vector2(300, 300);
-            startButton = new GameButton(Content.Load<Texture2D>("StartButton"), startButtonPos);
 
-            float x1 = (float)graphics.PreferredBackBufferWidth / 6 - playerBrig.Width / 2;
-            float x2 = (x1 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerFrigate.Width / 2);
-            float x3 = (x2 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerManOfWar.Width / 2);
-
-            Vector2 ship1Pos = new Vector2(x1, (graphics.PreferredBackBufferHeight / 2) - playerBrig.Height / 2);
-            Vector2 ship2Pos = new Vector2(x2, (graphics.PreferredBackBufferHeight / 2) - playerFrigate.Height / 2);
-            Vector2 ship3Pos = new Vector2(x3, (graphics.PreferredBackBufferHeight / 2) - playerManOfWar.Height / 2);
-            brigButton = new GameButton(playerBrig, ship1Pos);
-            frigateButton = new GameButton(playerFrigate, ship2Pos);
-            manOfWarButton = new GameButton(playerManOfWar, ship3Pos);
-            returnToMenu = new GameButton(Content.Load<Texture2D>("ReturnToMenu"), new Vector2(250, 325));
-            resumeGame = new GameButton(Content.Load<Texture2D>("StartButton"), new Vector2(250, 500));
             #endregion
 
             #region GameMaterial
@@ -372,7 +379,54 @@ namespace PirateWars
             gameOverSongInstance = gameOverSong.CreateInstance();
             #endregion
 
-            BorderTexture = Content.Load<Texture2D>("Border");
+            #region Menus
+
+            //General buttons
+            startButtonPos = new Vector2(300, 300);
+            startButton = new GameButton(Content.Load<Texture2D>("StartButton"), startButtonPos);
+            returnToMenu = new GameButton(Content.Load<Texture2D>("ReturnToMenu"), new Vector2(250, 325));
+            resumeGame = new GameButton(Content.Load<Texture2D>("StartButton"), new Vector2(250, 500));
+
+            //Boot Menu
+            TextField motto = new TextField(("Omnis Erigere Niger Vexillum"), new Vector2(200, 600));
+            GameButton logoB = new GameButton(logo, new Vector2(graphics.PreferredBackBufferWidth / 2 - logo.Width / 2, graphics.PreferredBackBufferHeight / 2 - logo.Height / 2));
+            bootMenu = new Menu(motto, this);
+            bootMenu.AddMenuButton(logoB, ToMainMenu);
+
+            //MainMenu
+            TextField menuTitle = new TextField(("BOATS BOATS BOATS"), CenterText("BOATS BOATS BOATS", logoFont));
+            mainMenu = new Menu(menuTitle, this);
+            mainMenu.AddMenuButton(startButton, ToShipSelection);
+
+            //PauseMenu
+            TextField pauseTitle = new TextField("PAUSE", CenterText("PAUSE", logoFont));
+            pauseMenu = new Menu(pauseTitle, this);
+            pauseMenu.AddMenuButton(resumeGame, ToGameOn);
+            pauseMenu.AddMenuButton(returnToMenu, ToMainMenu);
+
+            //ShipSelectionMenu
+            float x1 = (float)graphics.PreferredBackBufferWidth / 6 - playerBrig.Width / 2;
+            float x2 = (x1 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerFrigate.Width / 2);
+            float x3 = (x2 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerManOfWar.Width / 2);
+
+            Vector2 ship1Pos = new Vector2(x1, (graphics.PreferredBackBufferHeight / 2) - playerBrig.Height / 2);
+            Vector2 ship2Pos = new Vector2(x2, (graphics.PreferredBackBufferHeight / 2) - playerFrigate.Height / 2);
+            Vector2 ship3Pos = new Vector2(x3, (graphics.PreferredBackBufferHeight / 2) - playerManOfWar.Height / 2);
+            brigButton = new GameButton(playerBrig, ship1Pos);
+            frigateButton = new GameButton(playerFrigate, ship2Pos);
+            manOfWarButton = new GameButton(playerManOfWar, ship3Pos);
+
+            TextField shipSelectionTitle = new TextField("CHOOSE YOUR SHIP", CenterText("CHOOSE YOUR SHIP", logoFont));
+            shipSelectionMenu = new Menu(shipSelectionTitle, this);
+            shipSelectionMenu.AddMenuButton(brigButton, LoadPlayerBrig);
+            shipSelectionMenu.AddMenuButton(frigateButton, LoadPlayerFrig);
+            shipSelectionMenu.AddMenuButton(manOfWarButton, LoadPlayerMOW);
+            shipSelectionMenu.AddMenuText(new TextField(PLAYER_BRIG_DATA.PrintData(), new Vector2(brigButton.Position.X, brigButton.Position.Y + brigButton.Texture.Height + 20)));
+            shipSelectionMenu.AddMenuText(new TextField(PLAYER_FRIG_DATA.PrintData(), new Vector2(frigateButton.Position.X, frigateButton.Position.Y + brigButton.Texture.Height + 20)));
+            shipSelectionMenu.AddMenuText(new TextField(PLAYER_MOW_DATA.PrintData(), new Vector2(manOfWarButton.Position.X, manOfWarButton.Position.Y + brigButton.Texture.Height + 20)));
+
+
+            #endregion
         }
         #endregion
 
@@ -397,8 +451,16 @@ namespace PirateWars
         #region Update
         protected override void Update(GameTime gameTime)
         {
-            //update all inputs
+            //update the appropriate menu
             inputManager.Update(gameTime);
+            if (gameState == GameState.BootMenu)
+                bootMenu.Update(gameTime, inputManager);
+            else if (gameState == GameState.MainMenu)
+                mainMenu.Update(gameTime, inputManager);
+            else if (gameState == GameState.Pause)
+                pauseMenu.Update(gameTime, inputManager);
+            else if (gameState == GameState.ShipSelection)
+                shipSelectionMenu.Update(gameTime, inputManager);
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -434,15 +496,12 @@ namespace PirateWars
                 if (gameOverSongInstance.State == SoundState.Stopped)
                     gameOverSongInstance.Play();
             }
-            //if the game is the BootMenu, MainMenu, Ship Selection or PauseMenu, then the mouse input needs to be updated
-            if (gameState == GameState.BootMenu || gameState == GameState.MainMenu || gameState == GameState.ShipSelection || gameState == GameState.Pause || gameState == GameState.GameOver)
+
+            //if game state is GAME ON, do all game updating
+            if (gameState == GameState.GameOn)
             {
-                IsMouseVisible = true;
-                UpdateMouseInput(gameTime);
-            }
-            //if game state is GAME ON
-            else if (gameState == GameState.GameOn)
-            {
+                if (gameTimer.RawTime == TimeSpan.Zero)
+                    StartGame();
                 IsMouseVisible = false;
                 /*COLLISION DETECTIONS*/
                 //player against enemy
@@ -477,13 +536,13 @@ namespace PirateWars
                 {
                     e.UpdateAndMove(gameTimer.RawTime, player);
                 }
-                
-                for (int i = playerInteractableList.Count-1; i>=0; i--)
+
+                for (int i = playerInteractableList.Count - 1; i >= 0; i--)
                 {
                     //update all PlayerInteractables
                     playerInteractableList.ElementAt(i).Update(player, gameTimer.RawTime);
                     //if one has timed out, remove it from the list
-                    if(playerInteractableList.ElementAt(i).TimedOut == true)
+                    if (playerInteractableList.ElementAt(i).TimedOut == true)
                     {
                         playerInteractableList.RemoveAt(i);
                     }
@@ -505,15 +564,18 @@ namespace PirateWars
                         }
                     }
                 }
-                Draw(gameTime);
                 Spawn(gameTime);
                 gameTimer.Update(gameTime);
                 base.Update(gameTime);
             }
+            else
+            {
+                IsMouseVisible = true;
+            }
         }
         #endregion
 
-        #region Input
+
         #region KeyboardInput
         /// <summary>
         /// Checks for keyboard input, and interprets that keyboard input.
@@ -541,7 +603,7 @@ namespace PirateWars
                 gameState = GameState.Pause;
                 gameTimer.Pause();
             }
-            
+
             if (inputManager.KeyIsDown(Keys.Tab))
             {
                 if (player.getShipState() == Player.ShipState.AbilityCharged)
@@ -554,12 +616,12 @@ namespace PirateWars
                     }
                 }
             }
-            
+
             if (inputManager.KeyIsDown(Keys.A) || inputManager.KeyIsDown(Keys.Left))
             {
                 angle = player.Angle - player.TurnSpeed;
             }
-                
+
             if (inputManager.KeyIsDown(Keys.D) || inputManager.KeyIsDown(Keys.Right))
             {
                 angle = player.Angle + player.TurnSpeed;
@@ -581,76 +643,12 @@ namespace PirateWars
                 OutOfBounds(ref newP, player.Texture, 0, graphics.PreferredBackBufferWidth, 0, graphics.PreferredBackBufferHeight);
             player.Position = newP;
             player.Angle = angle;
-            
+
             //place a delay on the space bar firing
-            if(inputManager.KeyIsDown(Keys.Space))
+            if (inputManager.KeyIsDown(Keys.Space))
                 player.Fire(gameTimer.RawTime);
         }//end UpdateInput (Keyboard
         #endregion //keyboard
-
-        #region MouseInput
-        private void UpdateMouseInput(GameTime gameTime)
-        {
-            MouseState newState = Mouse.GetState();
-            //check if the mouse is clicked, and if it is, see what button it pressed
-            if (gameState == GameState.BootMenu)
-            {
-                if (newState.LeftButton == ButtonState.Pressed)
-                {
-                    gameState = GameState.MainMenu;
-                }
-            }
-            if (gameState == GameState.MainMenu)
-            {
-                //if it clicked the start Button
-                if (inputManager.GameButtonWasClicked(startButton) == true)
-                {
-                    gameState = GameState.ShipSelection;
-                    return;
-                }
-            }//end MainMenu
-            else if (gameState == GameState.ShipSelection)
-            {
-                //if any of the buttons are clicked, set the player to the corresponding type and then start the game
-                //check for Brig Selection
-                if (inputManager.GameButtonWasClicked(brigButton) == true)
-                {
-                    player = new Player_Brig(PLAYER_BRIG_DATA, playerBrig, playerCBTexture);
-                    StartGame();
-
-                }
-                //check for frigate selection
-                else if (inputManager.GameButtonWasClicked(frigateButton) == true)
-                {
-                    player = new Player_Frigate(PLAYER_FRIG_DATA, playerFrigate, playerCBTexture);
-                    StartGame();
-                }
-                //check for man of war selection
-                else if (inputManager.GameButtonWasClicked(manOfWarButton) == true)
-                {
-                    player = new Player_ManOfWar(PLAYER_MOW_DATA, playerManOfWar, playerCBTexture);
-                    StartGame();
-                }
-            }//end shipSelection
-            else if (gameState == GameState.Pause)
-            {
-                if (inputManager.GameButtonWasClicked(resumeGame) == true)
-                {
-                    gameState = GameState.GameOn;
-                    gameTimer.Start();
-                }
-                if (inputManager.GameButtonWasClicked(returnToMenu) == true)
-                {
-                    gameState = GameState.MainMenu;
-                }
-            }
-            else if (gameState == GameState.GameOver)
-            {
-                if (inputManager.GameButtonWasClicked(returnToMenu) == true)
-                    gameState = GameState.MainMenu;
-            }
-        }
-
 
         private void GenerateFriendlies()
         {
@@ -688,10 +686,6 @@ namespace PirateWars
             e3.Position = ePos;
             friendlyList.Add(e3);
         }
-
-        #endregion //mouse
-
-        #endregion//input
 
         #region Helpers
         /// <summary>
@@ -732,9 +726,16 @@ namespace PirateWars
             int r = randomGenerator.Next(0, 100);
             if (r >= 0 && r < 10)
             {
-                playerInteractableList.Add(new HealthPowerup(HEALTH_POWER_DATA, e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup,gameTimer.RawTime));
+                playerInteractableList.Add(new HealthPowerup(HEALTH_POWER_DATA, e.Position, new Vector2(0, -1), (float)(Math.PI / 2), healthPowerup, gameTimer.RawTime));
             }
 
+        }
+
+        private Vector2 CenterText(string s, SpriteFont f)
+        {
+            float x = graphics.PreferredBackBufferWidth / 2 - f.MeasureString(s).X / 2;
+            float y = 25 + f.MeasureString(s).Y;
+            return new Vector2(x, y);
         }
         #endregion
 
@@ -750,7 +751,9 @@ namespace PirateWars
             //check game state and draw screen accordingly
             if (gameState == GameState.BootMenu)
             {
-                DrawBootMenu(spriteBatch, gameTime);
+                GraphicsDevice.Clear(Color.Black);
+                bootMenu.DrawMenu(spriteBatch, graphics, mottoFont, null);
+                //DrawBootMenu(spriteBatch, gameTime);
             }
             else if (gameState == GameState.Loading)
             {
@@ -760,15 +763,12 @@ namespace PirateWars
             {
                 //draw main menu
                 GraphicsDevice.Clear(Color.Black);
-                float x = graphics.PreferredBackBufferWidth / 2 - logoFont.MeasureString("BOATS BOATS BOATS").X / 2;
-                float y = 25 + logoFont.MeasureString("BOATS BOATS BOATS").Y;
-                spriteBatch.DrawString(logoFont, "BOATS BOATS BOATS", new Vector2(x, y), Color.White);
-                spriteBatch.Draw(startButton.Texture, new Vector2(300, 300), Color.White);
+                mainMenu.DrawMenu(spriteBatch, graphics, logoFont, null);
             }
             else if (gameState == GameState.ShipSelection)
             {
                 //draw ship selection menu
-                DrawShipSelection(spriteBatch, gameTime);
+                shipSelectionMenu.DrawMenu(spriteBatch,graphics,logoFont, mottoFont);
             }
             else if (gameState == GameState.GameOn)
             {
@@ -778,7 +778,7 @@ namespace PirateWars
             else if (gameState == GameState.Pause)
             {
                 //draw pause menu
-                DrawPauseMenu(spriteBatch, gameTime);
+                //DrawPauseMenu(spriteBatch, gameTime);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -791,61 +791,6 @@ namespace PirateWars
             }
             spriteBatch.End();
             base.Draw(gameTime);
-        }
-
-
-        /// <summary>
-        /// Draws the Boot up Menu for the game
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch which draws everything for the game.  Declared in Draw</param>
-        /// <param name="gameTime">Contains timing information for the game</param>
-        private void DrawBootMenu(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Draw(logo, new Vector2(graphics.PreferredBackBufferWidth / 2 - logo.Width / 2, graphics.PreferredBackBufferHeight / 2 - logo.Height / 2), Color.White);
-            //spriteBatch.DrawString(logoFont, "BlackCode Studios", new Vector2(titleW, titleH), Color.White);
-            spriteBatch.DrawString(mottoFont, "Omnis Erigere Niger Vexillum", new Vector2(200, 600), Color.White);
-        }
-
-        private void DrawShipSelection(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.Black);
-            float titleX = graphics.PreferredBackBufferWidth / 2 - logoFont.MeasureString("CHOOSE YOUR SHIP").X / 2;
-            spriteBatch.DrawString(logoFont, "CHOOSE YOUR SHIP", new Vector2(titleX, 100), Color.White);
-
-            //draw buttons
-            spriteBatch.Draw(brigButton.Texture, brigButton.Position, Color.White);
-            spriteBatch.Draw(frigateButton.Texture, frigateButton.Position, Color.White);
-            spriteBatch.Draw(manOfWarButton.Texture, manOfWarButton.Position, Color.White);
-
-            //draw ship data
-            float brigButtonMid = brigButton.Position.X + brigButton.Texture.Width / 2;
-            float frigateButtonMid = frigateButton.Position.X + frigateButton.Texture.Width / 2;
-            float mOWButtonMid = manOfWarButton.Position.X + manOfWarButton.Texture.Width / 2;
-            //make sure the text is centered around the button
-            spriteBatch.DrawString(mottoFont, PLAYER_BRIG_DATA.PrintData() +"\nPOWER: RAMMING SPEED", new Vector2(brigButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.Position.Y + 30), Color.White);
-
-            spriteBatch.DrawString(mottoFont, PLAYER_FRIG_DATA.PrintData() + "\nPOWER: TANK", new Vector2(frigateButtonMid - (mottoFont.MeasureString(PLAYER_FRIG_DATA.PrintData()).X / 2), frigateButton.Position.Y + 30), Color.White);
-
-            spriteBatch.DrawString(mottoFont, PLAYER_MOW_DATA.PrintData() + "\nPOWER: ARMY", new Vector2(mOWButtonMid - (mottoFont.MeasureString(PLAYER_BRIG_DATA.PrintData()).X / 2), brigButton.Position.Y + 30), Color.White);
-
-            //draw ship names
-
-            float x = frigateButtonMid - (mottoFont.MeasureString("The Patt Meters").X / 2);
-            spriteBatch.DrawString(mottoFont, "The Patt Meters", new Vector2(x, frigateButton.Position.Y - 35), Color.White);
-            x = brigButtonMid - (mottoFont.MeasureString("The Kimberly").X / 2);
-            spriteBatch.DrawString(mottoFont, "The Kimberly", new Vector2(x, brigButton.Position.Y - 35), Color.White);
-            x = mOWButtonMid - (mottoFont.MeasureString("El Jefe").X / 2);
-            spriteBatch.DrawString(mottoFont, "El Jefe", new Vector2(x, manOfWarButton.Position.Y - 35), Color.White);
-
-
-        }
-
-        private void DrawPauseMenu(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            spriteBatch.DrawString(logoFont, "PAUSE", new Vector2(150, 100), Color.Black);
-            spriteBatch.Draw(resumeGame.Texture, resumeGame.Position, Color.White);
-            spriteBatch.Draw(returnToMenu.Texture, returnToMenu.Position, Color.White);
         }
 
         /// <summary>
@@ -883,7 +828,7 @@ namespace PirateWars
                     int y = (int)(e1.Position.Y - e1.Texture.Height / 2);
 
                     //give the enemy a health bar that the player can see
-                    int healthBarL = (int)((healthBar.Width*.5f) * (double)((e1.Health / e1.MaxHealth)));
+                    int healthBarL = (int)((healthBar.Width * .5f) * (double)((e1.Health / e1.MaxHealth)));
                     spriteBatch.Draw(healthBar, new Rectangle(x, y, healthBarL / 2, 15), Color.Red);
                 }
             }
@@ -935,18 +880,18 @@ namespace PirateWars
                     }
                 }
             }
-            
+
             //draw player interactables
             for (int i = playerInteractableList.Count - 1; i >= 0; i--)
             {
                 if (OutOfBounds(playerInteractableList.ElementAt(i)))
                     playerInteractableList.RemoveAt(i);
-                else if(playerInteractableList.ElementAt(i).Faded == false)
-                { 
+                else if (playerInteractableList.ElementAt(i).Faded == false)
+                {
                     spriteBatch.Draw(playerInteractableList.ElementAt(i).Texture, playerInteractableList.ElementAt(i).Position, Color.White);
                 }
             }
-            
+
             /*Draw HUD*/
             //draw score
             spriteBatch.DrawString(HUDFont, "Score: " + score + "\nx" + scoreMultiplier, new Vector2(50, 50), Color.Black);
@@ -983,7 +928,7 @@ namespace PirateWars
                 spriteBatch.Draw(healthBar, new Rectangle(this.Window.ClientBounds.Width / 2 - healthBar.Width / 2,
              75, width, 25), Color.Red);
             }
-            
+
             //draw time
             spriteBatch.DrawString(HUDFont, "Time: " + (gameTimer.DisplayTime), new Vector2(graphics.PreferredBackBufferWidth - 200, 50), Color.Black);
         }
@@ -1019,7 +964,7 @@ namespace PirateWars
                     ResetSpawnTime(numberToSpawn);
                     BOSS_READY_TO_SPAWN = false;
                     //after beating the boss, increase the spawn number threshold so that they can face normal enemies again
-                    SPAWN_NUMBER_THRESHOLD+=2;
+                    SPAWN_NUMBER_THRESHOLD += 2;
                 }
             }
             //if the boss is not ready to spawn, continue spawning regular enemies enemies
@@ -1030,7 +975,7 @@ namespace PirateWars
                  *      The number of enemies that spawns durig any given wave is the sum of the natural log of game time + the natural log of their score per second
                  *      Ensures that the number is dynamic based on player ability but has a baseline for each game
                  */
-                numberToSpawn = (int)(MathHelper.Clamp(numberToSpawn, 0, 10));
+                numberToSpawn = (int)(MathHelper.Clamp(numberToSpawn, 0, 8));
 
                 lastSpawn = gameTimer.RawTime;
                 for (int i = 0; i < numberToSpawn; i++)
@@ -1196,8 +1141,8 @@ namespace PirateWars
         /// </summary>
         /// <param name="s">The ship dealing damage</param>
         /// <param name="e">The ship having damage dealt against it</param>
-        /// <param name="index">Only needs to be used if the function is being called from a loop iterating through a list.  it allows the use of RemoveAt(O(n)) over Remove((O(n))</param>
-        
+        /// <param name="index">Only needs to be used if the function is being called from a loop iterating through a list.  it allows the use of RemoveAt() which is O(1) over Remove() which is O(n)</param>
+
         private void CollisionDetection(Ship s, Ship e, int index)
         {
             //check cannon balls

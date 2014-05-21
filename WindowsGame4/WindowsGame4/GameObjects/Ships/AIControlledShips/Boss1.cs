@@ -75,7 +75,7 @@ namespace PirateWars
         /// Fire another round of projectiles.  The Boss's projectiles move in a sinusodial motion.
         /// </summary>
         /// <param name="gameTime">provides a snapshot of timing values</param>
-        protected void Fire(TimeSpan gameTime)
+        public override void Fire(TimeSpan gameTime)
         {
             if (CanFire(gameTime) == false)
                 return;

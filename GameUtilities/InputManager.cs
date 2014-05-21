@@ -10,7 +10,7 @@ namespace GameUtilities
     /// Handles keyboard and mouse inputs.
     /// Taken from TimGThomas's GitHub page at:
     /// https://github.com/TimGThomas/XnaInputManager
-    /// 
+    /// </summary>
     /// Added to this class were all comments, and the interaction between the GameButton class.
     /// Many functions were also renamed to keep the naming similar and decrease confusion
     /// 
@@ -23,7 +23,7 @@ namespace GameUtilities
     ///     
     /// The main point is that Up/Down/Pressed are checks of the current state ONLY, and Released/Clicked depend on the previous state
     /// The XNA Framework uses these same key terms but in a different manner.  Down and Up are used with keys, and Pressed and Released with mouse buttons.   They only refer to the current state without relation to any previous state.
-    /// </summary>
+
 	public class InputManager : GameComponent
 	{
         public enum MouseButtons
@@ -34,8 +34,6 @@ namespace GameUtilities
             Extra1,
             Extra2
         }
-
-        
 
         #region PrivateVariables
         private KeyboardState _priorKeyboardState;
@@ -82,6 +80,7 @@ namespace GameUtilities
 			}
 		}
 
+        #region Keyboard Functions
         /// <summary>
         /// Check if a key was pressed.
         /// </summary>
@@ -160,6 +159,9 @@ namespace GameUtilities
 			return _keyHeldTimes[key];
 		}
 
+        #endregion
+
+        #region Mouse Button Functions
         /// <summary>
         /// Get how long a mouse button has been held for
         /// </summary>
@@ -253,6 +255,7 @@ namespace GameUtilities
 		{
 			return _currentMouseState.ScrollWheelValue < _priorMouseState.ScrollWheelValue;
 		}
+        #endregion
 
         /// <summary>
         /// Check if a GameButton was clicked.  Checks the current mouse state's position to verify that the mouse click happened in the area of the button
@@ -261,14 +264,12 @@ namespace GameUtilities
         /// <returns>True if the mouse was clicked and the click happened in the area of the button</returns>
         public bool GameButtonWasClicked(GameButton b)
         {
-            //Console.WriteLine("Checking Game Button: " + b.Position.X + ": " + _currentMouseState.LeftButton + "; " + _priorMouseState.LeftButton);
             if (MouseButtonWasClicked(MouseButtons.Left))
             {
                 if (_currentMouseState.X >= b.Position.X && _currentMouseState.X <= b.Position.X + b.Texture.Width)
                 {
                     if (_currentMouseState.Y >= b.Position.Y && _currentMouseState.Y <= b.Position.Y + b.Texture.Height)
                     {
-                        Console.WriteLine("ButtonClicked!");
                         return true;
                     }
                 }
