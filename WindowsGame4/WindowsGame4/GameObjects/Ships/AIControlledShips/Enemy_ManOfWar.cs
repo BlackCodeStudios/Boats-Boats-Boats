@@ -11,7 +11,7 @@ namespace PirateWars
     /// <summary>
     /// Another type of Enemy.  Behaves the same as an Enemy_Brig but with different values.
     /// </summary>
-    class Enemy_ManOfWar : Enemy_Brig
+    public class Enemy_ManOfWar : Enemy_Brig
     {
         public Enemy_ManOfWar()
             : base()

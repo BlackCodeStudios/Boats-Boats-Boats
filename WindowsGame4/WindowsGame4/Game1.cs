@@ -70,11 +70,37 @@ namespace PirateWars
         SoundEffectInstance gameOverSongInstance;
         #endregion
 
+        #region Preloaded Types
+        /*
+         * These types are loaded when this class is constructed and run and can then be passed to other game types
+         * Since all game types basically use the same group of textures but have different spawning, scoring and possibly enemy behavior, one of all types can be loaded and used as a base instance for all game types and be accessed through an accessor from this class.
+         * While this will increase the amount of memory that this game requires, it will decrease the amount of textures and other items that have to be loaded multiple times (once for menus and then for a gametype, or once for one gametype and then for another) and it will decrease loading time once the game is started because everything is already loaded through the content pipeline.
+         */
+        //enemy types
+        FireBoat preLoadedFireboat;
+        Enemy_Brig preLoadedEnemyBrig;
+        Enemy_Frigate preLoadedEnemyFrigate;
+        Enemy_ManOfWar preLoadedEnemyManOfWar;
+        Boss1 preLoadedBoss1;
+
+        //player types
+        Player_Brig preLoadedPlayerBrig;
+        Player_Frigate preLoadedPlayerFrigate;
+        Player_ManOfWar preLoadedPlayerManOfWar;
+
+        //player interactables
+        Multiplier preLoadedMultiplier;
+        HealthPowerup preLoadedHealthPowerup;
+
+
+        #endregion
+
         #region Menus
         Menu mainMenu;
         Menu bootMenu;
         Menu pauseMenu;
         Menu shipSelectionMenu;
+        Menu gameOverMenu;
         #endregion
 
         #region MouseAndKeyboard
@@ -268,28 +294,75 @@ namespace PirateWars
         }
 
         #region ChangeMenuFunctions
+        
         private void ToMainMenu() { gameState = GameState.MainMenu; }               //change to MainMenu
+        
         private void ToShipSelection() { gameState = GameState.ShipSelection; }     //change to ShipSelection
-        private void ToGameOn() { gameState = GameState.GameOn; }                   //Change to GameOn
+        
+        private void ToGameOn() { gameState = GameState.GameOn; }                   //change to GameOn
+        
+        private void ResumeGame()                                                   //Pause to GameOn
+        { 
+            gameTimer.Start();
+            ToGameOn();
+        }
+        private void StartGame() { gameState = GameState.GameOn; RestartGame(); }   //Start the game with initial values
+        
         private void ToGameOver() { gameState = GameState.GameOver; }               //change to GameOver
+        
         private void ToPause() { gameState = GameState.Pause; }                     //change to pause
+        
         private void LoadPlayerBrig()
         {
             player = new Player_Brig(PLAYER_BRIG_DATA, playerBrig, playerCBTexture);
-            ToGameOn();
+            StartGame();
         }
+        
         private void LoadPlayerFrig() 
         { 
             player = new Player_Frigate(PLAYER_FRIG_DATA, playerFrigate, playerCBTexture);
-            ToGameOn();
+            StartGame();
         }
+       
         private void LoadPlayerMOW() 
         { 
             player = new Player_ManOfWar(PLAYER_MOW_DATA, playerManOfWar, playerCBTexture);
-            ToGameOn();
+            StartGame();
         }
         #endregion
 
+        #region AnimationFunctions
+        /*These are functions that are used to control texture animations.*/
+        private struct Waves
+        {
+            public float amplitude;        //amplitude of wave
+            public Vector2 direction;      //direction wave is moving in
+            public float speed;            //scalar represeting speed of wave
+            public float wavelength;       //scalar representing the wavelength of the wave
+            public float wavenumber;       //wavenumber of the wave.  Is calcualted by: 2pi/wavelength
+            public float phaseConstant;    //phase constant of wave.  Is calculated by: speed*(2pi/wavelength) OR speed*wavenumber
+            public float q;                //steepness of wave.  It is: 1/(wavenumber * amplitude).  Should have a range between 0 and 1
+
+            public Waves(float a, Vector2 d, float s, float l)
+            {
+                amplitude = a;
+                direction = d;
+                speed = s;
+                wavelength = l;
+
+                wavenumber = MathHelper.TwoPi / wavelength;
+                phaseConstant = speed * wavenumber;
+                q = 1 / (wavenumber * amplitude);
+            }
+        }
+        private void Wave(TimeSpan time, AnimatedTexture t)
+        {
+            //http://gamedev.stackexchange.com/questions/69827/gerstner-wave-function-simplified
+            Waves w = new Waves((float)randomGenerator.NextDouble(), new Vector2(0, 1), (float)(randomGenerator.Next(5)), (float)(randomGenerator.Next(5)));
+
+            t.Angle += (float)((w.q * w.amplitude) * w.direction.Y * Math.Cos(w.wavenumber + (w.phaseConstant * time.TotalSeconds)));
+        }
+        #endregion
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -397,11 +470,13 @@ namespace PirateWars
             TextField menuTitle = new TextField(("BOATS BOATS BOATS"), CenterText("BOATS BOATS BOATS", logoFont));
             mainMenu = new Menu(menuTitle, this);
             mainMenu.AddMenuButton(startButton, ToShipSelection);
+            AnimatedTexture menuBoat = new AnimatedTexture(Content.Load<Texture2D>("MenuTextures/MenuBoat"), new Vector2(700, 300), Wave);
+            mainMenu.AddMenuAnimatedTexture(menuBoat);
 
             //PauseMenu
             TextField pauseTitle = new TextField("PAUSE", CenterText("PAUSE", logoFont));
             pauseMenu = new Menu(pauseTitle, this);
-            pauseMenu.AddMenuButton(resumeGame, ToGameOn);
+            pauseMenu.AddMenuButton(resumeGame, ResumeGame);
             pauseMenu.AddMenuButton(returnToMenu, ToMainMenu);
 
             //ShipSelectionMenu
@@ -425,6 +500,10 @@ namespace PirateWars
             shipSelectionMenu.AddMenuText(new TextField(PLAYER_FRIG_DATA.PrintData(), new Vector2(frigateButton.Position.X, frigateButton.Position.Y + brigButton.Texture.Height + 20)));
             shipSelectionMenu.AddMenuText(new TextField(PLAYER_MOW_DATA.PrintData(), new Vector2(manOfWarButton.Position.X, manOfWarButton.Position.Y + brigButton.Texture.Height + 20)));
 
+            //Game Over Menu
+            TextField gameOverTitle = new TextField("GAME OVER", CenterText("GAME OVER", logoFont));
+            gameOverMenu = new Menu(gameOverTitle, this);
+            gameOverMenu.AddMenuButton(returnToMenu, ToMainMenu);
 
             #endregion
         }
@@ -461,6 +540,8 @@ namespace PirateWars
                 pauseMenu.Update(gameTime, inputManager);
             else if (gameState == GameState.ShipSelection)
                 shipSelectionMenu.Update(gameTime, inputManager);
+            else if (gameState == GameState.GameOver)
+                gameOverMenu.Update(gameTime, inputManager);
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -501,7 +582,7 @@ namespace PirateWars
             if (gameState == GameState.GameOn)
             {
                 if (gameTimer.RawTime == TimeSpan.Zero)
-                    StartGame();
+                    RestartGame();
                 IsMouseVisible = false;
                 /*COLLISION DETECTIONS*/
                 //player against enemy
@@ -691,7 +772,7 @@ namespace PirateWars
         /// <summary>
         /// Set all game values to default value.  Called when first starting the game (or restarting the game)
         /// </summary>
-        private void StartGame()
+        private void RestartGame()
         {
             gameState = GameState.Loading;
 
@@ -778,15 +859,21 @@ namespace PirateWars
             else if (gameState == GameState.Pause)
             {
                 //draw pause menu
-                //DrawPauseMenu(spriteBatch, gameTime);
+                pauseMenu.DrawMenu(spriteBatch,graphics,logoFont,mottoFont);
             }
             else if (gameState == GameState.GameOver)
             {
                 //draw game over screen
-                spriteBatch.DrawString(logoFont, "GAME OVER", new Vector2(250, 100), Color.Black);
-                spriteBatch.DrawString(mottoFont, "Score: " + score, new Vector2(250, 300), Color.Black);
-                spriteBatch.DrawString(mottoFont, "High Score: " + readHighScoreData().HighScore + " " + readHighScoreData().date, new Vector2(400, 300), Color.Black);
-                spriteBatch.Draw(returnToMenu.Texture, returnToMenu.Position, Color.White);
+                //if the high score data has not been added to the game over menu, add it
+                if (gameOverMenu.TextFieldCount == 0)
+                {
+                    string highScoreString = "High Score: " + readHighScoreData().HighScore + " " + readHighScoreData().date;
+                    TextField highScore = new TextField(highScoreString, new Vector2(700, 300));
+                    TextField gameScore = new TextField(("Score: " + score), new Vector2(550, 300));
+                    gameOverMenu.AddMenuText(highScore);
+                    gameOverMenu.AddMenuText(gameScore);
+                }
+                gameOverMenu.DrawMenu(spriteBatch, graphics, logoFont, mottoFont);
 
             }
             spriteBatch.End();
@@ -1215,6 +1302,64 @@ namespace PirateWars
                 else
                     p.ActivateAbility(s);
                 playerInteractableList.RemoveAt(index);
+            }
+        }
+        #endregion
+
+        #region Accessors
+        public Enemy_Brig PreLoadedEnemyBrig
+        {
+            get
+            {
+                return preLoadedEnemyBrig;
+            }
+        }
+
+        public Enemy_Frigate PreLoadedEnemyFrigate
+        {
+            get
+            {
+                return preLoadedEnemyFrigate;
+            }
+        }
+
+        public Enemy_ManOfWar PreLoadedEnemyManOfWar
+        {
+            get
+            {
+                return preLoadedEnemyManOfWar;
+            }
+        }
+
+        public FireBoat PreLoadedFireBoat
+        {
+            get
+            {
+                return PreLoadedFireBoat;
+            }
+        }
+
+        public Player GetPlayer
+        {
+            get
+            {
+                return player;
+            }
+        }
+
+        public Multiplier PreLoadedMultiplier
+        {
+            get
+            {
+                return preLoadedMultiplier;
+            }
+        }
+
+        public HealthPowerup PreLoadedHealthPowerup
+        {
+            get
+            {
+                return preLoadedHealthPowerup;
             }
         }
         #endregion

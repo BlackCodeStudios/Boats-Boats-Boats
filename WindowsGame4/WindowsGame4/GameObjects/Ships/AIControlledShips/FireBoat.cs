@@ -11,7 +11,7 @@ namespace PirateWars
     /// <summary>
     /// Another type of enemy.  Does not behave the same as the other Enemy ships.  This one charges at the player and deals damage upon collision.
     /// </summary>
-    class FireBoat : Enemy
+    public class FireBoat : Enemy
     {
         public FireBoat()
             : base()

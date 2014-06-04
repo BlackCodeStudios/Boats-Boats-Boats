@@ -59,6 +59,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimatedTexture.cs" />
     <Compile Include="GameButton.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Menu.cs" />

@@ -116,9 +116,10 @@
     <Compile Include="GameObjects\PlayerInteractables\PlayerInteractable.cs" />
     <Compile Include="GameObjects\Ships\PlayerControlledShips\Player_Frigate.cs" />
     <Compile Include="GameObjects\Ships\PlayerControlledShips\Player_ManOfWar.cs" />
+    <Compile Include="GameTypes\Survival.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="GameTypes\Game1.cs" />
+    <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Ships\PlayerControlledShips\Player_Brig.cs" />
     <Compile Include="GameObjects\Ships\Ship.cs" />
     <None Include="GameTypes\TestGame.cs" />
