@@ -104,17 +104,20 @@ namespace GameUtilities
         /// <param name="graphics">The graphics device manager associated with the menu (the same one associated with the game)</param>
         /// <param name="titleFont">The font used for the title</param>
         /// <param name="textFont">The font used for the body text</param>
-        public void DrawMenu(SpriteBatch spriteBatch, GraphicsDeviceManager graphics, SpriteFont titleFont, SpriteFont textFont)
+        public void DrawMenu(SpriteBatch spriteBatch, GraphicsDeviceManager graphics, SpriteFont titleFont, SpriteFont textFont, Color textColor, Color background)
         {
+            //draw background color
+            Game.GraphicsDevice.Clear(background);
+
             //draw title
             spriteBatch.DrawString(titleFont, title.Text, title.Position, Color.White);
-
+            
             //draw body text (if there is any)
             if (bodyText != null)
             {
                 foreach (TextField t in bodyText)
                 {
-                    spriteBatch.DrawString(textFont, t.Text, t.Position, Color.Black);
+                    spriteBatch.DrawString(textFont, t.Text, t.Position, textColor);
                 }
             }
             //draw menu buttons (if there are any)

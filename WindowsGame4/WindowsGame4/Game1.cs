@@ -357,10 +357,15 @@ namespace PirateWars
         }
         private void Wave(TimeSpan time, AnimatedTexture t)
         {
+            float xIncrement = graphics.PreferredBackBufferWidth * .001f;
             //http://gamedev.stackexchange.com/questions/69827/gerstner-wave-function-simplified
-            Waves w = new Waves((float)randomGenerator.NextDouble(), new Vector2(0, 1), (float)(randomGenerator.Next(5)), (float)(randomGenerator.Next(5)));
+            float yIncrement = (float)(.5*Math.Sin(time.TotalSeconds));
+            yIncrement-= (float)(.5 * Math.Sin(MathHelper.PiOver4 * time.TotalSeconds + MathHelper.PiOver4));
+            yIncrement -= (float)(.5 * Math.Cos(MathHelper.Pi/6 * time.TotalSeconds));
+            yIncrement += (float)(.25 * Math.Cos(time.TotalSeconds + MathHelper.Pi / 6));
+            t.Position = new Vector2(t.Position.X + xIncrement, t.Position.Y + yIncrement);
 
-            t.Angle += (float)((w.q * w.amplitude) * w.direction.Y * Math.Cos(w.wavenumber + (w.phaseConstant * time.TotalSeconds)));
+            //t.Angle = (float)Math.Atan2(t.Position.Y, t.Position.X);
         }
         #endregion
         /// <summary>
@@ -414,10 +419,9 @@ namespace PirateWars
             multiplierTexture = Content.Load<Texture2D>("Multiplier");
             #endregion
 
-            #region Time Variables
-            #endregion
+            #region PreLoaded Types
 
-            //Load object data
+
             #region ObjectData
             PLAYER_BRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player/Player_BrigData");
             PLAYER_FRIG_DATA = Content.Load<PlayerData>("ObjectDataFiles/Player/Player_FrigateData");
@@ -470,7 +474,7 @@ namespace PirateWars
             TextField menuTitle = new TextField(("BOATS BOATS BOATS"), CenterText("BOATS BOATS BOATS", logoFont));
             mainMenu = new Menu(menuTitle, this);
             mainMenu.AddMenuButton(startButton, ToShipSelection);
-            AnimatedTexture menuBoat = new AnimatedTexture(Content.Load<Texture2D>("MenuTextures/MenuBoat"), new Vector2(700, 300), Wave);
+            AnimatedTexture menuBoat = new AnimatedTexture(Content.Load<Texture2D>("MenuTextures/MenuBoat"), new Vector2(50, 400), Wave);
             mainMenu.AddMenuAnimatedTexture(menuBoat);
 
             //PauseMenu
@@ -483,22 +487,33 @@ namespace PirateWars
             float x1 = (float)graphics.PreferredBackBufferWidth / 6 - playerBrig.Width / 2;
             float x2 = (x1 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerFrigate.Width / 2);
             float x3 = (x2 + ((float)graphics.PreferredBackBufferWidth / 3.0f)) - (playerManOfWar.Width / 2);
-
+            
+            //create buttons
             Vector2 ship1Pos = new Vector2(x1, (graphics.PreferredBackBufferHeight / 2) - playerBrig.Height / 2);
             Vector2 ship2Pos = new Vector2(x2, (graphics.PreferredBackBufferHeight / 2) - playerFrigate.Height / 2);
             Vector2 ship3Pos = new Vector2(x3, (graphics.PreferredBackBufferHeight / 2) - playerManOfWar.Height / 2);
             brigButton = new GameButton(playerBrig, ship1Pos);
             frigateButton = new GameButton(playerFrigate, ship2Pos);
             manOfWarButton = new GameButton(playerManOfWar, ship3Pos);
-
+            
+            //add Title
             TextField shipSelectionTitle = new TextField("CHOOSE YOUR SHIP", CenterText("CHOOSE YOUR SHIP", logoFont));
             shipSelectionMenu = new Menu(shipSelectionTitle, this);
+            //add buttons
             shipSelectionMenu.AddMenuButton(brigButton, LoadPlayerBrig);
             shipSelectionMenu.AddMenuButton(frigateButton, LoadPlayerFrig);
             shipSelectionMenu.AddMenuButton(manOfWarButton, LoadPlayerMOW);
+            //add ship data
             shipSelectionMenu.AddMenuText(new TextField(PLAYER_BRIG_DATA.PrintData(), new Vector2(brigButton.Position.X, brigButton.Position.Y + brigButton.Texture.Height + 20)));
             shipSelectionMenu.AddMenuText(new TextField(PLAYER_FRIG_DATA.PrintData(), new Vector2(frigateButton.Position.X, frigateButton.Position.Y + brigButton.Texture.Height + 20)));
             shipSelectionMenu.AddMenuText(new TextField(PLAYER_MOW_DATA.PrintData(), new Vector2(manOfWarButton.Position.X, manOfWarButton.Position.Y + brigButton.Texture.Height + 20)));
+            //add ship names
+            TextField brigName = new TextField("THE MS.MEYERS",new Vector2(brigButton.Position.X, brigButton.Position.Y - 50));
+            shipSelectionMenu.AddMenuText(brigName);
+            TextField frigName = new TextField("THE PATT METERS", CenterText("THE PATT METERS", mottoFont,frigateButton.Position.X, frigateButton.Position.X + frigateButton.Texture.Width, frigateButton.Position.Y));
+            shipSelectionMenu.AddMenuText(frigName);
+            TextField mOWName = new TextField("EL JEFE", CenterText("EL JEFE",mottoFont,manOfWarButton.Position.X,(manOfWarButton.Position.X + manOfWarButton.Texture.Width), manOfWarButton.Position.Y));
+            shipSelectionMenu.AddMenuText(mOWName);
 
             //Game Over Menu
             TextField gameOverTitle = new TextField("GAME OVER", CenterText("GAME OVER", logoFont));
@@ -818,6 +833,12 @@ namespace PirateWars
             float y = 25 + f.MeasureString(s).Y;
             return new Vector2(x, y);
         }
+        private Vector2 CenterText(string s, SpriteFont f, float startX, float endX, float startY)
+        {
+            float x = (startX+ ((endX - startX) / 2))  - (f.MeasureString(s).X/2);
+            float y = startY - f.LineSpacing;
+            return new Vector2(x, y);
+        }
         #endregion
 
         #region Draw
@@ -832,8 +853,7 @@ namespace PirateWars
             //check game state and draw screen accordingly
             if (gameState == GameState.BootMenu)
             {
-                GraphicsDevice.Clear(Color.Black);
-                bootMenu.DrawMenu(spriteBatch, graphics, mottoFont, null);
+                bootMenu.DrawMenu(spriteBatch, graphics, mottoFont, null, Color.White, Color.Black);
                 //DrawBootMenu(spriteBatch, gameTime);
             }
             else if (gameState == GameState.Loading)
@@ -844,12 +864,12 @@ namespace PirateWars
             {
                 //draw main menu
                 GraphicsDevice.Clear(Color.Black);
-                mainMenu.DrawMenu(spriteBatch, graphics, logoFont, null);
+                mainMenu.DrawMenu(spriteBatch, graphics, logoFont, null, Color.White, Color.Black);
             }
             else if (gameState == GameState.ShipSelection)
             {
                 //draw ship selection menu
-                shipSelectionMenu.DrawMenu(spriteBatch,graphics,logoFont, mottoFont);
+                shipSelectionMenu.DrawMenu(spriteBatch,graphics,logoFont, mottoFont, Color.White, Color.Black);
             }
             else if (gameState == GameState.GameOn)
             {
@@ -859,7 +879,7 @@ namespace PirateWars
             else if (gameState == GameState.Pause)
             {
                 //draw pause menu
-                pauseMenu.DrawMenu(spriteBatch,graphics,logoFont,mottoFont);
+                pauseMenu.DrawMenu(spriteBatch,graphics,logoFont,mottoFont, Color.White, Color.Black);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -873,7 +893,7 @@ namespace PirateWars
                     gameOverMenu.AddMenuText(highScore);
                     gameOverMenu.AddMenuText(gameScore);
                 }
-                gameOverMenu.DrawMenu(spriteBatch, graphics, logoFont, mottoFont);
+                gameOverMenu.DrawMenu(spriteBatch, graphics, logoFont, mottoFont, Color.White, Color.Black);
 
             }
             spriteBatch.End();

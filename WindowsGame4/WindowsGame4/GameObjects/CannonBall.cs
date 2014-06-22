@@ -31,25 +31,6 @@ namespace PirateWars
             direction = Vector2.Zero;
         }//end default constructor
 
-
-        /// <summary>
-        /// Overloaded constructor for a cannon ball
-        /// </summary>
-        /// <param name="v">2D vector for the speed of the cannon ball</param>
-        /// <param name="dir">2D vector for the direction of the cannon ball.  Should be perpendicular to the direction of the ship it was fired from </param>
-        /// <param name="t">Texture that is to be drawn.  Also used to create a bounding rectangle.  Passed to cannon ball class upon intitilization in the Ship.Fire() method</param>
-        /// <param name="da">Damage that the cannon ball should deal.  It is passed from the Ship class</param>
-        /// <param name="s">Vector representing the speed of the cannon ball</param>
-        public CannonBall(Vector2 v, Vector2 dir, Texture2D t, float da, Vector2 s)
-            : this()
-        {
-            //not enough comments # nerd
-            position = v;
-            direction = dir;
-            texture = t;
-            damage = da;
-            speed = s;
-        }
         /// <summary>
         /// Construct new cannon ball.
         /// </summary>

@@ -41,31 +41,22 @@ namespace PirateWars
         /// The frigate fires like a normal ship except when its ability is activated.  Then it fires off all four sides.
         /// </summary>
         public override void Fire(TimeSpan gameTime)
-        {
-            //fire off two sides
-            base.Fire(gameTime);
-            
+        {            
             //if the ability is activated shoot in front and behind the ship
             if (shipState == ShipState.AbilityActivated)
             {
-                Vector2 increment = RectangleF.RotateVector(this.Direction,(float)Math.PI) * (texture.Height / cannons);
-                for (int i = 0; i < cannons; i++)
+                if (CanFire(gameTime) == true)
                 {
-                    /*
-                     * One set will move in the same direction as the ship, the other in the opposite direction.
-                     * Same algorithm as in base.Fire() but the direction is just the direction of the player
-                     */
-                    Vector2 posT = this.position + (((cannons - i) - (cannons / 2)) * increment);
-                    Vector2 posB = this.position + (((cannons - i) - (cannons / 2)) * increment);
-
-                    posT += this.Direction * cannonBallVelocity;     //off left side
-                    posB += -this.Direction * cannonBallVelocity;    //off right side
-                    
-                    //add Cannon Balls to List of cannon balls
-                    CBA.Add(new CannonBall(posT, this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle)));      //add left side cannon ball
-                    CBA.Add(new CannonBall(posB, -this.Direction, this.CannonBallTexture, this.damage, cannonBallVelocity, RectangleF.WrapAngle(this.angle)));    //add right side cannon ball
+                    Console.WriteLine("CBA SIZE: " + CBA.Count);
+                    CannonBall cannonBallTop = new CannonBall(this.Position, this.Direction, CannonBallTexture, damage, cannonBallVelocity, this.Angle);
+                    CannonBall cannonBallBotton = new CannonBall(this.Position, -this.Direction, CannonBallTexture, damage, cannonBallVelocity, -this.Angle);
+                    CBA.Add(cannonBallTop);
+                    CBA.Add(cannonBallBotton);
+                    Console.WriteLine("CBA SIZE: " + CBA.Count);
                 }
             }
+            //fire off two sides
+            base.Fire(gameTime);
         }
 
         public override bool ActivateAbility(TimeSpan gameTime)

@@ -34,7 +34,7 @@ namespace ObjectDataTypes
         {
             string output = base.PrintData();
             output += ("Cannons per side: " + cannons + "\n");
-            output += ("Rate of Fire: " + rateOfFire + "\n");
+            output += ("Rate of Fire: " + (1000-rateOfFire) + "\n");    //the larger the value of rate of fire, the slower it actually fires...
             output += ("Health: " + health + "\n");
             output += ("Damage: " + damage + "\n");
             return output;
